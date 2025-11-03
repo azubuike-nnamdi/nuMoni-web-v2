@@ -9,6 +9,9 @@ import {
   TotalPointsRewardedCard
 } from "./cards";
 import PointAnalytics from "./point-analytics";
+import TotalDistributedPoints from "./total-distributed-points";
+import TotalOutstandingAllocation from "./total-outstanding-allocation";
+import TotalRewardIssued from "./total-reward-issued";
 
 export default function RewardDashboard() {
 
@@ -33,35 +36,75 @@ export default function RewardDashboard() {
         className="mb-4"
       />
 
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white rounded-2xl p-4">
-        <BudgetCapCard
-          rewardCap={rewardTableData?.rewardCap}
-          isLoading={isPending}
-        />
+      <section className="bg-white rounded-2xl p-4 overflow-x-auto">
+        <div className="flex gap-4 min-w-max md:min-w-0">
+          <div className="min-w-[280px] flex-shrink-0">
+            <BudgetCapCard
+              rewardCap={rewardTableData?.rewardCap}
+              isLoading={isPending}
+            />
+          </div>
 
-        <TotalPointsRewardedCard
-          totalRewardCap={analyticsData?.totalRewardDistributed}
-          isLoading={isPendingRewardAnalysis}
-          isError={isErrorRewardAnalysis}
-          errorMessage={errorRewardAnalysis?.message}
-          onRetry={() => refetchRewardAnalysis()}
-        />
+          <div className="min-w-[280px] flex-shrink-0">
+            <TotalPointsRewardedCard
+              totalRewardCap={analyticsData?.totalRewardDistributed}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
 
-        <TotalPointsBalanceCard
-          availablePoints={analyticsData?.availablePoints}
-          isLoading={isPendingRewardAnalysis}
-          isError={isErrorRewardAnalysis}
-          errorMessage={errorRewardAnalysis?.message}
-          onRetry={() => refetchRewardAnalysis()}
-        />
+          <div className="min-w-[280px] flex-shrink-0">
+            <TotalPointsBalanceCard
+              availablePoints={analyticsData?.availablePoints}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
 
-        <CustomerPoolCard
-          totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
-          isLoading={isPendingRewardAnalysis}
-          isError={isErrorRewardAnalysis}
-          errorMessage={errorRewardAnalysis?.message}
-          onRetry={() => refetchRewardAnalysis()}
-        />
+          <div className="min-w-[280px] flex-shrink-0">
+            <CustomerPoolCard
+              totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
+
+          <div className="min-w-[280px] flex-shrink-0">
+            <TotalRewardIssued
+              totalIssued={analyticsData?.totalIssued}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
+
+          <div className="min-w-[280px] flex-shrink-0">
+            <TotalOutstandingAllocation
+              outStandingAllocation={analyticsData?.outStandingAllocation}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
+
+          <div className="min-w-[280px] flex-shrink-0">
+            <TotalDistributedPoints
+              totalRewardDistributed={analyticsData?.totalRewardDistributed}
+              isLoading={isPendingRewardAnalysis}
+              isError={isErrorRewardAnalysis}
+              errorMessage={errorRewardAnalysis?.message}
+              onRetry={() => refetchRewardAnalysis()}
+            />
+          </div>
+        </div>
       </section>
 
       <PointAnalytics

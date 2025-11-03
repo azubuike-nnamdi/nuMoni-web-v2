@@ -1,4 +1,4 @@
-import { pointIcon, successIconCheck } from "@/constant/icons";
+import { pointIcon } from "@/constant/icons";
 import { formatNumber } from "@/lib/helper";
 import Image from "next/image";
 import CardErrorState from "./card-error-state";
@@ -38,12 +38,12 @@ export default function TotalPointsBalanceCard({
           {formatNumber(availablePoints ?? 0)}
         </div>
         <hr className="border-gray-100 mb-2" />
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="bg-[#F5F5F5] rounded-full p-2 flex items-center gap-1 w-full justify-center">
             <Image src={successIconCheck} alt="Success" width={18} height={18} />
             <span className="text-xs font-medium text-black/50">Cap value still on target</span>
           </div>
-        </div>
+        </div> */}
       </>
     );
   };

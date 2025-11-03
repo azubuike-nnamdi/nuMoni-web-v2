@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ErrorDisplay from "../common/error-display";
 import { MusicPauseIcon } from "../common/icon-svg";
+import PointsDistributed from "../dashboard/points/points-distributed";
+import PointsRedeemed from "../dashboard/points/points-redeemed";
 import { Button } from "../ui/button";
 import AnalyticalTrend from "./analytical-trend";
 import PointsAllocated from "./points-allocated";
@@ -66,12 +68,14 @@ export default function PointAnalytics({
   return (
     <main className="bg-white rounded-2xl p-3 sm:p-4 md:p-6 my-4 sm:my-6 md:my-8">
       {/* Header Section */}
+      <h1 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Point Insights & Analytics</h1>
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 sm:mb-6 gap-4">
+
         <div className="flex flex-row gap-2 items-center">
-          <h1 className="text-base sm:text-lg font-semibold text-gray-900">Point Insights & Analytics</h1>
+
 
           {/* Tabs - Mobile: Full width, Desktop: Auto width */}
-          <div className="flex flex-wrap items-center gap-2 lg:gap-2">
+          <div className="flex flex-wrap items-center gap-1 lg:gap-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -152,6 +156,10 @@ export default function PointAnalytics({
         {activeTab === "analytics-trends" && (
           <AnalyticalTrend />
         )}
+
+        {activeTab === "points-distributed" && <PointsDistributed />}
+
+        {activeTab === "points-redeemed" && <PointsRedeemed />}
       </div>
 
       {/* Dynamic Rewards Modal */}
