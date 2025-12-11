@@ -34,22 +34,16 @@ export default function TotalPointsBalanceCard({
 
     return (
       <>
-        <div className="text-3xl font-bold mb-4 flex-1">
+        <div className="text-3xl font-bold mb-4">
           {formatNumber(availablePoints ?? 0)}
         </div>
-        <hr className="border-gray-100 mb-2" />
-        {/* <div className="flex items-center gap-2">
-          <div className="bg-[#F5F5F5] rounded-full p-2 flex items-center gap-1 w-full justify-center">
-            <Image src={successIconCheck} alt="Success" width={18} height={18} />
-            <span className="text-xs font-medium text-black/50">Cap value still on target</span>
-          </div>
-        </div> */}
+        <hr className="border-gray-100 mb-4" />
       </>
     );
   };
 
   return (
-    <div className="bg-theme-gray rounded-xl p-6 flex flex-col">
+    <div className="bg-gray-200/40 rounded-xl p-6 flex flex-col h-full">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-[#727272] text-md font-semibold">Total Points Balance</h3>
         <div className="bg-white rounded-full p-3">
@@ -57,7 +51,9 @@ export default function TotalPointsBalanceCard({
         </div>
       </div>
 
-      {renderData()}
+      <div className="flex flex-col flex-1">
+        {renderData()}
+      </div>
     </div>
   );
 }

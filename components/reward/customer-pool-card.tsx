@@ -34,7 +34,7 @@ export default function CustomerPoolCard({
 
     return (
       <>
-        <div className="text-3xl font-bold mb-4 flex-1">
+        <div className="text-3xl font-bold mb-4">
           {totalLifetimeCustomers ?? 0}
         </div>
         <hr className="border-gray-100 mb-4" />
@@ -52,15 +52,17 @@ export default function CustomerPoolCard({
   };
 
   return (
-    <div className="bg-theme-gray rounded-xl p-6 flex flex-col">
+    <div className="bg-gray-200/40 rounded-xl p-6 flex flex-col h-full">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-[#727272] text-md font-semibold">Customer Pool</h3>
+        <h3 className="text-[#727272] text-md font-semibold">Customers</h3>
         <div className="bg-white rounded-full p-3">
           <Image src={peopleIcon} alt="People" width={18} height={18} />
         </div>
       </div>
 
-      {renderData()}
+      <div className="flex flex-col flex-1">
+        {renderData()}
+      </div>
     </div>
   );
 }

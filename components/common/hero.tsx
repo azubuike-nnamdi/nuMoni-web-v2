@@ -1,6 +1,7 @@
 'use client';
 
 import useGetMerchant from "@/hooks/query/useGetMerchant";
+import { cleanS3Url } from "@/lib/helper";
 import { DashboardProps } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import BrandProfile from "../dashboard/brand-profile";
@@ -22,6 +23,13 @@ export default function Hero({
   const { data: merchant, isPending, isError, error } = useGetMerchant();
   const merchantInfo = merchant?.data?.data;
 
+
+
+  // Merchant is verified if all three verification fields are true
+  const isVerified = merchantInfo?.verifiedNin === true &&
+    merchantInfo?.verifiedTin === true &&
+    merchantInfo?.verifiedCac === true;
+
   // Determine which summary component to show based on route
   const getSummaryComponent = () => {
     if (pathname.includes("branch-level")) {
@@ -40,10 +48,11 @@ export default function Hero({
         isLoading={isPending}
         isError={isError}
         error={error}
+        isVerified={isVerified}
       />
 
       <QRCodeCard
-        qrCodeUrl={merchantInfo?.qrCode}
+        qrCodeUrl={cleanS3Url(merchantInfo?.qrCode)}
         title={qrTitle}
         description={qrDescription}
         onDownload={onDownload}

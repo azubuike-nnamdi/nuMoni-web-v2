@@ -1,7 +1,8 @@
 import { BranchIcon, DashboardIcon, RewardIcon } from "@/components/common/icon-svg";
 import { avatarIcon, branchIcon, calenderIcon, dealIcon, emailIcon, giftIcon, graphDirectionIcon, grayPointIcon, instagramIcon, musicPauseIcon, phoneNotificationIcon, twitterIcon, whatsappIcon } from "@/constant/icons";
 import { sampleUserIcon } from "@/constant/images";
-import { BRANCH_LEVEL_URL, DASHBOARD_URL, REWARD_TABLE_URL } from "@/constant/routes";
+import { BRANCH_LEVEL_URL, DASHBOARD_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
+import { PanelTopClose } from "lucide-react";
 
 const navigationItems = [
   {
@@ -19,6 +20,11 @@ const navigationItems = [
     path: REWARD_TABLE_URL,
     icon: RewardIcon
   },
+  {
+    name: 'Transactions',
+    path: TRANSACTIONS_URL,
+    icon: PanelTopClose
+  }
   // {
   //   name: 'Points',
   //   path: POINTS_URL,
@@ -78,7 +84,7 @@ const benefitsData = [
 const tabs = [
   { id: "reward-table", label: "Reward Table" },
   // { id: "customers-score", label: "Customers Score" },
-  { id: "points-allocation", label: "Points Allocation" },
+  { id: "customer", label: "Customer" },
   { id: "analytics-trends", label: "Analytics & Trends" },
   { id: "points-distributed", label: "Points Distributed" },
   { id: "points-redeemed", label: "Points Redeemed" }

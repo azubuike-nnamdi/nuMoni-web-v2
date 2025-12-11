@@ -15,6 +15,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const searchParams = useSearchParams();
   const { openDialog } = useBranchStore();
 
+
   // Debug logging
   // console.log('Navbar - pathname:', pathname);
   // console.log('Navbar - searchParams:', searchParams.toString());

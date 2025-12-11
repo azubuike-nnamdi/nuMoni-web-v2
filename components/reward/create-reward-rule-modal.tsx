@@ -3,7 +3,7 @@
 import { giftIcon } from "@/constant/icons";
 import { useCreateRewards } from "@/hooks/mutation/useCreateRewards";
 import { getAuthCookies } from "@/lib/cookies-utils";
-import { getDistributionType, getRewardType } from "@/lib/helper";
+import { getDistributionType, getRewardType, removeCommas } from "@/lib/helper";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -51,6 +51,11 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
   const handleSave = () => {
     // Map form values to API enum values
 
+    // Clean rewardCap: remove commas and parse to number
+    // Example: "40,000" -> "40000" -> 40000
+    const cleanedRewardCap = removeCommas(rewardCap || "");
+    const parsedRewardCap = cleanedRewardCap ? parseFloat(cleanedRewardCap) : 0;
+
     // Prepare payload according to CreateRewardsPayload type
     const payload = {
       merchantId: merchantId, // Replace with actual merchant ID from context/store
@@ -60,7 +65,7 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
         maxSpend: parseFloat(rule.max) || 0,
         rewardValue: parseFloat(rule.percentage) || 0
       })),
-      rewardCap: parseFloat(rewardCap) || 0,
+      rewardCap: parsedRewardCap, // Number without commas (e.g., 40000)
       distributionType: getDistributionType(receiveMethod),
       milestoneTarget: receiveMethod === "INSTANT" ? 1 : (parseInt(milestoneTarget) || 0),
       pointExpirationDays: parseInt(pointExpiration) || 0,
@@ -69,9 +74,12 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
       endDate: endDate || null
     };
 
-    // console.log("=== REWARD RULE PAYLOAD ===");
-    // console.log("Payload:", payload);
-    // console.log("=============================");
+    console.log("=== REWARD RULE PAYLOAD ===");
+    console.log("rewardCap (formatted in UI):", rewardCap);
+    console.log("rewardCap (cleaned, no commas):", cleanedRewardCap);
+    console.log("rewardCap (parsed number):", parsedRewardCap);
+    console.log("Full payload:", payload);
+    console.log("=============================");
 
     // Call the mutation hook
     handleCreateRewards(payload);

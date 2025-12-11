@@ -50,6 +50,7 @@ type BrandProfileProps = {
   isLoading?: boolean;
   isError?: boolean;
   error?: Error | null;
+  isVerified?: boolean;
 }
 
 type SummaryItem = {
@@ -444,5 +445,80 @@ type AccountInformationProps = {
   maxPointsIssued: string;
 }
 
-export type { AccountInformationProps, ActiveBranchModalProps, AdminNavigationItem, AuthUser, AuthUserStore, AxiosError, BankPayload, BankToken, Branch, BranchAnalyticsData, BranchManagerPayload, BranchSummaryData, BrandProfileProps, BrandSummaryProps, ChangeBranchStatusPayload, CreateRewardsPayload, Customer, CustomerAnalyticsData, CustomerAnalyticsResponse, CustomerCardProps, CustomerSectionProps, DashboardProps, DateSectionProps, ErrorDisplayProps, ExpirationSectionProps, GetBranchesResponse, InfoItem, MainBranchSummaryProps, MilestoneTargetSectionProps, PointAnalyticsProps, QRCodeCardProps, ReceiveMethodSectionProps, RewardCapSectionProps, RewardModalProps, RewardRule, RewardRulesSectionProps, Rewards, SidebarProps, signInPayload, singleBranchDetails, SocialMediaData, TanstackProviderProps, Transaction, UpdateBranchManagerPayload, UpdateRewardRuleModalProps, VerifyBankPayload, VerifyPayOnUsBankPayload };
+type Bank = {
+  code: string;
+  name: string;
+}
+
+type VerifyBankNamePayload = {
+  institutionCode: string;
+  accountNumber: string;
+}
+
+type MetricCardProps = {
+  title: string;
+  value: string;
+  change?: string;
+  changeType?: 'positive' | 'negative';
+  icon: React.ReactNode;
+  bgColor: string;
+  iconBgColor: string;
+}
+
+type TransactionData = {
+  id: string;
+  transactionId: string | null;
+  transactionType: string;
+  operationType: string;
+  amount: number;
+  description: string;
+  status: string;
+  date: string;
+  customerId: string;
+  customerName: string | null;
+  customerImageUrl: string | null;
+  merchantId: string;
+  merchantName: string | null;
+  businessImagePath: string | null;
+  walletType: string | null;
+  sourceTable: string;
+  balanceBeforeTransaction: number | null;
+  balanceAfterTransaction: number | null;
+  referenceTransactionId: string | null;
+  fee: number | null;
+  trnType: string | null;
+  dealId: string | null;
+  dealName: string | null;
+  dealType: string | null;
+  unitsPurchased: number | null;
+  branchId: string | null;
+  branchName: string;
+  invoiceRefId: string | null;
+  invoiceNo: string;
+  transactionReferenceId: string;
+  numoniTransactionRefId: string | null;
+  transactionNo: string | null;
+  amountByWallet: number | null;
+  amountBrandWallet: number | null;
+  numoniPoints: number | null;
+  brandPoints: number | null;
+  amountPaid: number;
+  settledAmount: number | null;
+  issuedPoints: number | null;
+  beneficiaryAccountNumber: string | null;
+  beneficiaryAccountName: string | null;
+  bankCode: string | null;
+  bankName: string | null;
+  paymentGateway: string | null;
+  transferResponseCode: string | null;
+  transactionCategory: string;
+  title: string;
+  paymentDt: string | null;
+  createdDt: string | null;
+  updatedDt: string | null;
+  incoming: boolean;
+  outgoing: boolean;
+}
+
+export type { AccountInformationProps, ActiveBranchModalProps, AdminNavigationItem, AuthUser, AuthUserStore, AxiosError, Bank, BankPayload, BankToken, Branch, BranchAnalyticsData, BranchManagerPayload, BranchSummaryData, BrandProfileProps, BrandSummaryProps, ChangeBranchStatusPayload, CreateRewardsPayload, Customer, CustomerAnalyticsData, CustomerAnalyticsResponse, CustomerCardProps, CustomerSectionProps, DashboardProps, DateSectionProps, ErrorDisplayProps, ExpirationSectionProps, GetBranchesResponse, InfoItem, MainBranchSummaryProps, MetricCardProps, MilestoneTargetSectionProps, PointAnalyticsProps, QRCodeCardProps, ReceiveMethodSectionProps, RewardCapSectionProps, RewardModalProps, RewardRule, RewardRulesSectionProps, Rewards, SidebarProps, signInPayload, singleBranchDetails, SocialMediaData, TanstackProviderProps, Transaction, TransactionData, UpdateBranchManagerPayload, UpdateRewardRuleModalProps, VerifyBankNamePayload, VerifyBankPayload, VerifyPayOnUsBankPayload };
 

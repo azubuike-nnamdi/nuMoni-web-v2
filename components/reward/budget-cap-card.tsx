@@ -15,7 +15,7 @@ export default function BudgetCapCard({ rewardCap, isLoading }: BudgetCapCardPro
   }
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-green-800 to-green-900 text-white rounded-xl p-6 flex flex-col">
+    <div className="relative overflow-hidden bg-gradient-to-br from-green-800 to-green-900 text-white rounded-xl p-6 flex flex-col h-full">
       {/* Cash Back Background Icon */}
       <div className="absolute -top-8 -right-16 opacity-30">
         <Image src={cashBackIcon} alt="Cash Back" width={200} height={200} />

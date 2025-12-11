@@ -149,7 +149,7 @@ export default function PointAnalytics({
           <CustomersScore />
         )} */}
 
-        {activeTab === "points-allocation" && (
+        {activeTab === "customer" && (
           <PointsAllocated />
         )}
 

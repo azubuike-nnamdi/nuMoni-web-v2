@@ -10,6 +10,8 @@ import { Button } from "../ui/button";
 export default function EmptyBranch() {
   const { openDialog } = useBranchStore();
 
+
+
   return (
     <main>
       <motion.div

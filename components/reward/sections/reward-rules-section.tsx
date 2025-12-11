@@ -24,6 +24,14 @@ export default function RewardRulesSection({
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const handleSaveRule = () => {
     if (minSpending && maxSpending && rewardPercentage) {
+      const minValue = parseFloat(removeCommas(minSpending));
+      const maxValue = parseFloat(removeCommas(maxSpending));
+
+      // Validate that min is not greater than max
+      if (minValue > maxValue) {
+        return; // Don't save if min > max
+      }
+
       const newRule = {
         min: removeCommas(minSpending),
         max: removeCommas(maxSpending),
@@ -71,7 +79,12 @@ export default function RewardRulesSection({
     setRewardPercentage("");
   };
 
-  const isSaveRuleDisabled = !minSpending || !maxSpending || !rewardPercentage;
+  // Check if min > max
+  const minValue = minSpending ? parseFloat(removeCommas(minSpending)) : null;
+  const maxValue = maxSpending ? parseFloat(removeCommas(maxSpending)) : null;
+  const isMinGreaterThanMax = minValue !== null && maxValue !== null && minValue > maxValue;
+
+  const isSaveRuleDisabled = !minSpending || !maxSpending || !rewardPercentage || isMinGreaterThanMax;
 
   return (
     <div className="space-y-4">
@@ -226,6 +239,11 @@ export default function RewardRulesSection({
               )}
             </div>
           </div>
+          {isMinGreaterThanMax && (
+            <div className="text-xs text-red-500 font-medium">
+              Min spending cannot be greater than max spending
+            </div>
+          )}
           <div className="flex gap-2">
             <Button
               onClick={handleSaveRule}
@@ -297,26 +315,33 @@ export default function RewardRulesSection({
             )}
           </div>
           <span className="text-gray-500 flex-shrink-0">-</span>
-          <div className="flex gap-2 flex-shrink-0">
-            <Button
-              onClick={handleSaveRule}
-              disabled={isSaveRuleDisabled}
-              className={`px-8 py-6 text-sm ${isSaveRuleDisabled
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-theme-dark-green hover:bg-theme-dark-green/90 text-white"
-                }`}
-            >
-              {editingIndex !== null ? "Update" : "Save"}
-            </Button>
-            {editingIndex !== null && (
-              <Button
-                onClick={handleCancelEdit}
-                variant="outline"
-                className="px-6 py-6 text-sm"
-              >
-                Cancel
-              </Button>
+          <div className="flex gap-2 flex-shrink-0 flex-col">
+            {isMinGreaterThanMax && (
+              <div className="text-xs text-red-500 font-medium whitespace-nowrap">
+                Min cannot be greater than max
+              </div>
             )}
+            <div className="flex gap-2">
+              <Button
+                onClick={handleSaveRule}
+                disabled={isSaveRuleDisabled}
+                className={`px-8 py-6 text-sm ${isSaveRuleDisabled
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-theme-dark-green hover:bg-theme-dark-green/90 text-white"
+                  }`}
+              >
+                {editingIndex !== null ? "Update" : "Save"}
+              </Button>
+              {editingIndex !== null && (
+                <Button
+                  onClick={handleCancelEdit}
+                  variant="outline"
+                  className="px-6 py-6 text-sm"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

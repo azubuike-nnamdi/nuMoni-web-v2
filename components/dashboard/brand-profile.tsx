@@ -13,7 +13,8 @@ export default function BrandProfile({
   isLoading,
   isError,
   error,
-  onAccountSettings
+  onAccountSettings,
+  isVerified = false
 }: BrandProfileProps) {
 
   if (isLoading) {
@@ -71,7 +72,9 @@ export default function BrandProfile({
         )}
         <div className="flex items-center gap-2 mb-1">
           <h2 className="text-lg font-bold text-gray-900">{brandName}</h2>
-          <Image src={blueVerifiedIcon} alt="verified-badge" width={16} height={16} />
+          {isVerified && (
+            <Image src={blueVerifiedIcon} alt="verified-badge" width={16} height={16} />
+          )}
         </div>
         <p className="text-xs text-gray-600 mb-4">
           Merchant ID: <span className="text-green-600 font-medium">{merchantId}</span>

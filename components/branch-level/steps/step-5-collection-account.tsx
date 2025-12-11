@@ -1,9 +1,10 @@
 "use client"
 
-import { useVerifyPayOnUsBank } from "@/hooks/mutation/useVerifyPayOnUsBank";
-import useGeneratePayOnUsBankList from "@/hooks/query/useGeneratePayOnUsBankList";
+import { useVerifyBankName } from "@/hooks/mutation/useVerifyBankName";
+import useGetBanks from "@/hooks/query/useGetBanks";
 import { BranchFormData } from "@/lib/schemas/branch-schema";
-import { useEffect, useRef, useState } from "react";
+import { Bank } from "@/lib/types";
+import React, { useEffect, useRef, useState } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
 import { FormCombobox } from "../../ui/form-combobox";
 import { FormInputTopLabel } from "../../ui/form-input";
@@ -16,10 +17,9 @@ interface Step5Props {
 
 export default function Step5CollectionAccount({ control, setValue, onAccountVerificationChange }: Step5Props) {
 
-  const { handleVerifyPayOnUsBank, isPending: isVerifyingPayOnUsBank, isSuccess: isVerifiedPayOnUsBank, accountName: accountNamePayOnUs } = useVerifyPayOnUsBank();
+  const { data: banks, isPending: isBanksPending } = useGetBanks();
 
-
-  const { data: payOnUsBankList, isPending: isPayOnUsBankListPending } = useGeneratePayOnUsBankList();
+  const { handleVerifyBankName, isPending: isVerifyingBankName, isSuccess: isVerifiedBankName, accountName: accountNameBankName } = useVerifyBankName();
 
   // console.log("payOnUsBankList", payOnUsBankList);
 
@@ -35,16 +35,22 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
   // })) || [];
 
   // Transform pay-on-us bank data to options format
-  const payOnUsBankOptions = (() => {
-    const bankData = payOnUsBankList?.data?.data || payOnUsBankList?.data;
-    if (bankData && typeof bankData === 'object') {
-      return Object.entries(bankData).map(([code, name]) => ({
-        value: code,
-        label: String(name)
-      }));
+  const bankOptions = React.useMemo(() => {
+    // Handle different possible response structures
+    // banks.data could be the array directly, or banks.data.data if wrapped
+    const allBanks = Array.isArray(banks?.data)
+      ? banks.data
+      : banks?.data?.data;
+
+    if (!allBanks || !Array.isArray(allBanks)) {
+      return [];
     }
-    return [];
-  })();
+
+    return allBanks.map((bank: Bank) => ({
+      value: bank.code,
+      label: bank.name
+    }));
+  }, [banks]);
 
   // console.log("payOnUsBankList raw data:", payOnUsBankList);
   // console.log("payOnUsBankOptions:", payOnUsBankOptions);
@@ -76,15 +82,14 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
 
     if (selectedBank && accountNumber && accountNumber.length >= 10) {
       const verificationKey = `${selectedBank}-${accountNumber}`;
-      if (hasVerifiedPayOnUs.current !== verificationKey && !isVerifyingPayOnUsBank) {
+      if (hasVerifiedPayOnUs.current !== verificationKey && !isVerifyingBankName) {
         verificationTimeoutPayOnUs.current = setTimeout(() => {
           const verifyPayload = {
             institutionCode: selectedBank,
             accountNumber: accountNumber,
-            businessId: "8a86b73d-4cc9-42d6-ba8a-7c099335d62d"
           };
           hasVerifiedPayOnUs.current = verificationKey;
-          handleVerifyPayOnUsBank(verifyPayload);
+          handleVerifyBankName(verifyPayload);
         }, 500); // 500ms delay
       }
     } else {
@@ -99,22 +104,22 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
         clearTimeout(verificationTimeoutPayOnUs.current);
       }
     };
-  }, [selectedBank, accountNumber, handleVerifyPayOnUsBank, isVerifyingPayOnUsBank]);
+  }, [selectedBank, accountNumber, handleVerifyBankName, isVerifyingBankName]);
 
   // Handle verification success
   useEffect(() => {
-    if (isVerifiedPayOnUsBank && accountNamePayOnUs) {
+    if (isVerifiedBankName && accountNameBankName) {
       setIsAccountValid(true);
       // Save the verified account name to the form
-      setValue("bankAccountName", accountNamePayOnUs);
+      setValue("bankAccountName", accountNameBankName);
       onAccountVerificationChange?.(true);
-    } else if (!isVerifyingPayOnUsBank && accountNumber && accountNumber.length >= 10) {
+    } else if (!isVerifyingBankName && accountNumber && accountNumber.length >= 10) {
       setIsAccountValid(false);
       // Clear the account name if verification fails
       setValue("bankAccountName", "");
       onAccountVerificationChange?.(false);
     }
-  }, [isVerifiedPayOnUsBank, accountNamePayOnUs, isVerifyingPayOnUsBank, accountNumber, setValue, onAccountVerificationChange]);
+  }, [isVerifiedBankName, accountNameBankName, isVerifyingBankName, accountNumber, setValue, onAccountVerificationChange]);
 
   return (
     <div className="space-y-4">
@@ -134,10 +139,10 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
         <FormCombobox
           control={control}
           name="bank"
-          disabled={isPayOnUsBankListPending}
+          disabled={isBanksPending}
           label="Bank"
-          options={payOnUsBankOptions}
-          placeholder={isPayOnUsBankListPending ? "Loading banks..." : "Search and select a bank..."}
+          options={bankOptions}
+          placeholder={isBanksPending ? "Loading banks..." : "Search and select a bank..."}
           searchPlaceholder="Search banks..."
           emptyMessage="No bank found."
           required
@@ -154,26 +159,26 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
         {/* Account Verification Status */}
         {accountNumber && accountNumber.length >= 10 && (
           <div className="space-y-2">
-            {isVerifyingPayOnUsBank && (
+            {isVerifyingBankName && (
               <div className="flex items-center space-x-2 text-theme-green">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-theme-green"></div>
                 <span className="text-sm">Verifying account...</span>
               </div>
             )}
 
-            {isAccountValid && accountNamePayOnUs && (
+            {isAccountValid && accountNameBankName && (
               <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="text-sm font-medium text-green-800">Account Verified</span>
                 </div>
                 <p className="text-sm text-green-700 mt-1">
-                  Account Name: <span className="font-semibold">{accountNamePayOnUs}</span>
+                  Account Name: <span className="font-semibold">{accountNameBankName}</span>
                 </p>
               </div>
             )}
 
-            {!isVerifyingPayOnUsBank && !isAccountValid && accountNumber && accountNumber.length >= 10 && (
+            {!isVerifyingBankName && !isAccountValid && accountNumber && accountNumber.length >= 10 && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>

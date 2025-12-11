@@ -3,7 +3,7 @@
 import { giftIcon } from "@/constant/icons";
 import { useUpdateRewards } from "@/hooks/mutation/useUpdateRewards";
 import { getAuthCookies } from "@/lib/cookies-utils";
-import { getDistributionType, getRewardType, mapPointExpirationToApi } from "@/lib/helper";
+import { getDistributionType, getRewardType, mapPointExpirationToApi, removeCommas } from "@/lib/helper";
 import { Rewards, UpdateRewardRuleModalProps } from "@/lib/types";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -36,6 +36,15 @@ const createUpdatePayload = (
     rewardRules
   } = formData;
 
+  // Clean rewardCap: remove commas and parse to number
+  // Example: "40,000" -> "40000" -> 40000
+  const cleanedRewardCap = removeCommas(rewardCap || "");
+  const parsedRewardCap = cleanedRewardCap ? parseFloat(cleanedRewardCap) : 0;
+
+  // Clean milestoneTarget: remove commas and parse to number
+  const cleanedMilestoneTarget = removeCommas(milestoneTarget || "");
+  const parsedMilestoneTarget = cleanedMilestoneTarget ? parseInt(cleanedMilestoneTarget) : 0;
+
   return {
     id: ruleData?.id || "",
     merchantId: merchantId,
@@ -45,9 +54,9 @@ const createUpdatePayload = (
       maxSpend: parseFloat(rule.max) || 0,
       rewardValue: parseFloat(rule.percentage) || 0
     })),
-    rewardCap: parseFloat(rewardCap) || 0,
+    rewardCap: parsedRewardCap, // Number without commas (e.g., 40000)
     distributionType: getDistributionType(receiveMethod),
-    milestoneTarget: parseInt(milestoneTarget) || 0,
+    milestoneTarget: parsedMilestoneTarget, // Number without commas
     pointExpirationDays: mapPointExpirationToApi(pointExpiration),
     status: "ACTIVE",
     startDate: startDate || null,

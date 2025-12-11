@@ -581,6 +581,35 @@ export const formatUrl = (url: string, platform: string): string => {
 };
 
 /**
+ * Strips query parameters from S3 signed URLs to get the base URL
+ * This prevents QR codes from encoding expired AWS signed URL parameters
+ * @param url - The URL (potentially with query parameters)
+ * @returns The base URL without query parameters
+ * 
+ * @example
+ * cleanS3Url('https://bucket.s3.amazonaws.com/image.png?X-Amz-Security-Token=...')
+ * // Returns: 'https://bucket.s3.amazonaws.com/image.png'
+ */
+export const cleanS3Url = (url: string | null | undefined): string => {
+  if (!url || typeof url !== 'string') {
+    return '';
+  }
+
+  try {
+    // Parse the URL and extract just the base URL without query parameters
+    const urlObj = new URL(url);
+    return `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+  } catch (error) {
+    // If URL parsing fails, try to remove query string manually
+    const queryIndex = url.indexOf('?');
+    if (queryIndex !== -1) {
+      return url.substring(0, queryIndex);
+    }
+    return url;
+  }
+};
+
+/**
  * Downloads a QR code as a PNG image
  * @param printRef - Reference to the element containing the QR code SVG
  * @param title - Title for the downloaded file

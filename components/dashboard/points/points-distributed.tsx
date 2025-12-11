@@ -4,7 +4,9 @@ import EmptyState from "@/components/common/empty-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetPointsDistributed from "@/hooks/query/useGetPointsDistributed";
 import { useEffect, useState } from "react";
-import TransactionsTable, { PaginationInfo, TransactionData } from "../transactions-table";
+import { PaginationInfo } from "../transactions-table";
+import PointsDistributedTable from "./points-distributed-table";
+import { PointsDistributedData } from "./types";
 
 export default function PointsDistributed() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -27,7 +29,7 @@ export default function PointsDistributed() {
     search: debouncedSearch || undefined,
   });
 
-  const pointsDistributedData = data?.data?.data as TransactionData[] | undefined;
+  const pointsDistributedData = data?.data?.data as PointsDistributedData[] | undefined;
   const paginationInfo = data?.data?.pagination as PaginationInfo | undefined;
 
   const isEmpty = !isPending && (!pointsDistributedData || pointsDistributedData.length === 0);
@@ -53,7 +55,7 @@ export default function PointsDistributed() {
   }
 
   return (
-    <TransactionsTable
+    <PointsDistributedTable
       data={pointsDistributedData || []}
       title="Points Distributed"
       pagination={paginationInfo}
@@ -63,5 +65,5 @@ export default function PointsDistributed() {
       onSearchChange={handleSearchChange}
       searchPlaceholder="Search by merchant, branch, deal..."
     />
-  )
+  );
 }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isStaticAsset } from "./lib/helper";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const userType = request.cookies.get('user-type')?.value;
   const accessToken = request.cookies.get('access-token')?.value;
