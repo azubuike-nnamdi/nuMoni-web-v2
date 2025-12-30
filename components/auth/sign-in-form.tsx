@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { numoniLogoDark } from "@/constant/icons";
+import { SIGN_UP_URL } from "@/constant/routes";
 import { useSignIn } from "@/hooks/mutation/useSignIn";
 import { generateUUID } from "@/lib/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -147,6 +149,12 @@ export default function SignInForm() {
             </div>
           </form>
         </Form>
+
+        <div className="flex items-center justify-center my-3">
+          <span className="text-sm text-gray-500">
+            Don&apos;t have an account? <Link href={SIGN_UP_URL} className="text-theme-dark-green hover:underline font-medium">Sign Up</Link>
+          </span>
+        </div>
       </div>
     </div>
   );

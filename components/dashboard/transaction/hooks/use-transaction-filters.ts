@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { DateRangeOption, getDateRange } from "../utils/date-range-utils";
 import { StatusOption } from "../components/status-filter";
+import { CategoryOption } from "../components/category-filter";
 
 export function useTransactionFilters() {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRange, setSelectedRange] = useState<DateRangeOption>('Today');
   const [selectedStatus, setSelectedStatus] = useState<StatusOption>('All');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryOption>('All');
   const [customStartDate, setCustomStartDate] = useState<Date | undefined>(undefined);
   const [customEndDate, setCustomEndDate] = useState<Date | undefined>(undefined);
 
@@ -30,6 +32,11 @@ export function useTransactionFilters() {
     setCurrentPage(0);
   };
 
+  const handleCategoryChange = (category: CategoryOption) => {
+    setSelectedCategory(category);
+    setCurrentPage(0);
+  };
+
   const handleCustomStartDateSelect = (date: Date | undefined) => {
     setCustomStartDate(date);
     // If end date is before start date, reset end date
@@ -45,18 +52,20 @@ export function useTransactionFilters() {
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [selectedRange, selectedStatus, customStartDate, customEndDate]);
+  }, [selectedRange, selectedStatus, selectedCategory, customStartDate, customEndDate]);
 
   return {
     currentPage,
     selectedRange,
     selectedStatus,
+    selectedCategory,
     customStartDate,
     customEndDate,
     dateRange,
     handlePageChange,
     handleDateRangeChange,
     handleStatusChange,
+    handleCategoryChange,
     handleCustomStartDateSelect,
     handleCustomEndDateSelect,
   };

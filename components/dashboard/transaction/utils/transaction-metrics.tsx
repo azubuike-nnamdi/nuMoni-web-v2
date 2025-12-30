@@ -1,5 +1,5 @@
 import { formatValue } from "@/lib/helper";
-import { Gift, Star, Store, TrendingDown, Users, Wallet } from "lucide-react";
+import { Banknote, Gift, Star, Store, Users, Wallet } from "lucide-react";
 import React from "react";
 
 export interface PaymentHistoryData {
@@ -23,7 +23,7 @@ export function getTransactionMetrics(data: PaymentHistoryData): TransactionMetr
   return [
     {
       title: 'Total Count',
-      value: formatValue(data?.salesCount ?? 0),
+      value: String(data?.salesCount ?? 0),
       changeType: 'positive',
       icon: <Users className="h-6 w-6 text-gray-200" />,
       bgColor: 'bg-[#E3EAFD]',
@@ -62,10 +62,10 @@ export function getTransactionMetrics(data: PaymentHistoryData): TransactionMetr
       iconBgColor: 'bg-black'
     },
     {
-      title: 'Commission',
+      title: 'Commission/Service Fees',
       value: formatValue(data?.serviceFees ?? 0),
       changeType: 'positive',
-      icon: <TrendingDown className="h-6 w-6 text-gray-200" />,
+      icon: <Banknote className="h-6 w-6 text-gray-200" />,
       bgColor: 'bg-[#DFFDDB]',
       iconBgColor: 'bg-black'
     },

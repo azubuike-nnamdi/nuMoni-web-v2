@@ -95,7 +95,7 @@ export const usePayOnUsStore = create<PayOnUsStore>()(
               } else {
                 state?.clearToken();
               }
-            } catch (error) {
+            } catch {
               // console.error('Error parsing pay-on-us token from cookie:', error);
               state?.clearToken();
             }

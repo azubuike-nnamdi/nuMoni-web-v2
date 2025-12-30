@@ -4,26 +4,33 @@ import { Skeleton } from "@/components/ui/skeleton";
 import TransactionFiltersHeader from "./transaction-filters-header";
 import { DateRangeOption } from "../utils/date-range-utils";
 import { StatusOption } from "./status-filter";
+import { CategoryOption } from "./category-filter";
 
 interface TransactionLoadingStateProps {
   selectedStatus: StatusOption;
+  selectedCategory: CategoryOption;
   selectedRange: DateRangeOption;
   onStatusChange: (status: StatusOption) => void;
+  onCategoryChange: (category: CategoryOption) => void;
   onRangeChange: (range: DateRangeOption) => void;
 }
 
 export default function TransactionLoadingState({
   selectedStatus,
+  selectedCategory,
   selectedRange,
   onStatusChange,
+  onCategoryChange,
   onRangeChange,
 }: TransactionLoadingStateProps) {
   return (
     <main className="bg-white rounded-2xl p-6 my-4">
       <TransactionFiltersHeader
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         onStatusChange={onStatusChange}
+        onCategoryChange={onCategoryChange}
         onRangeChange={onRangeChange}
       />
       <div className="space-y-4">

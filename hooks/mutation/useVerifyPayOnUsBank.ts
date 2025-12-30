@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export const useVerifyPayOnUsBank = () => {
   const { mutate, isPending, isSuccess, data } = useMutation({
     mutationFn: (data: VerifyPayOnUsBankPayload) => payOnUsApi.post("/api/v1/transfer-requests/name-enquiry", data),
-    onSuccess: (response) => {
+    onSuccess: () => {
       // console.log("verification response", response);
       toast.success("Account verified successfully");
     },

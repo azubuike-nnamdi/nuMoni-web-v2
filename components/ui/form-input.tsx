@@ -48,7 +48,7 @@ export function FormInputTopLabel({
                 }`}
             />
           </FormControl>
-          <div className="min-h-[20px]">
+          <div className="min-h-[10px]">
             <FormMessage className="text-sm" />
           </div>
         </FormItem>

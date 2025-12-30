@@ -48,9 +48,17 @@ export function FormPhoneInput({
               <input
                 {...field}
                 id={name}
-                type="number"
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder={placeholder}
                 disabled={disabled}
+                maxLength={11}
+                onChange={(e) => {
+                  // Only allow numeric characters and limit to 11 digits
+                  const numericValue = e.target.value.replace(/\D/g, '').slice(0, 11);
+                  field.onChange(numericValue);
+                }}
                 className="w-full rounded-lg border border-gray-200 bg-gray-50 pl-20 pr-4 py-3 text-base text-gray-900 placeholder-gray-400 disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
             </div>

@@ -7,8 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DateRangeOption } from "../utils/date-range-utils";
 import { ChevronDown } from "lucide-react";
+import { DateRangeOption } from "../utils/date-range-utils";
 
 interface DateRangeFilterProps {
   selectedRange: DateRangeOption;
@@ -40,9 +40,9 @@ export default function DateRangeFilter({ selectedRange, onRangeChange }: DateRa
         <DropdownMenuItem onClick={() => onRangeChange('Last Month')}>
           Last Month
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onRangeChange('All Time')}>
+        {/* <DropdownMenuItem onClick={() => onRangeChange('All Time')}>
           All Time
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem onClick={() => onRangeChange('Custom Duration')}>
           Custom Duration
         </DropdownMenuItem>

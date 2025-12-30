@@ -5,14 +5,17 @@ import TransactionFiltersHeader from "./transaction-filters-header";
 import CustomDurationPicker from "./custom-duration-picker";
 import { DateRangeOption } from "../utils/date-range-utils";
 import { StatusOption } from "./status-filter";
+import { CategoryOption } from "./category-filter";
 
 interface TransactionErrorStateProps {
   selectedStatus: StatusOption;
+  selectedCategory: CategoryOption;
   selectedRange: DateRangeOption;
   customStartDate: Date | undefined;
   customEndDate: Date | undefined;
   error: Error | null;
   onStatusChange: (status: StatusOption) => void;
+  onCategoryChange: (category: CategoryOption) => void;
   onRangeChange: (range: DateRangeOption) => void;
   onCustomStartDateChange: (date: Date | undefined) => void;
   onCustomEndDateChange: (date: Date | undefined) => void;
@@ -21,11 +24,13 @@ interface TransactionErrorStateProps {
 
 export default function TransactionErrorState({
   selectedStatus,
+  selectedCategory,
   selectedRange,
   customStartDate,
   customEndDate,
   error,
   onStatusChange,
+  onCategoryChange,
   onRangeChange,
   onCustomStartDateChange,
   onCustomEndDateChange,
@@ -35,8 +40,10 @@ export default function TransactionErrorState({
     <main className="bg-white rounded-2xl p-6 my-4">
       <TransactionFiltersHeader
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         onStatusChange={onStatusChange}
+        onCategoryChange={onCategoryChange}
         onRangeChange={onRangeChange}
       />
       {selectedRange === 'Custom Duration' && (

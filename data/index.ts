@@ -1,7 +1,7 @@
 import { BranchIcon, DashboardIcon, RewardIcon } from "@/components/common/icon-svg";
 import { avatarIcon, branchIcon, calenderIcon, dealIcon, emailIcon, giftIcon, graphDirectionIcon, grayPointIcon, instagramIcon, musicPauseIcon, phoneNotificationIcon, twitterIcon, whatsappIcon } from "@/constant/icons";
 import { sampleUserIcon } from "@/constant/images";
-import { BRANCH_LEVEL_URL, DASHBOARD_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
+import { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
 import { PanelTopClose } from "lucide-react";
 
 const navigationItems = [
@@ -23,6 +23,11 @@ const navigationItems = [
   {
     name: 'Transactions',
     path: TRANSACTIONS_URL,
+    icon: PanelTopClose
+  },
+  {
+    name: 'Point of Sale',
+    path: POS_URL,
     icon: PanelTopClose
   }
   // {

@@ -143,7 +143,7 @@ export default function AddBranch() {
 
 
     }
-  }, [isSuccess, closeDialog]);
+  }, [isSuccess, closeDialog, form, resetForm]);
 
 
   return (

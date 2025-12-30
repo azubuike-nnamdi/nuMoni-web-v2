@@ -9,7 +9,7 @@ interface QRCodeDisplayProps {
 
 export default function QRCodeDisplay({
   value,
-  size = 180,
+  size,
   className = "",
   style = {}
 }: QRCodeDisplayProps) {

@@ -1,3 +1,5 @@
+import { numoniLogoDark } from "@/constant/icons";
+import Image from "next/image";
 import QRCodeDisplay from "./qr-code-display";
 
 interface PrintableQRCodeProps {
@@ -15,6 +17,17 @@ export default function PrintableQRCode({
 }: PrintableQRCodeProps) {
   return (
     <div className="p-8 text-center">
+      {/* Logo at the top */}
+      <div className="flex justify-center mb-6">
+        <Image
+          src={numoniLogoDark}
+          alt="nuMoni Logo"
+          width={120}
+          height={28}
+          className="h-7 w-auto"
+          priority
+        />
+      </div>
       <h1 className="text-2xl font-bold text-gray-900 mb-4">{title}</h1>
       <div className="flex justify-center mb-4">
         <QRCodeDisplay

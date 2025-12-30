@@ -15,12 +15,14 @@ export default function TransactionHistory() {
     currentPage,
     selectedRange,
     selectedStatus,
+    selectedCategory,
     customStartDate,
     customEndDate,
     dateRange,
     handlePageChange,
     handleDateRangeChange,
     handleStatusChange,
+    handleCategoryChange,
     handleCustomStartDateSelect,
     handleCustomEndDateSelect,
   } = useTransactionFilters();
@@ -30,6 +32,7 @@ export default function TransactionHistory() {
     toDate: dateRange.toDate,
     page: currentPage,
     status: selectedStatus,
+    category: selectedCategory,
   });
 
   const transactionData: TransactionData[] = data?.data ?? [];
@@ -40,8 +43,10 @@ export default function TransactionHistory() {
     return (
       <TransactionLoadingState
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         onStatusChange={handleStatusChange}
+        onCategoryChange={handleCategoryChange}
         onRangeChange={handleDateRangeChange}
       />
     );
@@ -52,11 +57,13 @@ export default function TransactionHistory() {
     return (
       <TransactionErrorState
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         customStartDate={customStartDate}
         customEndDate={customEndDate}
         error={error}
         onStatusChange={handleStatusChange}
+        onCategoryChange={handleCategoryChange}
         onRangeChange={handleDateRangeChange}
         onCustomStartDateChange={handleCustomStartDateSelect}
         onCustomEndDateChange={handleCustomEndDateSelect}
@@ -70,10 +77,12 @@ export default function TransactionHistory() {
     return (
       <TransactionEmptyState
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         customStartDate={customStartDate}
         customEndDate={customEndDate}
         onStatusChange={handleStatusChange}
+        onCategoryChange={handleCategoryChange}
         onRangeChange={handleDateRangeChange}
         onCustomStartDateChange={handleCustomStartDateSelect}
         onCustomEndDateChange={handleCustomEndDateSelect}
@@ -85,8 +94,10 @@ export default function TransactionHistory() {
     <main className="bg-white rounded-2xl p-6 my-4">
       <TransactionFiltersHeader
         selectedStatus={selectedStatus}
+        selectedCategory={selectedCategory}
         selectedRange={selectedRange}
         onStatusChange={handleStatusChange}
+        onCategoryChange={handleCategoryChange}
         onRangeChange={handleDateRangeChange}
       />
 

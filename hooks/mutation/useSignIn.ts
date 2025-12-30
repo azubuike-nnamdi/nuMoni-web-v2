@@ -17,6 +17,7 @@ export const useSignIn = () => {
         // console.log('sign in response', data);
 
         // Transform the response data to match our AuthUser type
+        const regLevel = Number(data.regLevel) || 0;
         const userData: AuthUser = {
           id: data.id,
           username: data.username,
@@ -24,18 +25,23 @@ export const useSignIn = () => {
           roles: data.roles,
           token: data.token,
           refreshToken: data.refreshToken,
+          regLevel: regLevel,
         };
 
-        // Store user data in the auth store
+        // Store user data in the auth store (regLevel will be stored in cookies via setUser)
         setUser(userData);
         toast.success("Signed in successfully");
 
-        // Navigate to dashboard
-        router.push("/dashboard");
+        // Redirect based on regLevel
+        if (regLevel === 0 || regLevel === 1 || regLevel === 2 || regLevel === 3) {
+          router.push("/auth/business-registration");
+        } else {
+          router.push("/dashboard");
+        }
       }
     },
     onError: (error: { response: { data: { message: string } } }) => {
-      console.log('Sign in error:', error);
+      // console.log('Sign in error:', error);
       toast.error(error?.response?.data?.message ?? "Failed to login")
       setLoading(false);
     },

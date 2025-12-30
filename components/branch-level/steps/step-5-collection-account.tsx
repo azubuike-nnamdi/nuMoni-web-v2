@@ -73,6 +73,12 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
     name: "accountNumber"
   });
 
+  // Check if verification has been attempted for current account
+  const verificationKey = selectedBank && accountNumber && accountNumber.length >= 10
+    ? `${selectedBank}-${accountNumber}`
+    : '';
+  const hasAttemptedVerification = hasVerifiedPayOnUs.current === verificationKey && verificationKey !== '';
+
   // Verify account when both bank and account number are provided
   useEffect(() => {
     // Clear any existing timeout
@@ -178,7 +184,7 @@ export default function Step5CollectionAccount({ control, setValue, onAccountVer
               </div>
             )}
 
-            {!isVerifyingBankName && !isAccountValid && accountNumber && accountNumber.length >= 10 && (
+            {hasAttemptedVerification && !isVerifyingBankName && !isAccountValid && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>

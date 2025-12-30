@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { blueVerifiedIcon, rightArrowIcon } from "@/constant/icons";
 import { BrandProfileProps } from "@/lib/types";
+import { Copy } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 
 
@@ -76,9 +78,22 @@ export default function BrandProfile({
             <Image src={blueVerifiedIcon} alt="verified-badge" width={16} height={16} />
           )}
         </div>
-        <p className="text-xs text-gray-600 mb-4">
-          Merchant ID: <span className="text-green-600 font-medium">{merchantId}</span>
-        </p>
+        <div className="flex items-center gap-2 mb-4">
+          <p className="text-xs text-gray-600">
+            Merchant ID: <span className="text-green-600 font-medium">{merchantId}</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              navigator.clipboard.writeText(merchantId);
+              toast.success("Merchant ID copied to clipboard");
+            }}
+            className="p-1 hover:bg-gray-200 rounded transition-colors"
+            aria-label="Copy Merchant ID"
+          >
+            <Copy className="w-3.5 h-3.5 text-gray-600" />
+          </button>
+        </div>
         <Button
           variant="outline"
           className="w-full flex items-center justify-center gap-2 border-gray-300 hover:bg-gray-50 text-sm py-2"

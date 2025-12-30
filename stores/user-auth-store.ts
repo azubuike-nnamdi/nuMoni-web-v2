@@ -12,8 +12,8 @@ export const useUserAuthStore = create<AuthUserStore>()(
       logoutInProgress: false,
 
       setUser: (user: AuthUser) => {
-        // Set cookies when user is set
-        setAuthCookies(user.usertype, user.id, user.token, user.refreshToken);
+        // Set cookies when user is set (including regLevel)
+        setAuthCookies(user.usertype, user.id, user.token, user.refreshToken, user.regLevel);
 
         set({
           user,

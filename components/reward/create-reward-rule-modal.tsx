@@ -68,18 +68,19 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
       rewardCap: parsedRewardCap, // Number without commas (e.g., 40000)
       distributionType: getDistributionType(receiveMethod),
       milestoneTarget: receiveMethod === "INSTANT" ? 1 : (parseInt(milestoneTarget) || 0),
-      pointExpirationDays: parseInt(pointExpiration) || 0,
+      // pointExpirationDays: parseInt(pointExpiration) || 0,
+      pointExpirationDays: 90,
       status: "ACTIVE", // Using uppercase as per API example
       startDate: startDate || null,
       endDate: endDate || null
     };
 
-    console.log("=== REWARD RULE PAYLOAD ===");
-    console.log("rewardCap (formatted in UI):", rewardCap);
-    console.log("rewardCap (cleaned, no commas):", cleanedRewardCap);
-    console.log("rewardCap (parsed number):", parsedRewardCap);
-    console.log("Full payload:", payload);
-    console.log("=============================");
+    // console.log("=== REWARD RULE PAYLOAD ===");
+    // console.log("rewardCap (formatted in UI):", rewardCap);
+    // console.log("rewardCap (cleaned, no commas):", cleanedRewardCap);
+    // console.log("rewardCap (parsed number):", parsedRewardCap);
+    // console.log("Full payload:", payload);
+    // console.log("=============================");
 
     // Call the mutation hook
     handleCreateRewards(payload);
@@ -102,7 +103,7 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] sm:w-full sm:max-w-3xl max-h-[90vh] flex flex-col mx-2 sm:mx-0">
         {/* Header - Static */}
-        <DialogHeader className="flex-shrink-0 pb-4">
+        <DialogHeader className="shrink-0 pb-4">
           <div className="flex items-center gap-2 sm:gap-3">
             <Image src={giftIcon} alt="Gift" width={35} height={35} className="sm:w-[45px] sm:h-[45px]" />
             <div className="flex-1 min-w-0">
@@ -166,7 +167,7 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: CreateRewa
         </div>
 
         {/* Footer - Static */}
-        <DialogFooter className="flex-shrink-0 pt-4 border-t">
+        <DialogFooter className="shrink-0 pt-4 border-t">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-3 sm:gap-0">
             <p className="text-xs sm:text-sm text-gray-500 font-semibold leading-relaxed">
               You Can Change This Configurations On Setting Page

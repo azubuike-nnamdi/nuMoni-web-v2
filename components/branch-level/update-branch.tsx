@@ -9,7 +9,7 @@ import { getStepDescription } from "@/lib/step-utils";
 import { BranchData } from "@/lib/types/branch-api";
 import { useBranchStore } from "@/stores/branch-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import BranchFormFooter from "./branch-form-footer";
 import BranchFormHeader from "./branch-form-header";
@@ -32,7 +32,7 @@ export default function UpdateBranch({ isOpen, onClose, branchData }: UpdateBran
   // console.log('🔄 UpdateBranch render - isOpen:', isOpen, 'branchData:', branchData?.id, 'isSuccess:', isSuccess, 'hasSubmitted:', hasSubmitted);
 
   // Get default values from branch data
-  const getDefaultValues = (): BranchFormData => {
+  const getDefaultValues = useCallback((): BranchFormData => {
     if (!branchData) return formData as BranchFormData;
 
     return {
@@ -69,7 +69,7 @@ export default function UpdateBranch({ isOpen, onClose, branchData }: UpdateBran
       bankAccountName: branchData.bankAccountName || formData.bankAccountName || '',
       minPayment: branchData.minimumPaymentAmount || formData.minPayment || '',
     };
-  };
+  }, [branchData, formData]);
 
   // Initialize form with default values
   const form = useForm<BranchFormData>({
@@ -179,7 +179,7 @@ export default function UpdateBranch({ isOpen, onClose, branchData }: UpdateBran
         }, 200);
       }, 100);
     }
-  }, [isOpen, branchData, form, updateFormData]);
+  }, [isOpen, branchData, form, updateFormData, getDefaultValues]);
 
 
   // Reset form when modal closes
