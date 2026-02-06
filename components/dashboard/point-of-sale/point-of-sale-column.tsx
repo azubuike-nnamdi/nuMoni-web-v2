@@ -33,10 +33,10 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "accountHolderName",
     header: "Account Holder Name",
   },
-  {
-    accessorKey: "bankCode",
-    header: "Bank Code",
-  },
+  // {
+  //   accessorKey: "bankCode",
+  //   header: "Bank Code",
+  // },
   // {
   //   accessorKey: "bankTransferCode",
   //   header: "Bank Transfer Code",
