@@ -27,10 +27,28 @@ export default function PointOfSale() {
   const posData: PointOfSaleData[] = data?.data?.data;
 
   if (posData?.length === 0) {
-    return <EmptyState
-      title="No Point of Sale Available"
-      description="There are currently no point of sale available. Check back later for exciting offers!"
-    />;
+    return (
+      <>
+        <section className="flex flex-col items-center">
+
+          <EmptyState
+            title="No Point of Sale Available"
+            description="There are currently no point of sale available. Check back later for exciting offers!"
+          />
+          <Button
+            onClick={() => setIsAddPOSOpen(true)}
+            className="bg-theme-dark-green hover:bg-theme-dark-green/90 text-white px-12 py-6 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mt-3"
+          >
+            <Plus /> Add POS
+          </Button>
+        </section>
+
+        <AddPOSDialog
+          isOpen={isAddPOSOpen}
+          onClose={() => setIsAddPOSOpen(false)}
+        />
+      </>
+    )
   }
 
   return <main>
