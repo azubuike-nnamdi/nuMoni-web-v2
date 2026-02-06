@@ -40,6 +40,7 @@ type ValidateOtpPayload = {
   otp: string;
 };
 
+
 type BrandSummaryProps = {
   title?: string;
   subtitle?: string;
@@ -596,6 +597,137 @@ interface SalesData {
   periodCount: number;
   totalCount: number;
 }
+
+type Location = {
+  id: string;
+  userId: string;
+  storeNo: string | null;
+  address: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  latitude: string;
+  longitude: string;
+  contactPersonName: string | null;
+  contactEmailAddress: string | null;
+  contactPhoneNumber: string | null;
+  contactAddress: string | null;
+  createdDt: string | null;
+  updatedDt: string;
+  active: boolean;
+};
+
+type BankInformation = {
+  id: string;
+  merchantId: string;
+  bankname: string;
+  bankcode: string;
+  accountNo: string;
+  accountHolderName: string;
+  bankTransferCode: string;
+  primary: boolean;
+  minimumSpentAmount: number;
+  active: boolean;
+  createdDt: string;
+  updatedDt: string;
+};
+
+type BusinessImage = {
+  id: string;
+  userId: string;
+  image: string;
+  createdDt: string;
+  updatedDt: string;
+};
+
+type Wallet = {
+  userId: string;
+  amount: number;
+  createdDt: string;
+};
+
+type NinInfo = {
+  tinNo: string | null;
+  businessReqNo: string | null;
+};
+
+type MerchantInfo = {
+  merchantId: string;
+  userId: string;
+  businessName: string;
+  brandName: string;
+  businessImagePath: string;
+  businessPhoneNo: string;
+  businessEmail: string;
+  registrationEmail: string;
+  qrCode: string;
+  registeredBusiness: boolean;
+  identificationTypeNumber: string;
+  identificationType: string;
+  businessReqNo: string;
+  spendMinimumAmount: string;
+  sellOffline: boolean;
+  sellOnline: boolean;
+  cacDocumentPath: string;
+  verifiedNin: string;
+  verifiedTin: string;
+  verifiedCac: string;
+  reqCertificatePath: string;
+  tinNo: string;
+  tinPath: string;
+  menuPath: string;
+  userInformation: {
+    id: string;
+    userName: string;
+    email: string;
+    phoneNumber: string;
+    name: string;
+    firstName: string;
+    lastName: string;
+    userType: string;
+    deviceId: string;
+  };
+  menu: string;
+  status: string;
+  averageRating: string;
+  numberOfReviews: string;
+  brand: string;
+  category: string[];
+  description: string;
+  locations: Location[];
+  bankInformation: BankInformation[];
+  businessImages: BusinessImage[];
+  percentage: number;
+  facebook: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  linkedin: string | null;
+  snapchat: string | null;
+  website: string | null;
+  tiktok: string | null;
+  whatsapp: string | null;
+  wallet: Wallet;
+  pointType: string | null;
+  minimumThreshold: string | null;
+  merchantLevel: string;
+  isReviewed: boolean;
+  reviewCount: string | null;
+  reviewAvg: string | null;
+  level: string | null;
+  kycStatus: string | null;
+  lastLogin: string | null;
+  ninNo: string | null;
+  cacNo: string | null;
+  registrationDate: string | null;
+  userkycStatus: string | null;
+  catalog: string | null;
+  businessOpenHours: string | null;
+  businessClosingHours: string | null;
+  approvalStatus: string | null;
+  nin: NinInfo;
+};
+
 export type {
   AccountInformationProps,
   ActiveBranchModalProps,
@@ -604,6 +736,7 @@ export type {
   AuthUserStore,
   AxiosError,
   Bank,
+  BankInformation,
   BankPayload,
   BankToken,
   Branch,
@@ -612,6 +745,7 @@ export type {
   BranchSummaryData,
   BrandProfileProps,
   BrandSummaryProps,
+  BusinessImage,
   ChangeBranchStatusPayload,
   CreateRewardsPayload,
   Customer,
@@ -628,10 +762,13 @@ export type {
   GenerateOtpPayload,
   GetBranchesResponse,
   InfoItem,
+  Location,
   MainBranchSummaryProps,
+  MerchantInfo,
   MetricCardProps,
   MilestoneTargetSectionProps,
   MutationErrorType,
+  NinInfo,
   PointAnalyticsProps,
   PointOfSaleData,
   QRCodeCardProps,
@@ -654,6 +791,7 @@ export type {
   ValidateOtpPayload,
   VerifyBankNamePayload,
   VerifyBankPayload,
-  VerifyPayOnUsBankPayload
+  VerifyPayOnUsBankPayload,
+  Wallet
 };
 
