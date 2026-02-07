@@ -15,7 +15,7 @@ export default function EmptyReward() {
       <main className="bg-white rounded-2xl p-6">
         <section className="flex flex-col lg:flex-row gap-6">
           {/* Custom Reward Tables Section */}
-          <div className="flex-[2]  bg-theme-dark-green rounded-2xl p-8 relative overflow-hidden flex flex-col items-center justify-center text-center">
+          <div className="flex-2  bg-theme-dark-green rounded-2xl p-8 relative overflow-hidden flex flex-col items-center justify-center text-center">
             <h1 className="text-4xl font-bold text-white mb-8">Custom Reward Tables</h1>
 
             {/* Central Illustration */}

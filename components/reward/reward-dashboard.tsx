@@ -107,7 +107,7 @@ export default function RewardDashboard() {
           ref={scrollContainerRef}
           className="flex gap-4 overflow-x-auto items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <BudgetCapCard
                 rewardCap={rewardTableData?.rewardCap}
@@ -116,7 +116,7 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalPointsRewardedCard
                 totalRewardCap={analyticsData?.totalRewardDistributed}
