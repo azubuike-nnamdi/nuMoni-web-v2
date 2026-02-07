@@ -728,6 +728,23 @@ type MerchantInfo = {
   nin: NinInfo;
 };
 
+type PaymentHistoryData = {
+  salesCount?: number;
+  totalSales?: number;
+  payOutPending?: number;
+  payOut?: number;
+  serviceFees?: number;
+  redeemsPoints?: number;
+}
+
+type TransactionMetric = {
+  title: string;
+  value: string;
+  changeType: 'positive' | 'negative';
+  icon: React.ReactNode;
+  bgColor: string;
+  iconBgColor: string;
+}
 export type {
   AccountInformationProps,
   ActiveBranchModalProps,
@@ -768,8 +785,7 @@ export type {
   MetricCardProps,
   MilestoneTargetSectionProps,
   MutationErrorType,
-  NinInfo,
-  PointAnalyticsProps,
+  NinInfo, PaymentHistoryData, PointAnalyticsProps,
   PointOfSaleData,
   QRCodeCardProps,
   ReceiveMethodSectionProps,
@@ -785,8 +801,7 @@ export type {
   SocialMediaData,
   TanstackProviderProps,
   Transaction,
-  TransactionData,
-  UpdateBranchManagerPayload,
+  TransactionData, TransactionMetric, UpdateBranchManagerPayload,
   UpdateRewardRuleModalProps,
   ValidateOtpPayload,
   VerifyBankNamePayload,
