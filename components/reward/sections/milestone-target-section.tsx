@@ -2,10 +2,11 @@
 
 import { RewardIcon } from "@/components/common/icon-svg";
 import { Input } from "@/components/ui/input";
+import { isNumericOnly } from "@/lib/helper";
 import { MilestoneTargetSectionProps } from "@/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function MilestoneTargetSection({ milestoneTarget, setMilestoneTarget }: MilestoneTargetSectionProps) {
+export default function MilestoneTargetSection({ milestoneTarget, setMilestoneTarget }: Readonly<MilestoneTargetSectionProps>) {
   return (
     <AnimatePresence>
       <motion.div
@@ -38,10 +39,16 @@ export default function MilestoneTargetSection({ milestoneTarget, setMilestoneTa
           className="relative"
         >
           <Input
-            type="number"
+            type="text"
             placeholder="0"
             value={milestoneTarget}
-            onChange={(e) => setMilestoneTarget(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Only allow positive numeric values (no negative sign)
+              if (isNumericOnly(value)) {
+                setMilestoneTarget(value);
+              }
+            }}
             className="w-full pl-10 pr-3 py-6 focus:outline-none focus:ring-0 focus:border-none"
           />
           <RewardIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-dark-green pointer-events-none h-4 w-4" />

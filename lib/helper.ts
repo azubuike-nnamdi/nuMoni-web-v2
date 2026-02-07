@@ -1141,6 +1141,17 @@ export const isNumericOnly = (value: string): boolean => {
 };
 
 /**
+ * Validates if input is a valid decimal number (allows decimal point)
+ * @param value - The string value to validate
+ * @returns Boolean indicating if input is a valid decimal number
+ */
+export const isDecimalNumeric = (value: string): boolean => {
+  // Allow empty string or valid decimal numbers (e.g., 0.5, 1.5, 10, 10.25)
+  // Only allow one decimal point and digits
+  return value === '' || /^\d*\.?\d*$/.test(value);
+};
+
+/**
  * Removes the leading zero from a phone number for OTP generation
  * This function is specifically used when generating mobile OTP where the phone number
  * should not have a leading zero.

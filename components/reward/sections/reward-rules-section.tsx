@@ -3,7 +3,7 @@
 import { RewardIcon } from "@/components/common/icon-svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { formatNumber, formatNumberWithCommas, isNumericOnly, removeCommas } from "@/lib/helper";
+import { formatNumber, formatNumberWithCommas, isDecimalNumeric, isNumericOnly, removeCommas } from "@/lib/helper";
 import { RewardRulesSectionProps } from "@/lib/types";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -20,12 +20,12 @@ export default function RewardRulesSection({
   setRewardRules,
   showTable,
   setShowTable
-}: RewardRulesSectionProps) {
+}: Readonly<RewardRulesSectionProps>) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const handleSaveRule = () => {
     if (minSpending && maxSpending && rewardPercentage) {
-      const minValue = parseFloat(removeCommas(minSpending));
-      const maxValue = parseFloat(removeCommas(maxSpending));
+      const minValue = Number.parseFloat(removeCommas(minSpending));
+      const maxValue = Number.parseFloat(removeCommas(maxSpending));
 
       // Validate that min is not greater than max
       if (minValue > maxValue) {
@@ -80,15 +80,15 @@ export default function RewardRulesSection({
   };
 
   // Check if min > max
-  const minValue = minSpending ? parseFloat(removeCommas(minSpending)) : null;
-  const maxValue = maxSpending ? parseFloat(removeCommas(maxSpending)) : null;
+  const minValue = minSpending ? Number.parseFloat(removeCommas(minSpending)) : null;
+  const maxValue = maxSpending ? Number.parseFloat(removeCommas(maxSpending)) : null;
   const isMinGreaterThanMax = minValue !== null && maxValue !== null && minValue > maxValue;
 
   const isSaveRuleDisabled = !minSpending || !maxSpending || !rewardPercentage || isMinGreaterThanMax;
 
   return (
     <div className="space-y-4">
-      <label className="text-sm font-semibold text-gray-900">
+      <label htmlFor="reward-rules" className="text-sm font-semibold text-gray-900">
         Reward Rules <span className="text-red-500">*</span>
       </label>
 
@@ -105,7 +105,7 @@ export default function RewardRulesSection({
                 <div className="font-medium text-theme-dark-green px-3 lg:px-4 py-3 text-center">Actions</div>
               </div>
               {rewardRules.map((rule, index) => (
-                <div key={index} className={`grid grid-cols-4 text-sm text-gray-900 ${index !== rewardRules.length - 1 ? 'border-b border-gray-200' : ''}`}>
+                <div key={index} className={`grid grid-cols-4 text-sm text-gray-900 ${index === rewardRules.length - 1 ? '' : 'border-b border-gray-200'}`}>
                   <div className="px-3 lg:px-4 py-3 text-left">{formatNumber(rule.min)}</div>
                   <div className="px-3 lg:px-4 py-3 text-center">{formatNumber(rule.max)}</div>
                   <div className="px-3 lg:px-4 py-3 text-right">
@@ -137,7 +137,7 @@ export default function RewardRulesSection({
           {/* Mobile Cards */}
           <div className="sm:hidden">
             {rewardRules.map((rule, index) => (
-              <div key={index} className={`p-3 ${index !== rewardRules.length - 1 ? 'border-b border-gray-200' : ''}`}>
+              <div key={index} className={`p-3 ${index === rewardRules.length - 1 ? '' : 'border-b border-gray-200'}`}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm font-semibold text-theme-dark-green">Rule {index + 1}</span>
                   <div className="flex items-center gap-1">
@@ -187,7 +187,7 @@ export default function RewardRulesSection({
         <div className="sm:hidden space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-gray-600 mb-1 block">Min Spending</label>
+              <label htmlFor="min-spending" className="text-xs text-gray-600 mb-1 block">Min Spending</label>
               <Input
                 type="text"
                 placeholder="Min"
@@ -202,7 +202,7 @@ export default function RewardRulesSection({
               />
             </div>
             <div>
-              <label className="text-xs text-gray-600 mb-1 block">Max Spending</label>
+              <label htmlFor="max-spending" className="text-xs text-gray-600 mb-1 block">Max Spending</label>
               <Input
                 type="text"
                 placeholder="Max"
@@ -226,7 +226,7 @@ export default function RewardRulesSection({
                 value={rewardPercentage}
                 onChange={(e) => {
                   const value = e.target.value;
-                  if (isNumericOnly(value)) {
+                  if (isDecimalNumeric(value)) {
                     setRewardPercentage(value);
                   }
                 }}
@@ -253,7 +253,7 @@ export default function RewardRulesSection({
                 : "bg-theme-dark-green hover:bg-theme-dark-green/90 text-white"
                 }`}
             >
-              {editingIndex !== null ? "Update" : "Save"}
+              {editingIndex === null ? "Save" : "Update"}
             </Button>
             {editingIndex !== null && (
               <Button
@@ -281,7 +281,7 @@ export default function RewardRulesSection({
             }}
             className="flex-1 min-w-0 px-3 py-6 focus:outline-none focus:ring-0 focus:border-none"
           />
-          <span className="text-gray-500 flex-shrink-0">-</span>
+          <span className="text-gray-500 shrink-0">-</span>
           <Input
             type="text"
             placeholder="Max. Spending"
@@ -294,7 +294,7 @@ export default function RewardRulesSection({
             }}
             className="flex-1 min-w-0 px-3 py-6 focus:outline-none focus:ring-0 focus:border-none"
           />
-          <span className="text-gray-500 flex-shrink-0">=</span>
+          <span className="text-gray-500 shrink-0">=</span>
           <div className="flex-1 min-w-0 relative">
             <Input
               type="text"
@@ -302,7 +302,7 @@ export default function RewardRulesSection({
               value={rewardPercentage}
               onChange={(e) => {
                 const value = e.target.value;
-                if (isNumericOnly(value)) {
+                if (isDecimalNumeric(value)) {
                   setRewardPercentage(value);
                 }
               }}
@@ -314,8 +314,8 @@ export default function RewardRulesSection({
               <RewardIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-dark-green pointer-events-none h-4 w-4" />
             )}
           </div>
-          <span className="text-gray-500 flex-shrink-0">-</span>
-          <div className="flex gap-2 flex-shrink-0 flex-col">
+          <span className="text-gray-500 shrink-0">-</span>
+          <div className="flex gap-2 shrink-0 flex-col">
             {isMinGreaterThanMax && (
               <div className="text-xs text-red-500 font-medium whitespace-nowrap">
                 Min cannot be greater than max
@@ -330,7 +330,7 @@ export default function RewardRulesSection({
                   : "bg-theme-dark-green hover:bg-theme-dark-green/90 text-white"
                   }`}
               >
-                {editingIndex !== null ? "Update" : "Save"}
+                {editingIndex === null ? "Save" : "Update"}
               </Button>
               {editingIndex !== null && (
                 <Button

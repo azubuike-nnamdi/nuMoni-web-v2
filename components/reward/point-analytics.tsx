@@ -24,7 +24,7 @@ export default function PointAnalytics({
   errorMessage,
   isError,
   onRetry
-}: PointAnalyticsProps) {
+}: Readonly<PointAnalyticsProps>) {
   const [activeTab, setActiveTab] = useState("reward-table");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'pause' | 'resume'>('pause');

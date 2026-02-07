@@ -1,13 +1,13 @@
 'use client';
 
 import { MetricCard } from "@/components/common/metric-card";
-import { TransactionMetric } from "../utils/transaction-metrics";
+import { TransactionMetric } from "@/lib/types";
 
 interface TransactionMetricsGridProps {
   metrics: TransactionMetric[];
 }
 
-export default function TransactionMetricsGrid({ metrics }: TransactionMetricsGridProps) {
+export default function TransactionMetricsGrid({ metrics }: Readonly<TransactionMetricsGridProps>) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 my-5">
       {metrics.map((metric, index) => (
