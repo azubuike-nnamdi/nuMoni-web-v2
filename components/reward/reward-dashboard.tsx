@@ -119,7 +119,7 @@ export default function RewardDashboard() {
           <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalPointsRewardedCard
-                totalRewardCap={analyticsData?.totalRewardDistributed}
+                totalRewardCap={analyticsData?.totalIssued}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
