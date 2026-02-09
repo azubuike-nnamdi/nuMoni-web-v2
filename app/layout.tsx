@@ -1,3 +1,4 @@
+import { TooltipProvider } from "@/components/ui/tooltip";
 import TanstackProvider from "@/context/tanstack-provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -135,7 +136,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <TanstackProvider>
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </TanstackProvider>
         <Script id="clarity-script-for-numoni-merchant-web" strategy="afterInteractive">
           {
