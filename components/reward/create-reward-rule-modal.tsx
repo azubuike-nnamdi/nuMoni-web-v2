@@ -25,7 +25,6 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: Readonly<C
   //get merchant id from cookies
   const { userId } = getAuthCookies();
 
-  // console.log("userId", userId);
   const merchantId = userId as string;
   const [earnMethod, setEarnMethod] = useState<string>("");
   const [rewardCap, setRewardCap] = useState<string>("");
@@ -67,7 +66,7 @@ export default function CreateRewardRuleModal({ open, onOpenChange }: Readonly<C
       })),
       rewardCap: parsedRewardCap, // Number without commas (e.g., 40000)
       distributionType: getDistributionType(receiveMethod),
-      milestoneTarget: receiveMethod === "INSTANT" ? 1 : (parseInt(milestoneTarget) || 0),
+      milestoneTarget: receiveMethod === "INSTANT" ? 1 : (Number.parseInt(milestoneTarget) || 0),
       // pointExpirationDays: parseInt(pointExpiration) || 0,
       pointExpirationDays: 90,
       status: "ACTIVE", // Using uppercase as per API example
