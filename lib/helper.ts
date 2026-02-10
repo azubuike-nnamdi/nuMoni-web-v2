@@ -133,7 +133,7 @@ export const getBarColor = (barColor: string): string => {
     'bg-indigo-500',
     'bg-cyan-500'
   ];
-  const index = parseInt(barColor) || 0;
+  const index = Number.parseInt(barColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -155,7 +155,7 @@ export const getChartBarColor = (barColor: string): string => {
     '#6366f1', // indigo-500
     '#06b6d4'  // cyan-500
   ];
-  const index = parseInt(barColor) || 0;
+  const index = Number.parseInt(barColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -179,7 +179,7 @@ export const getRingColor = (ringColor: string): string => {
     'ring-cyan-500',
     'ring-gray-500'
   ];
-  const index = parseInt(ringColor) || 0;
+  const index = Number.parseInt(ringColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -384,7 +384,7 @@ export const formatDistributionType = (distributionType: string) => {
  * @returns Array of rules or empty array if no rewards/rules
  */
 export const getRewardsRules = (rewards: { rules?: Array<RewardRule> } | null): Array<RewardRule> => {
-  if (!rewards || !rewards.rules) return [];
+  if (!rewards?.rules) return [];
   return rewards.rules;
 };
 
@@ -438,6 +438,8 @@ export const createRewardsSummaryData = (rewards: {
   distributionType: string;
   startDate: string | null;
   endDate: string | null;
+  milestoneTarget: number | null;
+  status: string;
 } | null) => {
   if (!rewards) return [];
 
@@ -461,6 +463,17 @@ export const createRewardsSummaryData = (rewards: {
       icon: "calenderIcon", // Will be replaced with actual icon in component
       label: "End Date",
       value: formatDate(rewards.endDate, "-")
+    },
+    {
+      icon: "flagIcon", // Will be replaced with actual icon in component
+      label: "Milestone Target",
+      value: rewards.milestoneTarget
+    },
+    {
+      icon: "chart-bar-big", // Will be replaced with actual icon in component
+      label: "Status",
+      value: getStatusText(rewards.status),
+      className: `px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(rewards.status)}`
     }
   ];
 };
