@@ -1,5 +1,7 @@
 
 import { DateRangeOption } from '@/components/ui/date-range-selector';
+import { calenderIcon, giftIcon, grayPointIcon } from "@/constant/icons";
+import { ChartBarBig, Flag } from "lucide-react";
 import React from 'react';
 import { FieldPath, FieldValues, UseFormSetError } from "react-hook-form";
 import { RewardRule } from './types';
@@ -1751,3 +1753,18 @@ export function extractErrorMessage(error: unknown): string {
   // Fallback
   return 'An error occurred'
 }
+
+export const getRewardIcon = (iconName: string) => {
+  switch (iconName) {
+    case "giftIcon":
+      return giftIcon;
+    case "grayPointIcon":
+      return grayPointIcon;
+    case "chart-bar-big":
+      return ChartBarBig;
+    case "flagIcon":
+      return Flag;
+    default:
+      return calenderIcon;
+  }
+};

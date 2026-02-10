@@ -2,7 +2,7 @@ import { BranchIcon, DashboardIcon, RewardIcon } from "@/components/common/icon-
 import { avatarIcon, branchIcon, calenderIcon, dealIcon, emailIcon, giftIcon, graphDirectionIcon, grayPointIcon, instagramIcon, musicPauseIcon, phoneNotificationIcon, twitterIcon, whatsappIcon } from "@/constant/icons";
 import { sampleUserIcon } from "@/constant/images";
 import { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
-import { PanelTopClose } from "lucide-react";
+import { ChartBarBig, Flag, PanelTopClose } from "lucide-react";
 
 const navigationItems = [
   {
@@ -132,6 +132,16 @@ const summaryData = [
   {
     icon: calenderIcon,
     label: "End Date",
+    value: "-"
+  },
+  {
+    icon: Flag,
+    label: "Milestone Target",
+    value: "-"
+  },
+  {
+    icon: ChartBarBig,
+    label: "Status",
     value: "-"
   }
 ];
