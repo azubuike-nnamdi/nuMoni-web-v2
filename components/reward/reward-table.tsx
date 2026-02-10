@@ -1,10 +1,10 @@
 'use client'
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { calenderIcon, giftIcon, grayPointIcon } from "@/constant/icons";
 import {
   createRewardsSummaryData,
   formatNumber,
+  getRewardIcon,
   getRewardsRules,
   shouldShowEmptyState,
   shouldShowRules,
@@ -13,7 +13,7 @@ import {
 import { RewardRule, Rewards } from "@/lib/types";
 import Image from "next/image";
 
-export default function RewardTable({ rewards, isPending }: { rewards: Rewards | null, isPending: boolean }) {
+export default function RewardTable({ rewards, isPending }: Readonly<{ rewards: Rewards | null, isPending: boolean }>) {
   // const [countdown, setCountdown] = useState(30);
   // const [showNotifications, setShowNotifications] = useState(false);
 
@@ -22,15 +22,20 @@ export default function RewardTable({ rewards, isPending }: { rewards: Rewards |
 
   // Get rules and summary data using helper functions
   const rules = getRewardsRules(rewards);
+
   const summaryDataRaw = createRewardsSummaryData(rewards);
 
+
+
   // Add actual icons to summary data
+
+
   const summaryData = summaryDataRaw.map(item => ({
     ...item,
-    icon: item.icon === "giftIcon" ? giftIcon :
-      item.icon === "grayPointIcon" ? grayPointIcon :
-        calenderIcon
+    icon: getRewardIcon(item.icon)
   }));
+
+
 
   // Helper functions for rendering
   const showSkeleton = shouldShowSkeleton(isPending, rules.length);
@@ -135,28 +140,39 @@ export default function RewardTable({ rewards, isPending }: { rewards: Rewards |
                 ))
               )}
 
-              {!showSkeleton && summaryData.map((item, index) => (
-                <div key={item.label}>
-                  <div className="flex items-center justify-between py-3">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={item.icon}
-                        alt={item.label}
-                        width={20}
-                        height={20}
-                        className="text-gray-400"
-                      />
-                      <span className="text-sm font-medium text-black/40">{item.label}</span>
+              {!showSkeleton && summaryData.map((item, index) => {
+                const isLucideIcon = typeof item.icon !== 'string';
+                const Icon = item.icon as React.ElementType;
+
+                return (
+                  <div key={item.label}>
+                    <div className="flex items-center justify-between py-3">
+                      <div className="flex items-center gap-2">
+                        {isLucideIcon ? (
+                          <Icon className="text-gray-400 w-5 h-5" />
+                        ) : (
+                          <Image
+                            src={item.icon as string}
+                            alt={item.label}
+                            width={20}
+                            height={20}
+                            className="text-gray-400"
+                          />
+                        )}
+                        <span className="text-sm font-medium text-black/40">{item.label}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <span className={`text-sm text-black wrap-break-words font-semibold ${item.className || ''}`}>
+                          {item.value}
+                        </span>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="text-sm text-black break-words font-semibold">{item.value}</span>
-                    </div>
+                    {index < summaryData.length - 1 && (
+                      <hr className="border-theme-gray" />
+                    )}
                   </div>
-                  {index < summaryData.length - 1 && (
-                    <hr className="border-theme-gray" />
-                  )}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>

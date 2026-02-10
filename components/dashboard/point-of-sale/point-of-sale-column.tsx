@@ -14,6 +14,10 @@ import UpdatePOSDialog from "./update-pos-dialog";
 
 export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
   {
+    accessorKey: "posId",
+    header: "POS ID",
+  },
+  {
     accessorKey: "posName",
     header: "Name",
   },

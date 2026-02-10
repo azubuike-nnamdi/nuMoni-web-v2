@@ -326,6 +326,7 @@ type Rewards = {
   status: string;
   startDate: string | null;
   endDate: string | null;
+
 };
 
 // Axios error type for API error handling
