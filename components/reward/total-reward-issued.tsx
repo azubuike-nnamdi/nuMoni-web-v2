@@ -18,7 +18,7 @@ export default function TotalRewardIssued({
   isError,
   errorMessage,
   onRetry,
-}: TotalRewardIssuedProps) {
+}: Readonly<TotalRewardIssuedProps>) {
   const renderData = () => {
     if (isError) {
       return <CardErrorState errorMessage={errorMessage} onRetry={onRetry} />;

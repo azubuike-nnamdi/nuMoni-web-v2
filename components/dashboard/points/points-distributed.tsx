@@ -3,6 +3,7 @@
 import EmptyState from "@/components/common/empty-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetPointsDistributed from "@/hooks/query/useGetPointsDistributed";
+import { getSearchPlaceholder } from "@/lib/helper";
 import { useEffect, useState } from "react";
 import { PaginationInfo } from "../transactions-table";
 import PointsDistributedTable from "./points-distributed-table";
@@ -11,6 +12,7 @@ import { PointsDistributedData } from "./types";
 export default function PointsDistributed() {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
+  const [searchType, setSearchType] = useState("transactionReference");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   // Debounce search input
@@ -23,10 +25,16 @@ export default function PointsDistributed() {
     return () => clearTimeout(timer);
   }, [searchValue]);
 
+  // Reset page when search type changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchType]);
+
   const { data, isPending, isError, error } = useGetPointsDistributed({
     page: currentPage,
     size: 10,
     search: debouncedSearch || undefined,
+    searchType,
   });
 
   const pointsDistributedData = data?.data?.data as PointsDistributedData[] | undefined;
@@ -51,7 +59,20 @@ export default function PointsDistributed() {
   }
 
   if (isEmpty) {
-    return <EmptyState title="No data yet" description="No points distributed yet." />;
+    return (
+      <PointsDistributedTable
+        data={[]}
+        title="Points Distributed"
+        pagination={paginationInfo}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        searchValue={searchValue}
+        onSearchChange={handleSearchChange}
+        searchPlaceholder={getSearchPlaceholder(searchType)}
+        searchType={searchType}
+        onSearchTypeChange={setSearchType}
+      />
+    );
   }
 
   return (
@@ -63,7 +84,9 @@ export default function PointsDistributed() {
       onPageChange={handlePageChange}
       searchValue={searchValue}
       onSearchChange={handleSearchChange}
-      searchPlaceholder="Search by merchant, branch, deal..."
+      searchPlaceholder={getSearchPlaceholder(searchType)}
+      searchType={searchType}
+      onSearchTypeChange={setSearchType}
     />
   );
 }

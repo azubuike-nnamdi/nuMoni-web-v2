@@ -16,6 +16,28 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
   {
     accessorKey: "posId",
     header: "POS ID",
+    cell: ({ row }) => {
+      const handleCopyId = async () => {
+        await navigator.clipboard.writeText(row.original.posId);
+        toast.success("POS ID copied to clipboard");
+      }
+      const ref = row.original.posId;
+      const truncatedRef = ref ? `${ref.substring(0, 8)}...` : "";
+      return (
+        <div className="flex items-center gap-2">
+          <div className="font-mono text-sm" title={ref}>{truncatedRef || "—"}</div>
+          <Button
+            type="button"
+            size="sm"
+            className="h-8 w-8 p-0 bg-theme-dark-green"
+            onClick={handleCopyId}
+            title="Copy POS ID"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "posName",

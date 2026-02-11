@@ -153,7 +153,7 @@ export default function Hero({
           <>
             <div className="min-w-[380px] shrink-0 flex">
               <div className="w-full h-full">
-                {summaryContent || <BrandSummary />}
+                {summaryContent || <BrandSummary minimumThreshold={merchantInfo?.minimumThreshold} />}
               </div>
             </div>
 

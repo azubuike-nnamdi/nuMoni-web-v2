@@ -47,6 +47,7 @@ type BrandSummaryProps = {
   onboardedBranches?: number;
   availableBrandPoints?: string;
   totalCustomers?: string;
+  minimumThreshold?: number;
 };
 
 type QRCodeCardProps = {

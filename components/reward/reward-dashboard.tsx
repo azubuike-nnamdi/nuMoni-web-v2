@@ -155,7 +155,7 @@ export default function RewardDashboard() {
           <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalRewardIssued
-                totalIssued={analyticsData?.totalIssued}
+                totalIssued={analyticsData?.totalRedeemed}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}

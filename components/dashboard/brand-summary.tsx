@@ -8,7 +8,7 @@ import MainBranchSummaryLoading from "./main-branch-summary-loading";
 export default function BrandSummary({
   title = "Brand Summary",
   subtitle = "Get quick insight on your brand and operations.",
-
+  minimumThreshold
 }: Readonly<BrandSummaryProps>) {
 
   const { data, isPending, isError, error, refetch } = useGetRewardAnalysis();
@@ -56,6 +56,15 @@ export default function BrandSummary({
             <p className="text-xs text-gray-600">Total Customers</p>
           </div>
           <p className="text-sm font-semibold text-gray-900">{rewardAnalysisData?.totalLifetimeCustomers}</p>
+        </div>
+        <hr className="border-gray-50" />
+        {/* Minimum Threshold */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Image src={rewardIcon} alt="people-icon" width={16} height={16} />
+            <p className="text-xs text-gray-600">Minimum Amount</p>
+          </div>
+          <p className="text-sm font-semibold text-gray-900">{minimumThreshold ?? "-"}</p>
         </div>
       </div>
     </div>
