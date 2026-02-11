@@ -21,5 +21,7 @@ export type PointsDistributedData = {
   paidInBrandPoints: number;
   currentDealPrice: number | null;
   timestamp: string;
+  posId: string | null;
+  posLocation: string | null;
 };
 
