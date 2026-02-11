@@ -18,7 +18,7 @@ export default function TotalOutstandingAllocation({
   isError,
   errorMessage,
   onRetry,
-}: CustomerPoolCardProps) {
+}: Readonly<CustomerPoolCardProps>) {
   const renderData = () => {
     if (isError) {
       return <CardErrorState errorMessage={errorMessage} onRetry={onRetry} />;
