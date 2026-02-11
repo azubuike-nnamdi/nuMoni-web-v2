@@ -1768,3 +1768,18 @@ export const getRewardIcon = (iconName: string) => {
       return calenderIcon;
   }
 };
+
+export const getSearchPlaceholder = (searchType: string) => {
+  switch (searchType) {
+    case "transactionReference":
+      return "Search by transaction reference...";
+    case "posId":
+      return "Search by POS ID...";
+    case "customerName":
+      return "Search by customer name...";
+    case "posLocation":
+      return "Search by POS location...";
+    default:
+      return "Search by merchant, branch, deal...";
+  }
+};
