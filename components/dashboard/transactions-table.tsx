@@ -9,6 +9,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+// ... imports
 
 const columns: ColumnDef<TransactionData>[] = [
   {
@@ -40,6 +42,32 @@ const columns: ColumnDef<TransactionData>[] = [
     },
   },
   {
+    accessorKey: "posId",
+    header: "POS ID",
+    cell: ({ row }) => {
+      const handleCopyId = async () => {
+        await navigator.clipboard.writeText(row.original.posId || "");
+        toast.success("POS ID copied to clipboard");
+      }
+      const ref = row.original.posId;
+      const truncatedRef = ref ? `${ref.substring(0, 8)}...` : "";
+      return (
+        <div className="flex items-center gap-2">
+          <div className="font-mono text-sm" title={ref || ""}>{truncatedRef || "—"}</div>
+          <Button
+            type="button"
+            size="sm"
+            className="h-8 w-8 p-0 bg-theme-dark-green"
+            onClick={handleCopyId}
+            title="Copy POS ID"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "customerName",
     header: "Customer",
     cell: ({ row }) => {
@@ -47,6 +75,7 @@ const columns: ColumnDef<TransactionData>[] = [
       return <div>{customerName || "—"}</div>;
     },
   },
+
   {
     accessorKey: "amountPaid",
     header: "Amount Paid",
@@ -83,33 +112,6 @@ const columns: ColumnDef<TransactionData>[] = [
       return (
         <div className="font-semibold text-sm">
           {category?.replaceAll("_", " ") || "—"}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "posId",
-    header: "POS ID",
-    cell: ({ row }) => {
-      const handleCopyLink = async () => {
-        await navigator.clipboard.writeText(row.original.posId);
-        toast.success(" POS ID copied to clipboard");
-      };
-      const posId = row.original.posId;
-      return (
-        <div className="flex items-center gap-2">
-          <div className="font-mono text-sm">{posId || "—"}</div>
-          {posId && (
-            <Button
-              type="button"
-              size="sm"
-              className="h-8 w-8 p-0 bg-theme-dark-green"
-              onClick={handleCopyLink}
-              title="Copy POS ID"
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-          )}
         </div>
       );
     },
@@ -328,6 +330,8 @@ export interface PaginationInfo {
   totalElements: number;
 }
 
+// ...
+
 interface TransactionsTableProps {
   data: TransactionData[];
   title?: string;
@@ -340,6 +344,8 @@ interface TransactionsTableProps {
   onDownload?: () => void;
   onInfo?: () => void;
   onDelete?: () => void;
+  searchType?: string;
+  onSearchTypeChange?: (value: string) => void;
 }
 
 export default function TransactionsTable({
@@ -354,19 +360,37 @@ export default function TransactionsTable({
   onDownload,
   onInfo,
   onDelete,
+  searchType,
+  onSearchTypeChange,
 }: Readonly<TransactionsTableProps>) {
   return (
     <div className="bg-white rounded-2xl p-4 my-4">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
-        {onSearchChange && (
-          <SearchInput
-            placeholder={searchPlaceholder}
-            value={searchValue}
-            onChange={onSearchChange}
-            maxWidth="max-w-xs"
-          />
-        )}
+        <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
+          {onSearchTypeChange && (
+            <Select value={searchType} onValueChange={onSearchTypeChange}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="transactionReference">Transaction Reference</SelectItem>
+                <SelectItem value="posId">POS ID</SelectItem>
+                <SelectItem value="customerName">Customer Name</SelectItem>
+                <SelectItem value="posLocation">POS Location</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+
+          {onSearchChange && (
+            <SearchInput
+              placeholder={searchPlaceholder}
+              value={searchValue}
+              onChange={onSearchChange}
+              maxWidth="max-w-xs"
+            />
+          )}
+        </div>
       </div>
       <div className="overflow-x-auto">
         <DataTable columns={columns} data={data} />
