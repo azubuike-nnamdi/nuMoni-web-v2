@@ -160,6 +160,19 @@ export default function RewardDashboard() {
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
+                title="Total Points Redeemed"
+              />
+            </div>
+          </div>
+          <div className="min-w-[280px] shrink-0 flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalIssued}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Points Issues"
               />
             </div>
           </div>
