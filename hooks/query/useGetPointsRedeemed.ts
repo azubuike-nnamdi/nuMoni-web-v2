@@ -6,15 +6,16 @@ interface UseGetPointsRedeemedParams {
   page?: number;
   size?: number;
   search?: string;
+  searchType?: string;
 }
 
 const useGetPointsRedeemed = (params: UseGetPointsRedeemedParams = {}) => {
-  const { page = 0, size = 10, search } = params;
+  const { page = 0, size = 10, search, searchType } = params;
   const fromDate = getYesterdayDate("dd-mm-yyyy") as string;
   const toDate = getCurrentDate("dd-mm-yyyy") as string;
 
   const { data, isPending, error, isError, refetch } = useQuery({
-    queryKey: ["points-redeemed", fromDate, toDate, page, size, search],
+    queryKey: ["points-redeemed", fromDate, toDate, page, size, search, searchType],
     queryFn: () => {
       const queryParams = new URLSearchParams();
 
@@ -25,7 +26,10 @@ const useGetPointsRedeemed = (params: UseGetPointsRedeemedParams = {}) => {
       queryParams.append("size", size.toString());
 
       // Optional search parameter
-      if (search) queryParams.append("search", search);
+      if (search) {
+        queryParams.append("search", search);
+        if (searchType) queryParams.append("searchType", searchType);
+      }
 
       const queryString = queryParams.toString();
       return api.get(`/merchant/points-redeemed?${queryString}`);
