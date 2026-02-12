@@ -128,7 +128,7 @@ export default function UpdatePOSDialog({
       bankCode: pos.bankCode || "",
       bankAccountNumber: pos.accountNo || "",
       accountName: pos.accountHolderName || "",
-      bankTransferCode: pos.bankTransferCode || "",
+      bankTransferCode: pos.bankCode || "",
     },
   });
 
@@ -264,7 +264,7 @@ export default function UpdatePOSDialog({
         accountNo: data.bankAccountNumber,
         accountHolderName: data.accountName,
         bankCode: data.bankCode,
-        bankTransferCode: data.bankTransferCode || data.bankCode,
+        bankTransferCode: data.bankCode,
         location: data.location,
         address: data.address,
       };

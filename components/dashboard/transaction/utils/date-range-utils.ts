@@ -27,34 +27,39 @@ export const getDateRange = (
     case 'Yesterday': {
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = formatDateDDMMYYYY(yesterday);
       return {
-        fromDate: formatDateDDMMYYYY(yesterday),
-        toDate: currentDate,
+        fromDate: yesterdayStr,
+        toDate: yesterdayStr,
       };
     }
 
     case 'This Week': {
-      const sevenDaysAgo = new Date(today);
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const startOfWeek = new Date(today);
+      const day = startOfWeek.getDay(); // 0 (Sun) to 6 (Sat)
+      const diff = startOfWeek.getDate() - day; // adjust when day is sunday
+      startOfWeek.setDate(diff); // Set to Sunday
       return {
-        fromDate: formatDateDDMMYYYY(sevenDaysAgo),
+        fromDate: formatDateDDMMYYYY(startOfWeek),
         toDate: currentDate,
       };
     }
 
     case 'This Month': {
       const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
       return {
         fromDate: formatDateDDMMYYYY(firstDayOfMonth),
-        toDate: currentDate,
+        toDate: formatDateDDMMYYYY(lastDayOfMonth),
       };
     }
 
     case 'Last Month': {
       const firstDayOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
       return {
         fromDate: formatDateDDMMYYYY(firstDayOfLastMonth),
-        toDate: currentDate,
+        toDate: formatDateDDMMYYYY(lastDayOfLastMonth),
       };
     }
 

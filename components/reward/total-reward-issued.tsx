@@ -1,15 +1,16 @@
-import { peopleIcon } from "@/constant/icons";
 import Image from "next/image";
 import { GraphDirectionIcon } from "../common/icon-svg";
 import CardErrorState from "./card-error-state";
 import CardSkeleton from "./card-skeleton";
 
 interface TotalRewardIssuedProps {
-  totalIssued?: number;
+  totalIssued?: number | string;
   isLoading?: boolean;
   isError?: boolean;
   errorMessage?: string;
   onRetry?: () => void;
+  title?: string;
+  iconImage: string;
 }
 
 export default function TotalRewardIssued({
@@ -18,7 +19,9 @@ export default function TotalRewardIssued({
   isError,
   errorMessage,
   onRetry,
-}: TotalRewardIssuedProps) {
+  title,
+  iconImage
+}: Readonly<TotalRewardIssuedProps>) {
   const renderData = () => {
     if (isError) {
       return <CardErrorState errorMessage={errorMessage} onRetry={onRetry} />;
@@ -52,15 +55,17 @@ export default function TotalRewardIssued({
   };
 
   return (
-    <div className="bg-gray-200/40 rounded-xl p-6 flex flex-col">
+    <div className="bg-gray-200/40 rounded-xl p-6 flex flex-col h-full">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-[#727272] text-md font-semibold">Total Points Redeemed</h3>
+        <h3 className="text-[#727272] text-md font-semibold">{title}</h3>
         <div className="bg-white rounded-full p-3">
-          <Image src={peopleIcon} alt="People" width={18} height={18} />
+          <Image src={iconImage} alt="People" width={18} height={18} />
         </div>
       </div>
 
-      {renderData()}
+      <div className="flex flex-col flex-1">
+        {renderData()}
+      </div>
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function BrandProfile({
   error,
   onAccountSettings,
   isVerified = false
-}: BrandProfileProps) {
+}: Readonly<BrandProfileProps>) {
 
   if (isLoading) {
     return (

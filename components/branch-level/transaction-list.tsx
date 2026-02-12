@@ -1,4 +1,6 @@
+import { extractErrorMessage } from "@/lib/helper";
 import { Transaction } from "@/lib/types";
+import { ErrorState } from "../ui/error-state";
 import LoadingSpinner from "../ui/loading-spinner";
 import TransactionItem from "./transaction-item";
 
@@ -6,11 +8,12 @@ interface TransactionListProps {
   transactionData: Transaction[] | undefined;
   isPending: boolean;
   isError: boolean;
+  error: Error | null;
 }
 
-export default function TransactionList({ transactionData, isPending, isError }: TransactionListProps) {
+export default function TransactionList({ transactionData, isPending, isError, error }: Readonly<TransactionListProps>) {
   if (isError) {
-    return <p className="p-4 text-center text-red-500">Error loading transactions</p>;
+    return <ErrorState title="Error loading transactions" message={extractErrorMessage(error)} />;
   }
 
   if (isPending) {

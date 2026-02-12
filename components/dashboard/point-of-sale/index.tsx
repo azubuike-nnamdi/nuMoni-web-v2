@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/error-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetAllPos from "@/hooks/query/useGetAllPos";
+import { extractErrorMessage } from "@/lib/helper";
 import { PointOfSaleData } from "@/lib/types";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -20,16 +21,34 @@ export default function PointOfSale() {
   }
 
   if (isError) {
-    return <ErrorState title="Error loading data" message={error?.message || "An error occurred while loading point of sale."} />;
+    return <ErrorState title="Error loading data" message={extractErrorMessage(error) || "An error occurred while loading point of sale."} />;
   }
 
   const posData: PointOfSaleData[] = data?.data?.data;
 
   if (posData?.length === 0) {
-    return <EmptyState
-      title="No Point of Sale Available"
-      description="There are currently no point of sale available. Check back later for exciting offers!"
-    />;
+    return (
+      <>
+        <section className="flex flex-col items-center">
+
+          <EmptyState
+            title="No Point of Sale Available"
+            description="There are currently no point of sale available. Check back later for exciting offers!"
+          />
+          <Button
+            onClick={() => setIsAddPOSOpen(true)}
+            className="bg-theme-dark-green hover:bg-theme-dark-green/90 text-white px-12 py-6 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mt-3"
+          >
+            <Plus /> Add POS
+          </Button>
+        </section>
+
+        <AddPOSDialog
+          isOpen={isAddPOSOpen}
+          onClose={() => setIsAddPOSOpen(false)}
+        />
+      </>
+    )
   }
 
   return <main>

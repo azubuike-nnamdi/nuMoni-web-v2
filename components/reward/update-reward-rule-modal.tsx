@@ -39,24 +39,24 @@ const createUpdatePayload = (
   // Clean rewardCap: remove commas and parse to number
   // Example: "40,000" -> "40000" -> 40000
   const cleanedRewardCap = removeCommas(rewardCap || "");
-  const parsedRewardCap = cleanedRewardCap ? parseFloat(cleanedRewardCap) : 0;
+  const parsedRewardCap = cleanedRewardCap ? Number.parseFloat(cleanedRewardCap) : 0;
 
   // Clean milestoneTarget: remove commas and parse to number
   const cleanedMilestoneTarget = removeCommas(milestoneTarget || "");
-  const parsedMilestoneTarget = cleanedMilestoneTarget ? parseInt(cleanedMilestoneTarget) : 0;
+  const parsedMilestoneTarget = cleanedMilestoneTarget ? Number.parseInt(cleanedMilestoneTarget) : 0;
 
   return {
     id: ruleData?.id || "",
     merchantId: merchantId,
     rewardType: getRewardType(earnMethod),
     rules: rewardRules.map(rule => ({
-      minSpend: parseFloat(rule.min) || 0,
-      maxSpend: parseFloat(rule.max) || 0,
-      rewardValue: parseFloat(rule.percentage) || 0
+      minSpend: Number.parseFloat(rule.min) || 0,
+      maxSpend: Number.parseFloat(rule.max) || 0,
+      rewardValue: Number.parseFloat(rule.percentage) || 0
     })),
     rewardCap: parsedRewardCap, // Number without commas (e.g., 40000)
     distributionType: getDistributionType(receiveMethod),
-    milestoneTarget: parsedMilestoneTarget, // Number without commas
+    milestoneTarget: receiveMethod === "INSTANT" ? 1 : parsedMilestoneTarget, // 1 for INSTANT, user input for LATER
     pointExpirationDays: mapPointExpirationToApi(pointExpiration),
     status: "ACTIVE",
     startDate: startDate || null,
@@ -64,10 +64,9 @@ const createUpdatePayload = (
   };
 };
 
-export default function UpdateRewardRuleModal({ open, onOpenChange, ruleData }: UpdateRewardRuleModalProps) {
+export default function UpdateRewardRuleModal({ open, onOpenChange, ruleData }: Readonly<UpdateRewardRuleModalProps>) {
   const { userId } = getAuthCookies();
   const merchantId = userId as string;
-  // console.log("ruleData", ruleData);
 
   // Use custom hook for form state management
   const formData = useUpdateRewardForm(ruleData, open);
@@ -96,7 +95,7 @@ export default function UpdateRewardRuleModal({ open, onOpenChange, ruleData }: 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-3xl max-h-[90vh] flex flex-col">
         {/* Header - Static */}
-        <DialogHeader className="flex-shrink-0 pb-4">
+        <DialogHeader className="shrink-0 pb-4">
           <div className="flex items-center gap-3">
             <Image src={giftIcon} alt="Gift" width={45} height={45} />
             <div>
@@ -142,10 +141,14 @@ export default function UpdateRewardRuleModal({ open, onOpenChange, ruleData }: 
             setReceiveMethod={formData.setReceiveMethod}
           />
 
-          <MilestoneTargetSection
-            milestoneTarget={formData.milestoneTarget}
-            setMilestoneTarget={formData.setMilestoneTarget}
-          />
+
+          {formData.receiveMethod === "LATER" && (
+            <MilestoneTargetSection
+              milestoneTarget={formData.milestoneTarget}
+              setMilestoneTarget={formData.setMilestoneTarget}
+            />
+          )}
+
 
           <ExpirationSection
             pointExpiration={formData.pointExpiration}
@@ -161,7 +164,7 @@ export default function UpdateRewardRuleModal({ open, onOpenChange, ruleData }: 
         </div>
 
         {/* Footer - Static */}
-        <DialogFooter className="flex-shrink-0 pt-4 border-t">
+        <DialogFooter className="shrink-0 pt-4 border-t">
           <div className="flex items-center justify-between w-full">
             <p className="text-sm text-gray-500 font-semibold">You Can Change This Configurations On Setting Page</p>
             <Button

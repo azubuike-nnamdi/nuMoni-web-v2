@@ -1,23 +1,7 @@
 import { formatValue } from "@/lib/helper";
+import { PaymentHistoryData, TransactionMetric } from "@/lib/types";
 import { Banknote, Gift, Star, Store, Users, Wallet } from "lucide-react";
-import React from "react";
 
-export interface PaymentHistoryData {
-  salesCount?: number;
-  totalSales?: number;
-  payOutPending?: number;
-  payOut?: number;
-  serviceFees?: number;
-}
-
-export interface TransactionMetric {
-  title: string;
-  value: string;
-  changeType: 'positive' | 'negative';
-  icon: React.ReactNode;
-  bgColor: string;
-  iconBgColor: string;
-}
 
 export function getTransactionMetrics(data: PaymentHistoryData): TransactionMetric[] {
   return [
@@ -55,7 +39,7 @@ export function getTransactionMetrics(data: PaymentHistoryData): TransactionMetr
     },
     {
       title: 'Points Redeemed',
-      value: formatValue(0), // Not available in the API response
+      value: formatValue(data?.redeemsPoints ?? 0), // Not available in the API response
       changeType: 'positive',
       icon: <Gift className="h-6 w-6 text-gray-200" />,
       bgColor: 'bg-[#FFFBDA]',

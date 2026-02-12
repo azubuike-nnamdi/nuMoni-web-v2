@@ -18,7 +18,7 @@ export default function TotalPointsBalanceCard({
   isError,
   errorMessage,
   onRetry,
-}: TotalPointsBalanceCardProps) {
+}: Readonly<TotalPointsBalanceCardProps>) {
   const renderData = () => {
     if (isError) {
       return <CardErrorState errorMessage={errorMessage} onRetry={onRetry} />;

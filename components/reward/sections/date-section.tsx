@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { format, isBefore, startOfDay } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
-export default function DateSection({ startDate, setStartDate, endDate, setEndDate }: DateSectionProps) {
+export default function DateSection({ startDate, setStartDate, endDate, setEndDate }: Readonly<DateSectionProps>) {
   // Convert string dates to Date objects for the calendar
   const startDateObj = startDate ? new Date(startDate) : undefined;
   const endDateObj = endDate ? new Date(endDate) : undefined;
@@ -34,7 +34,7 @@ export default function DateSection({ startDate, setStartDate, endDate, setEndDa
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {/* Start Issuing Reward From */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-900">
+        <label htmlFor="start-date" className="text-sm font-semibold text-gray-900">
           Start Issuing Reward From <span className="text-red-500">*</span>
         </label>
         <Popover>
@@ -69,7 +69,7 @@ export default function DateSection({ startDate, setStartDate, endDate, setEndDa
 
       {/* Close Reward On */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-900">Close Reward On</label>
+        <label htmlFor="end-date" className="text-sm font-semibold text-gray-900">Close Reward On</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -90,11 +90,14 @@ export default function DateSection({ startDate, setStartDate, endDate, setEndDa
               selected={endDateObj}
               onSelect={handleEndDateSelect}
               disabled={(date) => {
-                // Disable dates before today and before start date
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const startDateMin = startDateObj || today;
-                return date < startDateMin;
+                const today = startOfDay(new Date());
+                const dateToCheck = startOfDay(date);
+                const startDateMin = startDateObj ? startOfDay(startDateObj) : today;
+
+                // Disable if the date is before today OR strictly before the start date
+                // This ensures we can't pick a past date (even if start date is in the past)
+                // AND we can't pick a date before the start date
+                return isBefore(dateToCheck, today) || isBefore(dateToCheck, startDateMin);
               }}
               initialFocus
             />

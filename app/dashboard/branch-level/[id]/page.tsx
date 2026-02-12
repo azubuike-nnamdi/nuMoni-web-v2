@@ -3,8 +3,10 @@
 import AboutBranch from "@/components/branch-level/about-branch";
 import BranchDetails from "@/components/branch-level/branch-details";
 import TransactionHistory from "@/components/branch-level/transaction-history";
+import { ErrorState } from "@/components/ui/error-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetBranchById from "@/hooks/query/useGetBranchById";
+import { extractErrorMessage } from "@/lib/helper";
 import { useParams } from "next/navigation";
 
 export default function Page() {
@@ -28,7 +30,7 @@ export default function Page() {
 
   //error state when data is not fetched
   if (isError) {
-    return <div>Error: {error?.message}</div>;
+    return <ErrorState title="Error loading branch details" message={extractErrorMessage(error)} />;
   }
 
   return (

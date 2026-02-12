@@ -7,7 +7,7 @@ export const useUpdateRewardForm = (ruleData: Rewards | null, open: boolean) => 
   const [rewardCap, setRewardCap] = useState<string>("");
   const [milestoneTarget, setMilestoneTarget] = useState<string>("");
   const [receiveMethod, setReceiveMethod] = useState<string>("");
-  const [pointExpiration, setPointExpiration] = useState<string>("");
+  const [pointExpiration, setPointExpiration] = useState<string>("10000days");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [minSpending, setMinSpending] = useState<string>("");
@@ -23,7 +23,7 @@ export const useUpdateRewardForm = (ruleData: Rewards | null, open: boolean) => 
       setRewardCap("");
       setMilestoneTarget("");
       setReceiveMethod("");
-      setPointExpiration("");
+      setPointExpiration("10000days");
       setStartDate("");
       setEndDate("");
       setRewardRules([]);

@@ -14,6 +14,32 @@ import UpdatePOSDialog from "./update-pos-dialog";
 
 export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
   {
+    accessorKey: "posId",
+    header: "POS ID",
+    cell: ({ row }) => {
+      const handleCopyId = async () => {
+        await navigator.clipboard.writeText(row.original.posId);
+        toast.success("POS ID copied to clipboard");
+      }
+      const ref = row.original.posId;
+      const truncatedRef = ref ? `${ref.substring(0, 8)}...` : "";
+      return (
+        <div className="flex items-center gap-2">
+          <div className="font-mono text-sm" title={ref}>{truncatedRef || "—"}</div>
+          <Button
+            type="button"
+            size="sm"
+            className="h-8 w-8 p-0 bg-theme-dark-green"
+            onClick={handleCopyId}
+            title="Copy POS ID"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "posName",
     header: "Name",
   },
@@ -33,10 +59,10 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "accountHolderName",
     header: "Account Holder Name",
   },
-  {
-    accessorKey: "bankCode",
-    header: "Bank Code",
-  },
+  // {
+  //   accessorKey: "bankCode",
+  //   header: "Bank Code",
+  // },
   // {
   //   accessorKey: "bankTransferCode",
   //   header: "Bank Transfer Code",
@@ -54,7 +80,7 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "createDate",
     header: "Created Date",
     cell: ({ row }) => {
-      const createDate = row.getValue("createDate") as string;
+      const createDate = row.original.createDate;
       return <div>{formatDateTime(createDate)}</div>;
     },
   },
@@ -62,7 +88,7 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "updatedDate",
     header: "Updated Date",
     cell: ({ row }) => {
-      const updatedDate = row.getValue("updatedDate") as string;
+      const updatedDate = row.original.updatedDate;
       return <div>{formatDateTime(updatedDate)}</div>;
     },
   },
@@ -77,8 +103,10 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
 
       const handleCopyLink = async () => {
         try {
-          const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-          const transactionLink = `${baseUrl}/pos-transaction-history/${posId}?merchantName=${merchantName}&posName=${posName}&merchantId=${merchantId}`;
+          const baseUrl = globalThis.window ? globalThis.window.location.origin : '';
+          const encodedMerchantName = encodeURIComponent(merchantName || '');
+          const encodedPosName = encodeURIComponent(posName || '');
+          const transactionLink = `${baseUrl}/pos-transaction-history/${posId}?merchantName=${encodedMerchantName}&posName=${encodedPosName}&merchantId=${merchantId}`;
           await navigator.clipboard.writeText(transactionLink);
           toast.success("Transaction link copied to clipboard");
         } catch {
@@ -88,7 +116,7 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
 
       return (
         <div className="flex items-center gap-2">
-          <Link href={`/pos-transaction-history/${posId}?merchantName=${merchantName}&posName=${posName}&merchantId=${merchantId}`} target="_blank">
+          <Link href={`/pos-transaction-history/${posId}?merchantName=${encodeURIComponent(merchantName || '')}&posName=${encodeURIComponent(posName || '')}&merchantId=${merchantId}`} target="_blank">
             <Button
               type="button"
               variant="outline"
@@ -116,13 +144,13 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "posQRCode",
     header: "POS QR Code",
     cell: ({ row }) => {
-      const qrCode = row.getValue("posQRCode") as string | null | undefined;
+      const qrCode = row.original.posQRCode;
       const posId = row.original.posId;
 
-      const posName = row.getValue("posName") as string;
-      const merchantLogo = row.original.merchantLogo as string | null | undefined;
-      const location = row.original.location as string | null | undefined;
-      const address = row.original.address as string | null | undefined;
+      const posName = row.original.posName;
+      const merchantLogo = row.original.merchantLogo;
+      const location = row.original.location;
+      const address = row.original.address;
 
       const handleDownloadQRCode = async () => {
         if (!qrCode) return;
@@ -175,7 +203,7 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.original.status;
       const statusColors: Record<string, string> = {
         "ACTIVE": "bg-green-100 text-green-700",
         "INACTIVE": "bg-red-100 text-red-700",
@@ -197,7 +225,7 @@ export const pointOfSaleColumns: ColumnDef<PointOfSaleData>[] = [
   }
 ]
 
-function ActionCell({ posData }: { posData: PointOfSaleData }) {
+function ActionCell({ posData }: Readonly<{ posData: PointOfSaleData }>) {
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);

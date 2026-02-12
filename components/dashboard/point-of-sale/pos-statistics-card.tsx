@@ -28,7 +28,7 @@ export default function POSStatisticsCard({
   icon: Icon,
   bgColor,
   iconBgColor,
-}: POSStatisticsCardProps) {
+}: Readonly<POSStatisticsCardProps>) {
   return (
     <div className={`${bgColor} rounded-xl p-6 shadow-none border border-gray-100`}>
       <div className="flex flex-col h-full">

@@ -9,10 +9,8 @@ interface BranchSummaryCardProps {
   data: Branch;
 }
 
-export default function BranchSummaryCard({ data }: BranchSummaryCardProps) {
+export default function BranchSummaryCard({ data }: Readonly<BranchSummaryCardProps>) {
   const { name, merchantId, logo, status, totalAmountRecieved, totalPayout, fees } = data;
-
-  // console.log('data', data);
 
   return (
     <div
@@ -22,7 +20,7 @@ export default function BranchSummaryCard({ data }: BranchSummaryCardProps) {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-4">
           {/* Merchant Logo */}
-          <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex-shrink-0 bg-gray-100 flex items-center justify-center">
+          <div className="w-[50px] h-[50px] rounded-full overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
             {logo && logo.trim() !== '' ? (
               <Image
                 src={logo}

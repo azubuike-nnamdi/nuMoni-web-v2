@@ -1,6 +1,8 @@
-'use client';
+"use client";
 
-import SummaryDateRangeFilter, { SummaryDateRangeOption } from "./summary-date-range-filter";
+import SummaryDateRangeFilter, {
+  SummaryDateRangeOption,
+} from "./summary-date-range-filter";
 
 interface TransactionSummaryHeaderProps {
   selectedRange: SummaryDateRangeOption;
@@ -10,12 +12,21 @@ interface TransactionSummaryHeaderProps {
 export default function TransactionSummaryHeader({
   selectedRange,
   onRangeChange,
-}: TransactionSummaryHeaderProps) {
+}: Readonly<TransactionSummaryHeaderProps>) {
+
   return (
     <div className="flex items-center justify-between my-4">
-      <h2 className="text-lg font-semibold text-gray-900">Transaction Summary</h2>
-      <SummaryDateRangeFilter selectedRange={selectedRange} onRangeChange={onRangeChange} />
+      <h2 className="text-lg font-semibold text-gray-900">
+        Transaction Summary
+      </h2>
+      <div className="flex gap-2">
+
+        <SummaryDateRangeFilter
+          selectedRange={selectedRange}
+          onRangeChange={onRangeChange}
+        />
+      </div>
+
     </div>
   );
 }
-

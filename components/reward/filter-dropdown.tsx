@@ -97,7 +97,7 @@ export default function FilterDropdown({
                     <span className="truncate">{option}</span>
                   </div>
                   {option === "Custom Range" && showCustomRange && (
-                    <ChevronDownIcon className="h-3 w-3 sm:h-4 sm:w-4 rotate-[-90deg]" />
+                    <ChevronDownIcon className="h-3 w-3 sm:h-4 sm:w-4 -rotate-90]" />
                   )}
                 </CommandItem>
               ))}

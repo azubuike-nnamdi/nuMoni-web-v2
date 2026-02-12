@@ -2,13 +2,14 @@
 
 import { ErrorState } from "@/components/ui/error-state";
 import useGetPaymentHistory from "@/hooks/query/useGetPaymentHistory";
+import { PaymentHistoryData } from "@/lib/types";
 import { useState } from "react";
 import { SummaryDateRangeOption } from "./components/summary-date-range-filter";
 import TransactionMetricsGrid from "./components/transaction-metrics-grid";
 import TransactionSummaryHeader from "./components/transaction-summary-header";
 import TransactionSummaryLoading from "./components/transaction-summary-loading";
 import { getSummaryDateRange } from "./utils/summary-date-range-utils";
-import { getTransactionMetrics, PaymentHistoryData } from "./utils/transaction-metrics";
+import { getTransactionMetrics } from "./utils/transaction-metrics";
 
 export default function TransactionSummary() {
   const [selectedRange, setSelectedRange] = useState<SummaryDateRangeOption>('Today');

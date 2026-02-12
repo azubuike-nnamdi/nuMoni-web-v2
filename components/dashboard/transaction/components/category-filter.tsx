@@ -16,7 +16,7 @@ interface CategoryFilterProps {
   onCategoryChange: (category: CategoryOption) => void;
 }
 
-export default function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryFilterProps) {
+export default function CategoryFilter({ selectedCategory, onCategoryChange }: Readonly<CategoryFilterProps>) {
   const formatCategoryLabel = (category: CategoryOption): string => {
     if (category === 'All') return 'All';
     return category

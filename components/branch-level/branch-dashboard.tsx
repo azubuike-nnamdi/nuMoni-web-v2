@@ -5,8 +5,7 @@ interface BranchDashboardProps {
   branches?: Branch[];
 }
 
-export default function BranchDashboard({ branches }: BranchDashboardProps) {
-  // console.log('branches', branches);
+export default function BranchDashboard({ branches }: Readonly<BranchDashboardProps>) {
 
   return (
     <div className="bg-white rounded-2xl p-4 my-4">

@@ -2,18 +2,22 @@
 
 import EmptyState from "@/components/common/empty-state";
 import useGetAllDeals from "@/hooks/query/useGetAllDeals";
+import { extractErrorMessage } from "@/lib/helper";
 import { Button } from "../ui/button";
+import { ErrorState } from "../ui/error-state";
 import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Deals() {
-  const { data, isPending } = useGetAllDeals();
+  const { data, isPending, isError, error } = useGetAllDeals();
 
   if (isPending) {
     return <LoadingSpinner message="Loading deals..." />;
   }
+  if (isError) {
+    return <ErrorState title="Error loading deals" message={extractErrorMessage(error)} />;
+  }
 
   const dealsData = data?.data?.data;
-  console.log(dealsData);
 
   // Check if there's no data
   if (!dealsData || dealsData.totalRows === 0 || dealsData.pageData?.length === 0) {

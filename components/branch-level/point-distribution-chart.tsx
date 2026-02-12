@@ -6,7 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { formatValue, getChartBarColor, getRingColor } from "@/lib/helper";
+import { extractErrorMessage, formatValue, getChartBarColor, getRingColor } from "@/lib/helper";
 import { BranchAnalyticsData } from "@/lib/types";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis, YAxis } from "recharts";
 import ErrorDisplay from "../common/error-display";
@@ -24,13 +24,13 @@ export default function PointDistributionChart({
   isPending,
   isError,
   error,
-}: PointDistributionChartProps) {
+}: Readonly<PointDistributionChartProps>) {
   if (isPending) {
     return <PointDistributionChartSkeleton />;
   }
 
   if (isError) {
-    return <ErrorDisplay error={error?.message || "An error occurred"} />;
+    return <ErrorDisplay error={extractErrorMessage(error)} />;
   }
 
   // Transform data for Recharts and handle duplicates

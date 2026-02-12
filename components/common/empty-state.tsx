@@ -1,15 +1,11 @@
 "use client"
 
 import { emptyBranchIcon } from "@/constant/icons";
+import { EmptyStateProps } from "@/lib/types";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-type EmptyStateProps = {
-  title: string;
-  description: string;
-}
-
-export default function EmptyState({ title, description }: EmptyStateProps) {
+export default function EmptyState({ title, description }: Readonly<EmptyStateProps>) {
   return (
     <main>
       <section className="flex flex-col items-center justify-center gap-1">

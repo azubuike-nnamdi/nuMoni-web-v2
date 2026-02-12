@@ -8,12 +8,12 @@ import TransactionList from "./transaction-list";
 import TransactionPagination from "./transaction-pagination";
 import TransactionSummary from "./transaction-summary";
 
-export default function TransactionHistory({ singleBranch }: { singleBranch: singleBranchDetails }) {
+export default function TransactionHistory({ singleBranch }: Readonly<{ singleBranch: singleBranchDetails }>) {
   const [currentPage, setCurrentPage] = useState(0);
   const fromDate = getYesterdayDate("dd-mm-yyyy") as string;
   const toDate = getCurrentDate("dd-mm-yyyy") as string;
 
-  const { data, isPending, isError } = useGetTransactionList({ fromDate, toDate, page: currentPage });
+  const { data, isPending, isError, error } = useGetTransactionList({ fromDate, toDate, page: currentPage });
   const transactionData: Transaction[] | undefined = data?.data?.pageData;
 
   const handlePageChange = (page: number) => {
@@ -41,6 +41,7 @@ export default function TransactionHistory({ singleBranch }: { singleBranch: sin
             transactionData={transactionData}
             isPending={isPending}
             isError={isError}
+            error={error}
           />
         </div>
 

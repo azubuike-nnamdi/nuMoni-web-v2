@@ -11,8 +11,7 @@ export default function BranchLevel() {
   const { data, isPending } = useGetAllBranches();
 
   const branches = data?.data?.data;
-  // console.log('Full API response:', data);
-  // console.log('Branches data:', branches);
+
 
   const isBranch = branches?.length === 0;
 

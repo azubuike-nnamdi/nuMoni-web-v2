@@ -1,5 +1,7 @@
+import { peopleIcon, pointIcon } from "@/constant/icons";
 import useGetRewardAnalysis from "@/hooks/query/useGetRewardAnalysis";
 import useGetRewards from "@/hooks/query/useGetRewards";
+import { formatCurrency } from "@/lib/helper";
 import { AxiosError } from "@/lib/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -107,7 +109,7 @@ export default function RewardDashboard() {
           ref={scrollContainerRef}
           className="flex gap-4 overflow-x-auto items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <BudgetCapCard
                 rewardCap={rewardTableData?.rewardCap}
@@ -116,10 +118,10 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalPointsRewardedCard
-                totalRewardCap={analyticsData?.totalRewardDistributed}
+                totalRewardCap={analyticsData?.totalIssued}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
@@ -128,7 +130,7 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalPointsBalanceCard
                 availablePoints={analyticsData?.availablePoints}
@@ -140,7 +142,7 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <CustomerPoolCard
                 totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
@@ -152,19 +154,47 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalRewardIssued
-                totalIssued={analyticsData?.totalIssued}
+                totalIssued={analyticsData?.totalRedeemed}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
+                title="Total Points Redeemed"
+                iconImage={peopleIcon}
+              />
+            </div>
+          </div>
+          <div className="min-w-[280px] shrink-0 flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={formatCurrency(analyticsData?.budgetBalance)}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Budget Balance"
+                iconImage={pointIcon}
+              />
+            </div>
+          </div>
+          <div className="min-w-[280px] shrink-0 flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalIssueCount}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Issue Count"
+                iconImage={peopleIcon}
               />
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-shrink-0 flex">
+          <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalOutstandingAllocation
                 outStandingAllocation={analyticsData?.outStandingAllocation}

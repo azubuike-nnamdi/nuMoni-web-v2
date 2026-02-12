@@ -7,8 +7,8 @@ interface BranchSummaryGridProps {
   branches?: Branch[];
 }
 
-export default function BranchSummaryGrid({ branches }: BranchSummaryGridProps) {
-  // console.log('branches', branches);
+export default function BranchSummaryGrid({ branches }: Readonly<BranchSummaryGridProps>) {
+
 
   // Handle case where branches is undefined or not an array
   if (!branches || !Array.isArray(branches)) {

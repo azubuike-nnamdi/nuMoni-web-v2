@@ -1,5 +1,5 @@
 import { sampleUserIcon } from "@/constant/images";
-import { formatValue, getBarColor } from "@/lib/helper";
+import { extractErrorMessage, formatValue, getBarColor } from "@/lib/helper";
 import { BranchAnalyticsData } from "@/lib/types";
 import Image from "next/image";
 import ErrorDisplay from "../common/error-display";
@@ -23,13 +23,13 @@ export default function TopPerformingBranch({
   isPending,
   isError,
   error,
-}: TopPerformingBranchProps) {
+}: Readonly<TopPerformingBranchProps>) {
   if (isPending) {
     return <TopPerformingBranchSkeleton title={title} subtitle={subtitle} maxHeight={maxHeight} />;
   }
 
   if (isError) {
-    return <ErrorDisplay error={error?.message || "An error occurred"} />;
+    return <ErrorDisplay error={extractErrorMessage(error) || "An error occurred"} />;
   }
 
   return (
@@ -47,10 +47,10 @@ export default function TopPerformingBranch({
         {data?.map((item: BranchAnalyticsData, index: number) => (
           <div key={item.branchId} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
             {/* Colored indicator */}
-            <div className={`w-1 h-8 ${getBarColor(index.toString())} rounded-full flex-shrink-0`} />
+            <div className={`w-1 h-8 ${getBarColor(index.toString())} rounded-full shrink-0`} />
 
             {/* Branch icon */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <div className="w-8 h-8 rounded-full overflow-hidden">
                 <Image
                   src={item.logo || sampleUserIcon}
@@ -70,7 +70,7 @@ export default function TopPerformingBranch({
             </div>
 
             {/* Value */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <p className="text-sm font-semibold text-green-600">
                 {formatValue(item.totalPointsIssued)}
               </p>

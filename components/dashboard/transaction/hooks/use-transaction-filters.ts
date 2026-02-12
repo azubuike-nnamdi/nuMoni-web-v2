@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { DateRangeOption, getDateRange } from "../utils/date-range-utils";
-import { StatusOption } from "../components/status-filter";
 import { CategoryOption } from "../components/category-filter";
+import { StatusOption } from "../components/status-filter";
+import { DateRangeOption, getDateRange } from "../utils/date-range-utils";
 
 export function useTransactionFilters() {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRange, setSelectedRange] = useState<DateRangeOption>('Today');
   const [selectedStatus, setSelectedStatus] = useState<StatusOption>('All');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryOption>('All');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryOption>('direct transfer');
   const [customStartDate, setCustomStartDate] = useState<Date | undefined>(undefined);
   const [customEndDate, setCustomEndDate] = useState<Date | undefined>(undefined);
 

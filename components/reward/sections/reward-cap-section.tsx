@@ -2,14 +2,27 @@
 
 import { RewardIcon } from "@/components/common/icon-svg";
 import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatNumberWithCommas, isNumericOnly } from "@/lib/helper";
 import { RewardCapSectionProps } from "@/lib/types";
+import { Info } from "lucide-react";
 
 
-export default function RewardCapSection({ rewardCap, setRewardCap }: RewardCapSectionProps) {
+export default function RewardCapSection({ rewardCap, setRewardCap }: Readonly<RewardCapSectionProps>) {
   return (
     <div className="space-y-2">
-      <label htmlFor="rewardCap" className="text-sm font-medium text-gray-900">Reward Cap  <span className="text-xs text-gray-600">(Set The Maximum Points Your Brand Can Give Out Within A Period.)</span> <span className="text-red-500">*</span></label>
+      <label htmlFor="rewardCap" className="text-sm font-medium text-gray-900 flex items-center gap-2">
+        Maximum Pending Reward
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Info className="h-4 w-4 text-gray-500 cursor-help" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Set The Maximum Points Your Brand Can Give Out Within A Period.</p>
+          </TooltipContent>
+        </Tooltip>
+        <span className="text-red-500">*</span>
+      </label>
 
       <div className="relative">
         <Input

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,14 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 
-export type SummaryDateRangeOption = 'Today' | 'Yesterday' | 'This Week' | 'This Month' | 'Last Month';
+export type SummaryDateRangeOption =
+  | "Today"
+  | "Yesterday"
+  | "This Week"
+  | "This Month"
+  | "Last Month";
 
 interface SummaryDateRangeFilterProps {
   selectedRange: SummaryDateRangeOption;
   onRangeChange: (range: SummaryDateRangeOption) => void;
 }
 
-export default function SummaryDateRangeFilter({ selectedRange, onRangeChange }: SummaryDateRangeFilterProps) {
+export default function SummaryDateRangeFilter({
+  selectedRange,
+  onRangeChange,
+}: Readonly<SummaryDateRangeFilterProps>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="shadow-none">
@@ -26,23 +34,22 @@ export default function SummaryDateRangeFilter({ selectedRange, onRangeChange }:
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuItem onClick={() => onRangeChange('Today')}>
+        <DropdownMenuItem onClick={() => onRangeChange("Today")}>
           Today
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onRangeChange('Yesterday')}>
+        <DropdownMenuItem onClick={() => onRangeChange("Yesterday")}>
           Yesterday
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onRangeChange('This Week')}>
+        <DropdownMenuItem onClick={() => onRangeChange("This Week")}>
           This Week
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onRangeChange('This Month')}>
+        <DropdownMenuItem onClick={() => onRangeChange("This Month")}>
           This Month
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onRangeChange('Last Month')}>
+        <DropdownMenuItem onClick={() => onRangeChange("Last Month")}>
           Last Month
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
-

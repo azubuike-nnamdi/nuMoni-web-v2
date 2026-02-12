@@ -1,4 +1,7 @@
 
+import { DateRangeOption } from '@/components/ui/date-range-selector';
+import { calenderIcon, giftIcon, grayPointIcon } from "@/constant/icons";
+import { ChartBarBig, Flag } from "lucide-react";
 import React from 'react';
 import { FieldPath, FieldValues, UseFormSetError } from "react-hook-form";
 import { RewardRule } from './types';
@@ -132,7 +135,7 @@ export const getBarColor = (barColor: string): string => {
     'bg-indigo-500',
     'bg-cyan-500'
   ];
-  const index = parseInt(barColor) || 0;
+  const index = Number.parseInt(barColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -154,7 +157,7 @@ export const getChartBarColor = (barColor: string): string => {
     '#6366f1', // indigo-500
     '#06b6d4'  // cyan-500
   ];
-  const index = parseInt(barColor) || 0;
+  const index = Number.parseInt(barColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -178,7 +181,7 @@ export const getRingColor = (ringColor: string): string => {
     'ring-cyan-500',
     'ring-gray-500'
   ];
-  const index = parseInt(ringColor) || 0;
+  const index = Number.parseInt(ringColor) || 0;
   return colors[index % colors.length];
 };
 
@@ -383,7 +386,7 @@ export const formatDistributionType = (distributionType: string) => {
  * @returns Array of rules or empty array if no rewards/rules
  */
 export const getRewardsRules = (rewards: { rules?: Array<RewardRule> } | null): Array<RewardRule> => {
-  if (!rewards || !rewards.rules) return [];
+  if (!rewards?.rules) return [];
   return rewards.rules;
 };
 
@@ -415,6 +418,19 @@ export const formatDateTime = (dateString: string) => {
 };
 
 /**
+ * Formats a date string to DD-MM-YYYY format
+ * @param dateString - Date string to format
+ * @returns Formatted date string in DD-MM-YYYY format (e.g., "25-12-2024")
+ */
+export const formatDateDDMMYYYY = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+/**
  * Creates summary data array from rewards object
  * @param rewards - The rewards object or null
  * @returns Array of summary data objects
@@ -424,6 +440,8 @@ export const createRewardsSummaryData = (rewards: {
   distributionType: string;
   startDate: string | null;
   endDate: string | null;
+  milestoneTarget: number | null;
+  status: string;
 } | null) => {
   if (!rewards) return [];
 
@@ -447,6 +465,17 @@ export const createRewardsSummaryData = (rewards: {
       icon: "calenderIcon", // Will be replaced with actual icon in component
       label: "End Date",
       value: formatDate(rewards.endDate, "-")
+    },
+    {
+      icon: "flagIcon", // Will be replaced with actual icon in component
+      label: "Milestone Target",
+      value: rewards.milestoneTarget
+    },
+    {
+      icon: "chart-bar-big", // Will be replaced with actual icon in component
+      label: "Status",
+      value: getStatusText(rewards.status),
+      className: `px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(rewards.status)}`
     }
   ];
 };
@@ -737,7 +766,8 @@ export const mapPointExpirationToForm = (pointExpirationDays: number): string =>
   if (pointExpirationDays === 7) return "7-days";
   if (pointExpirationDays === 14) return "14-days";
   if (pointExpirationDays === 30) return "30-days";
-  return "never";
+  if (pointExpirationDays === 10000) return "10000days";
+  return "10000days";
 };
 
 export const mapPointExpirationToApi = (pointExpiration: string): number => {
@@ -746,7 +776,8 @@ export const mapPointExpirationToApi = (pointExpiration: string): number => {
   if (pointExpiration === "7-days") return 7;
   if (pointExpiration === "14-days") return 14;
   if (pointExpiration === "30-days") return 30;
-  return 0;
+  if (pointExpiration === "10000days") return 10000;
+  return 10000;
 };
 
 /**
@@ -877,11 +908,14 @@ export const getTimelineDates = (
   };
 
   switch (timeline) {
-    case 'Today':
+    case 'Today': {
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
       return {
-        startDate: formatDate(today),
+        startDate: formatDate(yesterday),
         endDate: formatDate(today)
       };
+    }
 
     case 'Yesterday': {
       const yesterday = new Date(today);
@@ -1121,6 +1155,17 @@ export const removeCommas = (value: string): string => {
 export const isNumericOnly = (value: string): boolean => {
   // Allow empty string or only digits and commas
   return value === '' || /^[\d,]*$/.test(value);
+};
+
+/**
+ * Validates if input is a valid decimal number (allows decimal point)
+ * @param value - The string value to validate
+ * @returns Boolean indicating if input is a valid decimal number
+ */
+export const isDecimalNumeric = (value: string): boolean => {
+  // Allow empty string or valid decimal numbers (e.g., 0.5, 1.5, 10, 10.25)
+  // Only allow one decimal point and digits
+  return value === '' || /^\d*\.?\d*$/.test(value);
 };
 
 /**
@@ -1594,4 +1639,149 @@ export const downloadQRCodeImageWithLogo = async (
       reject(error);
     }
   });
+};
+
+/**
+ * Parses a YYYY-MM-DD date string to a local Date object
+ * @param dateString - Date string in YYYY-MM-DD format
+ * @returns Date object in local timezone
+ * 
+ * @example
+ * parseDateString('2024-01-15') // Returns Date object for January 15, 2024
+ */
+export const parseDateString = (dateString: string): Date => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+/**
+ * Converts a date string from YYYY-MM-DD format to DD-MM-YYYY format
+ * @param dateString - Date string in YYYY-MM-DD format (e.g., "2026-01-05")
+ * @returns Date string in DD-MM-YYYY format (e.g., "05-01-2026")
+ * 
+ * @example
+ * convertYYYYMMDDtoDDMMYYYY('2026-01-05') // Returns "05-01-2026"
+ */
+export const convertYYYYMMDDtoDDMMYYYY = (dateString: string): string => {
+  const [year, month, day] = dateString.split('-');
+  return `${day}-${month}-${year}`;
+};
+
+/**
+ * Converts a date range option to actual start and end Date objects
+ * @param option - Date range option (Today, Yesterday, This Week, etc.)
+ * @returns Object with start and end Date objects, or null if option is invalid
+ * 
+ * @example
+ * getDatesFromRangeOption('Today') // Returns { start: Date, end: Date }
+ * getDatesFromRangeOption('Custom Range') // Returns null
+ */
+export const getDatesFromRangeOption = (option: DateRangeOption): { start: Date; end: Date } | null => {
+  if (!option || option === 'Custom Range') return null;
+
+  const dateStrings = getTimelineDates(option);
+  const start = parseDateString(dateStrings.startDate);
+  const end = parseDateString(dateStrings.endDate);
+
+  return { start, end };
+};
+
+/**
+ * Extracts a meaningful message from an object error.
+ */
+function extractObjectErrorMessage(error: object): string | null {
+  // 1. Try "message" property
+  if ('message' in error && typeof (error as { message: unknown }).message === 'string') {
+    return (error as { message: string }).message
+  }
+
+  // 2. Try JSON.stringify
+  try {
+    const jsonString = JSON.stringify(error)
+    if (jsonString !== '{}') {
+      return jsonString
+    }
+  } catch {
+    // Ignore stringify errors
+  }
+
+  // 3. If the object has a custom toString method
+  const stringified = String(error)
+  if (stringified !== '[object Object]') {
+    return stringified
+  }
+
+  return null
+}
+
+/**
+ * Safely extracts an error message from various error types
+ * (Axios errors, standard Errors, unknown, etc.)
+ */
+export function extractErrorMessage(error: unknown): string {
+  if (!error) {
+    return 'An error occurred'
+  }
+
+  // Axios-style errors (checking for "response")
+  if (typeof error === 'object' && error !== null && 'response' in error) {
+    const axiosError = error as {
+      response?: { data?: { message?: string } }
+    }
+    if (axiosError.response?.data?.message) {
+      return axiosError.response.data.message
+    }
+    return 'An error occurred'
+  }
+
+  // Standard JS Error
+  if (error instanceof Error) {
+    return error.message
+  }
+
+  // String errors
+  if (typeof error === 'string') {
+    return error
+  }
+
+  // Generic object errors
+  if (typeof error === 'object' && error !== null) {
+    const objMsg = extractObjectErrorMessage(error)
+    if (objMsg) {
+      return objMsg
+    }
+  }
+
+  // Fallback
+  return 'An error occurred'
+}
+
+export const getRewardIcon = (iconName: string) => {
+  switch (iconName) {
+    case "giftIcon":
+      return giftIcon;
+    case "grayPointIcon":
+      return grayPointIcon;
+    case "chart-bar-big":
+      return ChartBarBig;
+    case "flagIcon":
+      return Flag;
+    default:
+      return calenderIcon;
+  }
+};
+
+export const getSearchPlaceholder = (searchType: string) => {
+  switch (searchType) {
+    case "transactionReference":
+      return "Search by transaction reference...";
+    case "posId":
+      return "Search by POS ID...";
+    case "customerName":
+      return "Search by customer name...";
+    case "posLocation":
+      return "Search by POS location...";
+    default:
+      return "Search by merchant, branch, deal...";
+  }
 };

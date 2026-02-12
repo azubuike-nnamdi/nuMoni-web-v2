@@ -1,7 +1,7 @@
 import { CustomerSectionProps } from "@/lib/types";
 import CustomerCard from "./customer-card";
 
-export default function CustomerSection({ title, customers }: CustomerSectionProps) {
+export default function CustomerSection({ title, customers }: Readonly<CustomerSectionProps>) {
   return (
     <div>
       <h2 className="text-base sm:text-lg font-semibold text-black/50 mb-3 sm:mb-4">{title}</h2>

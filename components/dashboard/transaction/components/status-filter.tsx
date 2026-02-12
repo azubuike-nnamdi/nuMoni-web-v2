@@ -16,7 +16,7 @@ interface StatusFilterProps {
   onStatusChange: (status: StatusOption) => void;
 }
 
-export default function StatusFilter({ selectedStatus, onStatusChange }: StatusFilterProps) {
+export default function StatusFilter({ selectedStatus, onStatusChange }: Readonly<StatusFilterProps>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
