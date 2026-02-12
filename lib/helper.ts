@@ -766,7 +766,8 @@ export const mapPointExpirationToForm = (pointExpirationDays: number): string =>
   if (pointExpirationDays === 7) return "7-days";
   if (pointExpirationDays === 14) return "14-days";
   if (pointExpirationDays === 30) return "30-days";
-  return "never";
+  if (pointExpirationDays === 10000) return "10000days";
+  return "10000days";
 };
 
 export const mapPointExpirationToApi = (pointExpiration: string): number => {
@@ -775,7 +776,8 @@ export const mapPointExpirationToApi = (pointExpiration: string): number => {
   if (pointExpiration === "7-days") return 7;
   if (pointExpiration === "14-days") return 14;
   if (pointExpiration === "30-days") return 30;
-  return 0;
+  if (pointExpiration === "10000days") return 10000;
+  return 10000;
 };
 
 /**

@@ -177,7 +177,7 @@ type CustomerAnalyticsData = {
   totalSpent: number;
   mostShoppedBranch: string;
   customerId: string;
-  customerUserId: string;
+  rank?: number;
   customerName: string;
 };
 

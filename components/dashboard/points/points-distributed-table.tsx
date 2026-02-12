@@ -183,6 +183,7 @@ interface PointsDistributedTableProps {
   searchPlaceholder?: string;
   searchType?: string;
   onSearchTypeChange?: (value: string) => void;
+  dateSelector?: React.ReactNode;
 }
 
 export default function PointsDistributedTable({
@@ -196,12 +197,15 @@ export default function PointsDistributedTable({
   searchPlaceholder = "Search by merchant, branch, deal...",
   searchType,
   onSearchTypeChange,
+  dateSelector,
 }: Readonly<PointsDistributedTableProps>) {
   return (
     <div className="bg-white rounded-2xl p-4 my-4">
       <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
+          {dateSelector}
+
           {onSearchTypeChange && (
             <Select value={searchType} onValueChange={onSearchTypeChange}>
               <SelectTrigger className="w-[180px]">

@@ -6,13 +6,13 @@ import {
   timelineOptions
 } from "@/data";
 import useGetCustomerAnalytics from "@/hooks/query/useGetCustomerAnalytics";
-import { getTimelineDates } from "@/lib/helper";
+import { extractErrorMessage, getTimelineDates } from "@/lib/helper";
 import { CustomerAnalyticsData, CustomerAnalyticsResponse } from "@/lib/types";
 import { useEffect, useState } from "react";
 import ErrorDisplay from "../common/error-display";
 import LoadingSpinner from "../ui/loading-spinner";
 import CustomDateRangeModal from "./custom-date-range-modal";
-import CustomerSection from "./customer-section";
+import CustomerTabTable from "./customer-tab-table";
 import EmptyPointAllocation from "./empty-point-allocation";
 import FilterSection from "./filter-section";
 
@@ -78,7 +78,7 @@ export default function PointAllocationDashboard() {
     if (isError) {
       return (
         <ErrorDisplay
-          error={error?.message || "Error loading customer data. Please try again."}
+          error={extractErrorMessage(error) || "Error loading customer data. Please try again."}
           isError={isError}
           onRetry={refetch}
         />
@@ -90,12 +90,12 @@ export default function PointAllocationDashboard() {
       return <EmptyPointAllocation />;
     }
 
+    console.log(loyalCustomers)
+
     // 4. Show customer data if everything is successful
     return (
-      <CustomerSection
-        title="Your Most Loyal Customers"
-        customers={loyalCustomers}
-      />
+      <CustomerTabTable customers={loyalCustomers} title="Your Most Loyal Customers" />
+
     );
   };
 
@@ -140,7 +140,7 @@ export default function PointAllocationDashboard() {
       </div>
 
       {/* Customer Data Section */}
-      <div className="space-y-4 sm:space-y-6 bg-theme-gray rounded-xl p-3 sm:p-4">
+      <div className="">
         {renderCustomerContent()}
       </div>
 
