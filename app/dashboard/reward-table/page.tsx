@@ -1,4 +1,5 @@
 import Reward from "@/components/reward";
+import LoadingSkeleton from "@/components/reward/loading-skeleton";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Suspense fallback={<div>Loading...</div>}>
+  return <Suspense fallback={<LoadingSkeleton />}>
     <Reward />
   </Suspense>;
 }
