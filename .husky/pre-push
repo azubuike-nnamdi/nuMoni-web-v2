@@ -1,1 +1,31 @@
-pnpm build
+#!/bin/sh
+
+echo "🔍 Running pre-push hook..."
+
+# Check for package.json changes compared to origin/main
+files_changed=$(git diff --name-only origin/main...HEAD 2>/dev/null)
+
+if echo "$files_changed" | grep -q "package.json"; then
+  echo "📦 Dependencies changed. Running pnpm install..."
+  pnpm install
+fi
+
+# Run build
+echo "🏗️ Running build..."
+pnpm run build
+
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed. Push aborted."
+  exit 1
+fi
+
+# Run type check (optional but recommended)
+echo "➡️ Running type check..."
+pnpm run type-check
+
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed. Push aborted."
+  exit 1
+fi
+
+echo "✅ Build and checks passed. Proceeding with push..."

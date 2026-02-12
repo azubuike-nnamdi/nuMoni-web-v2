@@ -1,1 +1,13 @@
-pnpm lint
+#!/bin/sh
+
+echo "🔍 Running pre-commit hook..."
+
+# Get staged files
+files=$(git diff --cached --name-only)
+
+if [ -n "$files" ]; then
+  echo "🚀 Running lint for staged files..."
+  pnpm run lint
+else
+  echo "✅ No files staged for commit."
+fi
