@@ -1,5 +1,7 @@
+import { peopleIcon, pointIcon } from "@/constant/icons";
 import useGetRewardAnalysis from "@/hooks/query/useGetRewardAnalysis";
 import useGetRewards from "@/hooks/query/useGetRewards";
+import { formatCurrency } from "@/lib/helper";
 import { AxiosError } from "@/lib/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -161,18 +163,33 @@ export default function RewardDashboard() {
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
                 title="Total Points Redeemed"
+                iconImage={peopleIcon}
               />
             </div>
           </div>
           <div className="min-w-[280px] shrink-0 flex">
             <div className="w-full h-full">
               <TotalRewardIssued
-                totalIssued={analyticsData?.totalIssued}
+                totalIssued={formatCurrency(analyticsData?.budgetBalance)}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
-                title="Total Points Issues"
+                title="Budget Balance"
+                iconImage={pointIcon}
+              />
+            </div>
+          </div>
+          <div className="min-w-[280px] shrink-0 flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalIssueCount}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Issue Count"
+                iconImage={peopleIcon}
               />
             </div>
           </div>
