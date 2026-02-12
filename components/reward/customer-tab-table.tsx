@@ -31,7 +31,8 @@ const columns: ColumnDef<CustomerAnalyticsData>[] = [
 ]
 export default function CustomerTabTable({ customers, title }: Readonly<{ customers: CustomerAnalyticsData[], title: string }>) {
   return (
-    <div>
+    <div className="">
+      <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
       <DataTable columns={columns} data={customers} />
     </div>
   );

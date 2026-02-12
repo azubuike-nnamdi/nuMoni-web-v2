@@ -208,7 +208,7 @@ const columns: ColumnDef<TransactionData>[] = [
         <div
           className={`px-2 py-1 rounded-full text-xs font-medium inline-block ${colorClass}`}
         >
-          {status}
+          {status ?? "-"}
         </div>
       );
     },
@@ -225,7 +225,7 @@ const columns: ColumnDef<TransactionData>[] = [
             : "bg-green-100 text-green-700"
             }`}
         >
-          {type}
+          {type ?? "-"}
         </div>
       );
     },
@@ -346,6 +346,7 @@ interface TransactionsTableProps {
   onDelete?: () => void;
   searchType?: string;
   onSearchTypeChange?: (value: string) => void;
+  dateSelector?: React.ReactNode;
 }
 
 export default function TransactionsTable({
@@ -362,12 +363,14 @@ export default function TransactionsTable({
   onDelete,
   searchType,
   onSearchTypeChange,
+  dateSelector,
 }: Readonly<TransactionsTableProps>) {
   return (
     <div className="bg-white rounded-2xl p-4 my-4">
       <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
+          {dateSelector}
           {onSearchTypeChange && (
             <Select value={searchType} onValueChange={onSearchTypeChange}>
               <SelectTrigger className="w-[180px]">

@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -31,37 +33,52 @@ export function DateRangeSelector({
   disabled = false,
 }: Readonly<DateRangeSelectorProps>) {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [customStartDatePopoverOpen, setCustomStartDatePopoverOpen] = useState(false);
-  const [customEndDatePopoverOpen, setCustomEndDatePopoverOpen] = useState(false);
+
+  // Committed dates (synced with parent)
   const [customStartDate, setCustomStartDate] = useState<Date | undefined>();
   const [customEndDate, setCustomEndDate] = useState<Date | undefined>();
 
+  // Modal state
+  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [tempStartDate, setTempStartDate] = useState<Date | undefined>();
+  const [tempEndDate, setTempEndDate] = useState<Date | undefined>();
+
+  // Popovers inside modal
+  const [startDatePopoverOpen, setStartDatePopoverOpen] = useState(false);
+  const [endDatePopoverOpen, setEndDatePopoverOpen] = useState(false);
+
   const handleOptionChange = useCallback((option: DateRangeOption) => {
-    onValueChange(option);
     setPopoverOpen(false);
+
     if (option === 'Custom Range' && showCustomRange) {
-      setCustomStartDatePopoverOpen(true);
+      // Initialize temp dates with current committed dates
+      setTempStartDate(customStartDate);
+      setTempEndDate(customEndDate);
+      setShowCustomModal(true);
+      // We don't call onValueChange yet to avoid triggering redundant fetches
+      // until user applies dates. 
+      // However, the UI needs to show "Custom Range" is selected or about to be.
+      // Ideally we only switch value when Apply is hit, OR we switch it but the fetch is disabled (which we handled in parent).
+      // Let's call it to update the dropdown label, trusting the parent's enabled logic.
+      onValueChange(option);
+    } else {
+      onValueChange(option);
     }
-  }, [onValueChange, showCustomRange]);
+  }, [onValueChange, showCustomRange, customStartDate, customEndDate]);
 
-  const handleCustomStartDateSelect = useCallback((date: Date | undefined) => {
-    setCustomStartDate(date);
-    if (date && customEndDate && date > customEndDate) {
-      setCustomEndDate(undefined);
-    }
-    if (date) {
-      setCustomStartDatePopoverOpen(false);
-    }
-  }, [customEndDate]);
+  const handleApplyCustomDates = () => {
+    setCustomStartDate(tempStartDate);
+    setCustomEndDate(tempEndDate);
+    setShowCustomModal(false);
+  };
 
-  const handleCustomEndDateSelect = useCallback((date: Date | undefined) => {
-    setCustomEndDate(date);
-    if (date) {
-      setCustomEndDatePopoverOpen(false);
-    }
-  }, []);
+  const handleCancelCustomDates = () => {
+    setShowCustomModal(false);
+    // If we cancelled and had no valid dates set previously, maybe we should revert the selection?
+    // But keeping "Custom Range" selected with no dates is fine given our "enabled" logic in parent.
+  };
 
-  // Notify parent of date changes when custom dates are selected
+  // Notify parent of date changes when custom dates are commited
   useEffect(() => {
     if (showCustomRange && value === 'Custom Range' && onDatesChange) {
       onDatesChange(customStartDate, customEndDate);
@@ -73,8 +90,12 @@ export function DateRangeSelector({
     if (value !== 'Custom Range') {
       setCustomStartDate(undefined);
       setCustomEndDate(undefined);
+      // Also notify parent to reset its dates
+      if (onDatesChange) {
+        onDatesChange(undefined, undefined);
+      }
     }
-  }, [value]);
+  }, [value, onDatesChange]);
 
   const options: Array<{ value: DateRangeOption; label: string }> = [
     ...(showAllTime ? [{ value: null as DateRangeOption, label: 'Today' }] : []),
@@ -103,7 +124,7 @@ export function DateRangeSelector({
           {options.map((option) => (
             <button
               key={option.value || 'null'}
-              className={`px-3 py-2 text-sm cursor-pointer rounded-md transition-colors ${value === option.value
+              className={`px-3 py-2 text-sm cursor-pointer rounded-md transition-colors w-full text-left ${value === option.value
                 ? 'bg-gray-100 font-medium'
                 : 'hover:bg-gray-100'
                 }`}
@@ -115,65 +136,91 @@ export function DateRangeSelector({
         </PopoverContent>
       </Popover>
 
-      {/* Custom Date Range Picker */}
-      {showCustomRange && value === 'Custom Range' && (
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="space-y-2">
-            <label htmlFor="custom-start-date" className="text-xs text-gray-600">Start Date</label>
-            <Popover open={customStartDatePopoverOpen} onOpenChange={setCustomStartDatePopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {customStartDate ? format(customStartDate, "dd-MM-yyyy") : "Pick start date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={customStartDate}
-                  onSelect={handleCustomStartDateSelect}
-                  disabled={(date) => {
-                    const today = new Date();
-                    today.setHours(23, 59, 59, 999);
-                    return date > today || (customEndDate ? date > customEndDate : false);
-                  }}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+      <Dialog open={showCustomModal} onOpenChange={setShowCustomModal}>
+        <DialogContent className="sm:max-w-[525px]">
+          <DialogHeader>
+            <DialogTitle>Select Date Range</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-4 py-4">
+            <div className="space-y-2">
+              <label htmlFor="start-date" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Start Date
+              </label>
+              <Popover open={startDatePopoverOpen} onOpenChange={setStartDatePopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !tempStartDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {tempStartDate ? format(tempStartDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={tempStartDate}
+                    onSelect={(date) => {
+                      setTempStartDate(date);
+                      setStartDatePopoverOpen(false);
+                      // Reset end date if it's before start date
+                      if (tempEndDate && date && date > tempEndDate) {
+                        setTempEndDate(undefined);
+                      }
+                    }}
+                    initialFocus
+                    disabled={(date) =>
+                      date > new Date() ||
+                      (tempEndDate ? date > tempEndDate : false)
+                    }
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="end-date" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                End Date
+              </label>
+              <Popover open={endDatePopoverOpen} onOpenChange={setEndDatePopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !tempEndDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {tempEndDate ? format(tempEndDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={tempEndDate}
+                    onSelect={(date) => {
+                      setTempEndDate(date);
+                      setEndDatePopoverOpen(false);
+                    }}
+                    initialFocus
+                    disabled={(date) =>
+                      date > new Date() ||
+                      (tempStartDate ? date < tempStartDate : false)
+                    }
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
-          <div className="space-y-2">
-            <label htmlFor="custom-end-date" className="text-xs text-gray-600">End Date</label>
-            <Popover open={customEndDatePopoverOpen} onOpenChange={setCustomEndDatePopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {customEndDate ? format(customEndDate, "dd-MM-yyyy") : "Pick end date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={customEndDate}
-                  onSelect={handleCustomEndDateSelect}
-                  disabled={(date) => {
-                    const today = new Date();
-                    today.setHours(23, 59, 59, 999);
-                    return date > today || (customStartDate ? date < customStartDate : false);
-                  }}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-      )}
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCancelCustomDates}>Cancel</Button>
+            <Button onClick={handleApplyCustomDates} disabled={!tempStartDate || !tempEndDate} className="bg-theme-dark-green disabled:bg-theme-dark-green">Apply</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

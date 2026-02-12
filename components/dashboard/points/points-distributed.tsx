@@ -1,54 +1,44 @@
 'use client';
 
 import EmptyState from "@/components/common/empty-state";
+import { DateRangeSelector } from "@/components/ui/date-range-selector";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetPointsDistributed from "@/hooks/query/useGetPointsDistributed";
+import { useDateRangeFilter } from "@/hooks/useDateRangeFilter";
 import { getSearchPlaceholder } from "@/lib/helper";
-import { useEffect, useState } from "react";
 import { PaginationInfo } from "../transactions-table";
 import PointsDistributedTable from "./points-distributed-table";
 import { PointsDistributedData } from "./types";
 
 export default function PointsDistributed() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [searchValue, setSearchValue] = useState("");
-  const [searchType, setSearchType] = useState("transactionReference");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  // Debounce search input
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchValue);
-      setCurrentPage(0); // Reset to first page when searching
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
-
-  // Reset page when search type changes
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [searchType]);
+  const {
+    currentPage,
+    searchValue,
+    searchType,
+    debouncedSearch,
+    selectedTimeline,
+    fromDate,
+    toDate,
+    shouldFetch,
+    setSearchType,
+    setSelectedTimeline,
+    handlePageChange,
+    handleSearchChange,
+    handleCustomDatesChange,
+  } = useDateRangeFilter();
 
   const { data, isPending, isError, error } = useGetPointsDistributed({
     page: currentPage,
     size: 10,
     search: debouncedSearch || undefined,
     searchType,
+    fromDate,
+    toDate,
+    enabled: shouldFetch,
   });
 
   const pointsDistributedData = data?.data?.data as PointsDistributedData[] | undefined;
   const paginationInfo = data?.data?.pagination as PaginationInfo | undefined;
-
-  const isEmpty = !isPending && (!pointsDistributedData || pointsDistributedData.length === 0);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const handleSearchChange = (value: string) => {
-    setSearchValue(value);
-  };
 
   if (isPending && !data) {
     return <LoadingSpinner size="lg" message="Loading points distributed..." />;
@@ -58,22 +48,15 @@ export default function PointsDistributed() {
     return <EmptyState title="Error loading data" description={error?.message || "An error occurred while loading points distributed."} />;
   }
 
-  if (isEmpty) {
-    return (
-      <PointsDistributedTable
-        data={[]}
-        title="Points Distributed"
-        pagination={paginationInfo}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-        searchValue={searchValue}
-        onSearchChange={handleSearchChange}
-        searchPlaceholder={getSearchPlaceholder(searchType)}
-        searchType={searchType}
-        onSearchTypeChange={setSearchType}
-      />
-    );
-  }
+  const dateSelector = (
+    <DateRangeSelector
+      value={selectedTimeline}
+      onValueChange={setSelectedTimeline}
+      showCustomRange
+      onDatesChange={handleCustomDatesChange}
+      placeholder="Select Date"
+    />
+  );
 
   return (
     <PointsDistributedTable
@@ -87,6 +70,7 @@ export default function PointsDistributed() {
       searchPlaceholder={getSearchPlaceholder(searchType)}
       searchType={searchType}
       onSearchTypeChange={setSearchType}
+      dateSelector={dateSelector}
     />
   );
 }
