@@ -4,10 +4,10 @@ interface CardSkeletonProps {
   variant?: "default" | "gradient";
 }
 
-export default function CardSkeleton({ variant = "default" }: CardSkeletonProps) {
+export default function CardSkeleton({ variant = "default" }: Readonly<CardSkeletonProps>) {
   if (variant === "gradient") {
     return (
-      <div className="relative overflow-hidden bg-gradient-to-br from-green-800 to-green-900 text-white rounded-xl p-6 flex flex-col">
+      <div className="relative overflow-hidden bg-linear-to-br from-green-800 to-green-900 text-white rounded-xl p-6 flex flex-col">
         {/* Background Icon Skeleton */}
         <div className="absolute -top-8 -right-16 opacity-30">
           <Skeleton className="w-[200px] h-[200px] rounded-full" />
