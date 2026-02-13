@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 export function useDateRangeFilter() {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // Search state
   const [searchValue, setSearchValue] = useState("");
@@ -31,10 +32,10 @@ export function useDateRangeFilter() {
     return () => clearTimeout(timer);
   }, [searchValue]);
 
-  // Reset page when search type changes
+  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [searchType]);
+  }, [searchType, selectedTimeline, customStartDate, customEndDate, pageSize]);
 
   // Calculate fetch conditions
   const isCustomRange = selectedTimeline === "Custom Range";
@@ -75,6 +76,11 @@ export function useDateRangeFilter() {
     setCurrentPage(page);
   };
 
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(0);
+  };
+
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
   };
@@ -87,6 +93,7 @@ export function useDateRangeFilter() {
   return {
     // States
     currentPage,
+    pageSize,
     searchValue,
     searchType,
     debouncedSearch,
@@ -99,11 +106,13 @@ export function useDateRangeFilter() {
 
     // Setters
     setCurrentPage,
+    setPageSize,
     setSearchType,
     setSelectedTimeline,
 
     // Handlers
     handlePageChange,
+    handlePageSizeChange,
     handleSearchChange,
     handleCustomDatesChange,
   };

@@ -13,6 +13,7 @@ import { PointsDistributedData } from "./types";
 export default function PointsDistributed() {
   const {
     currentPage,
+    pageSize,
     searchValue,
     searchType,
     debouncedSearch,
@@ -23,13 +24,14 @@ export default function PointsDistributed() {
     setSearchType,
     setSelectedTimeline,
     handlePageChange,
+    handlePageSizeChange,
     handleSearchChange,
     handleCustomDatesChange,
   } = useDateRangeFilter();
 
   const { data, isPending, isError, error } = useGetPointsDistributed({
     page: currentPage,
-    size: 10,
+    size: pageSize,
     search: debouncedSearch || undefined,
     searchType,
     fromDate,
@@ -65,6 +67,7 @@ export default function PointsDistributed() {
       pagination={paginationInfo}
       currentPage={currentPage}
       onPageChange={handlePageChange}
+      onPageSizeChange={handlePageSizeChange}
       searchValue={searchValue}
       onSearchChange={handleSearchChange}
       searchPlaceholder={getSearchPlaceholder(searchType)}

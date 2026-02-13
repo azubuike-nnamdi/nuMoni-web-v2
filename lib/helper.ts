@@ -909,10 +909,8 @@ export const getTimelineDates = (
 
   switch (timeline) {
     case 'Today': {
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
       return {
-        startDate: formatDate(yesterday),
+        startDate: formatDate(today),
         endDate: formatDate(today)
       };
     }
