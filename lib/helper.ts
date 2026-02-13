@@ -221,7 +221,7 @@ export const formatCurrency = (amount: number) => {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 2,
-  }).format(amount).replace('NGN', '₦');
+  }).format(amount).replace('NGN ', '₦ ');
 };
 
 export const getStatusColor = (status: string) => {
