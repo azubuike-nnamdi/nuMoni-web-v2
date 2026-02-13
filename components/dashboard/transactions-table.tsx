@@ -78,29 +78,39 @@ const columns: ColumnDef<TransactionData>[] = [
 
   {
     accessorKey: "amountPaid",
-    header: "Amount Paid",
+    header: "Total Amount Paid",
     cell: ({ row }) => {
-      const amount = row.original.amountPaid;
+      const amount = row.original.totalAmountPaid;
       return (
         <div className="font-semibold">{formatCurrency(amount || 0)}</div>
       );
     },
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "paidInNumoniPoints",
+    header: "Amount in nuPoint",
     cell: ({ row }) => {
-      const amount = row.original.amount;
+      const amount = row.original.paidInNumoniPoints;
       return (
         <div className="font-semibold">{formatCurrency(amount || 0)}</div>
       );
     },
   },
   {
-    accessorKey: "settledAmount",
+    accessorKey: "paidInBrandPoints",
+    header: "Amount in Brand Point",
+    cell: ({ row }) => {
+      const amount = row.original.paidInBrandPoints;
+      return (
+        <div className="font-semibold">{formatCurrency(amount || 0)}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "settled",
     header: "Settled Amount",
     cell: ({ row }) => {
-      const amount = row.original.settledAmount;
+      const amount = row.original.settled;
       return <div>{amount ? formatCurrency(amount) : "—"}</div>;
     },
   },
@@ -309,10 +319,10 @@ const columns: ColumnDef<TransactionData>[] = [
   //   },
   // },
   {
-    accessorKey: "date",
+    accessorKey: "timestamp",
     header: "Date",
     cell: ({ row }) => {
-      const date = row.original.date;
+      const date = row.original.timestamp;
       return <div className="text-sm">{formatDateTime(date)}</div>;
     },
   },
