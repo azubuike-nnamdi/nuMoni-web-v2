@@ -23,6 +23,8 @@ export default function PointAllocationDashboard() {
   const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
   const [customStartDate, setCustomStartDate] = useState<string>("");
   const [customEndDate, setCustomEndDate] = useState<string>("");
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // Get dates based on selected timeline
   const { startDate, endDate } = getTimelineDates(
@@ -33,22 +35,23 @@ export default function PointAllocationDashboard() {
 
   const { data, isPending, error, isError, refetch } = useGetCustomerAnalytics({
     startDate,
-    endDate
+    endDate,
+    page,
+    size: pageSize,
   });
 
   const consumerData: CustomerAnalyticsResponse | undefined = data?.data;
 
   // Transform API data to match component expectations
   const loyalCustomers = consumerData?.topLoyalCustomers?.map((customer: CustomerAnalyticsData, index: number) => ({
-    totalTransactions: customer.totalTransactions,
-    totalSpent: customer.totalSpent,
-    mostShoppedBranch: customer.mostShoppedBranch,
-    customerId: customer.customerId,
-    customerName: customer.customerName,
-    rank: index + 1, // Add ranking based on array position
+    ...customer,
+    rank: index + 1 + (page * pageSize), // Add ranking based on array position and page
   })) || [];
 
-  // API only provides topLoyalCustomers, no other customers data
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(0);
+  }, [selectedTimeline, customStartDate, customEndDate]);
 
   const handleCustomRangeClick = () => {
     setShowCustomDatePicker(true);
@@ -62,10 +65,10 @@ export default function PointAllocationDashboard() {
     setShowCustomDatePicker(false);
   };
 
-  // Refetch data when timeline changes
+  // Refetch data when filters or pagination change
   useEffect(() => {
     refetch();
-  }, [selectedTimeline, customStartDate, customEndDate, refetch]);
+  }, [selectedTimeline, customStartDate, customEndDate, page, pageSize, refetch]);
 
   // Render customer content based on different states
   const renderCustomerContent = () => {
@@ -90,11 +93,18 @@ export default function PointAllocationDashboard() {
       return <EmptyPointAllocation />;
     }
 
-    console.log(loyalCustomers)
-
     // 4. Show customer data if everything is successful
     return (
-      <CustomerTabTable customers={loyalCustomers} title="Your Most Loyal Customers" />
+      <CustomerTabTable
+        customers={loyalCustomers}
+        title="Your Most Loyal Customers"
+        currentPage={page}
+        totalPages={consumerData?.totalPages || 0}
+        totalRows={consumerData?.totalElements || 0}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+      />
 
     );
   };
