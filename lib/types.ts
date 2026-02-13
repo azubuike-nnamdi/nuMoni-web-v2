@@ -578,6 +578,7 @@ type TransactionData = {
   totalAmountPaid: number | null;
   paidInNumoniPoints: number | null;
   paidInBrandPoints: number | null;
+  settledAmount: number | null;
 };
 
 type PointOfSaleData = {
