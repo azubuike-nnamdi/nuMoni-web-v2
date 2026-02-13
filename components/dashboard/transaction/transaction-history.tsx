@@ -13,6 +13,7 @@ import { useTransactionFilters } from "./hooks/use-transaction-filters";
 export default function TransactionHistory() {
   const {
     currentPage,
+    pageSize,
     selectedRange,
     selectedStatus,
     selectedCategory,
@@ -20,6 +21,7 @@ export default function TransactionHistory() {
     customEndDate,
     dateRange,
     handlePageChange,
+    handlePageSizeChange,
     handleDateRangeChange,
     handleStatusChange,
     handleCategoryChange,
@@ -31,6 +33,7 @@ export default function TransactionHistory() {
     fromDate: dateRange.fromDate,
     toDate: dateRange.toDate,
     page: currentPage,
+    size: pageSize,
     status: selectedStatus,
     category: selectedCategory,
   });
@@ -116,6 +119,7 @@ export default function TransactionHistory() {
         pagination={pagination}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
       />
     </main>
   );
