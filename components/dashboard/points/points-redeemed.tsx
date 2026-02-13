@@ -12,6 +12,7 @@ import TransactionsTable, { PaginationInfo } from "../transactions-table";
 export default function PointsRedeemed() {
   const {
     currentPage,
+    pageSize,
     searchValue,
     searchType,
     debouncedSearch,
@@ -22,13 +23,14 @@ export default function PointsRedeemed() {
     setSearchType,
     setSelectedTimeline,
     handlePageChange,
+    handlePageSizeChange,
     handleSearchChange,
     handleCustomDatesChange,
   } = useDateRangeFilter();
 
   const { data, isPending, isError, error } = useGetPointsRedeemed({
     page: currentPage,
-    size: 10,
+    size: pageSize,
     search: debouncedSearch || undefined,
     searchType,
     fromDate,
@@ -66,6 +68,7 @@ export default function PointsRedeemed() {
       pagination={paginationInfo}
       currentPage={currentPage}
       onPageChange={handlePageChange}
+      onPageSizeChange={handlePageSizeChange}
       searchValue={searchValue}
       onSearchChange={handleSearchChange}
       searchPlaceholder={getSearchPlaceholder(searchType)}
