@@ -174,16 +174,26 @@ type Customer = {
 
 type CustomerAnalyticsData = {
   totalTransactions: number;
+  averageOrderAmount: number;
   totalSpent: number;
+  totalPointSpent: number;
   mostShoppedBranch: string;
+  totalPointReceived: number;
   customerId: string;
-  rank?: number;
+  customerUserId: string;
+  branchesUsed: string[];
   customerName: string;
+  averageReviewScore: number;
+  rank?: number;
 };
 
 type CustomerAnalyticsResponse = {
   topLoyalCustomers: CustomerAnalyticsData[];
   totalCustomers: number;
+  size: number;
+  totalPages: number;
+  page: number;
+  totalElements: number;
 };
 
 type BranchAnalyticsData = {
@@ -543,7 +553,7 @@ type TransactionData = {
   numoniPoints: number | null;
   brandPoints: number | null;
   amountPaid: number;
-  settledAmount: number | null;
+  settled: number | null;
   issuedPoints: number | null;
   beneficiaryAccountNumber: string | null;
   beneficiaryAccountName: string | null;
@@ -564,6 +574,11 @@ type TransactionData = {
   posAccountHolderName: string;
   posAccountNumber: string;
   posId: string;
+  timestamp: string;
+  totalAmountPaid: number | null;
+  paidInNumoniPoints: number | null;
+  paidInBrandPoints: number | null;
+  settledAmount: number | null;
 };
 
 type PointOfSaleData = {

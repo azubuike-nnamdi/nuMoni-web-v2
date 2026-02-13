@@ -107,9 +107,9 @@ export default function RewardDashboard() {
 
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3 "
         >
-          <div className="min-w-[280px] shrink-0 flex">
+          <div className="min-w-[280px]  flex">
             <div className="w-full h-full">
               <BudgetCapCard
                 rewardCap={rewardTableData?.rewardCap}
@@ -117,57 +117,7 @@ export default function RewardDashboard() {
               />
             </div>
           </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalPointsRewardedCard
-                totalRewardCap={analyticsData?.totalIssued}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalPointsBalanceCard
-                availablePoints={analyticsData?.availablePoints}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <CustomerPoolCard
-                totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalRewardIssued
-                totalIssued={analyticsData?.totalRedeemed}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-                title="Total Points Redeemed"
-                iconImage={peopleIcon}
-              />
-            </div>
-          </div>
-          <div className="min-w-[280px] shrink-0 flex">
+          <div className="min-w-[280px]  flex">
             <div className="w-full h-full">
               <TotalRewardIssued
                 totalIssued={formatCurrency(analyticsData?.budgetBalance)}
@@ -180,7 +130,20 @@ export default function RewardDashboard() {
               />
             </div>
           </div>
-          <div className="min-w-[280px] shrink-0 flex">
+
+          <div className="min-w-[280px]  flex">
+            <div className="w-full h-full">
+              <TotalOutstandingAllocation
+                outStandingAllocation={analyticsData?.outStandingAllocation}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-[280px]  flex">
             <div className="w-full h-full">
               <TotalRewardIssued
                 totalIssued={analyticsData?.totalIssueCount}
@@ -194,10 +157,62 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] shrink-0 flex">
+          <div className="min-w-[280px]  flex">
             <div className="w-full h-full">
-              <TotalOutstandingAllocation
-                outStandingAllocation={analyticsData?.outStandingAllocation}
+              <CustomerPoolCard
+                totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-[280px]  flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalRedeemed}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Points Redeemed"
+                iconImage={peopleIcon}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-[280px]  flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalRedeemCount}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Redeemed Count"
+                iconImage={peopleIcon}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-[280px]  flex">
+            <div className="w-full h-full">
+              <TotalPointsRewardedCard
+                totalRewardCap={analyticsData?.totalIssued}
+                isLoading={isPendingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-[280px]  flex">
+            <div className="w-full h-full">
+              <TotalPointsBalanceCard
+                availablePoints={analyticsData?.availablePoints}
                 isLoading={isPendingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
@@ -228,3 +243,6 @@ export default function RewardDashboard() {
     </main>
   )
 }
+
+
+// className = "flex gap-4 overflow-x-auto items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"

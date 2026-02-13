@@ -5,6 +5,7 @@ import { DateRangeOption, getDateRange } from "../utils/date-range-utils";
 
 export function useTransactionFilters() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [selectedRange, setSelectedRange] = useState<DateRangeOption>('Today');
   const [selectedStatus, setSelectedStatus] = useState<StatusOption>('All');
   const [selectedCategory, setSelectedCategory] = useState<CategoryOption>('direct transfer');
@@ -15,6 +16,11 @@ export function useTransactionFilters() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(0);
   };
 
   const handleDateRangeChange = (option: DateRangeOption) => {
@@ -52,10 +58,11 @@ export function useTransactionFilters() {
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [selectedRange, selectedStatus, selectedCategory, customStartDate, customEndDate]);
+  }, [selectedRange, selectedStatus, selectedCategory, customStartDate, customEndDate, pageSize]);
 
   return {
     currentPage,
+    pageSize,
     selectedRange,
     selectedStatus,
     selectedCategory,
@@ -63,6 +70,7 @@ export function useTransactionFilters() {
     customEndDate,
     dateRange,
     handlePageChange,
+    handlePageSizeChange,
     handleDateRangeChange,
     handleStatusChange,
     handleCategoryChange,
