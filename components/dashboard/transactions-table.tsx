@@ -166,30 +166,30 @@ const columns: ColumnDef<TransactionData>[] = [
       return <div>{branchName || "—"}</div>;
     },
   },
-  {
-    accessorKey: "numoniPoints",
-    header: "Numoni Points",
-    cell: ({ row }) => {
-      const points = row.original.numoniPoints;
-      return (
-        <div className="font-semibold">
-          {points?.toLocaleString() || "—"}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "brandPoints",
-    header: "Brand Points",
-    cell: ({ row }) => {
-      const points = row.original.brandPoints;
-      return (
-        <div className="font-semibold">
-          {points?.toLocaleString() || "—"}
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "numoniPoints",
+  //   header: "Numoni Points",
+  //   cell: ({ row }) => {
+  //     const points = row.original.numoniPoints;
+  //     return (
+  //       <div className="font-semibold">
+  //         {points?.toLocaleString() || "—"}
+  //       </div>
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "brandPoints",
+  //   header: "Brand Points",
+  //   cell: ({ row }) => {
+  //     const points = row.original.brandPoints;
+  //     return (
+  //       <div className="font-semibold">
+  //         {points?.toLocaleString() || "—"}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "issuedPoints",
     header: "Issued Points",
@@ -224,78 +224,75 @@ const columns: ColumnDef<TransactionData>[] = [
     },
   },
   {
-    accessorKey: "transactionType",
+    accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
-      const type = row.original.transactionType;
+      const type = row.original.type;
       return (
         <div
-          className={`px-2 py-1 rounded-full text-xs font-medium inline-block ${type === "DEBIT"
-            ? "bg-red-100 text-red-700"
-            : "bg-green-100 text-green-700"
-            }`}
+          className={`px-2 py-1 rounded-full text-xs font-medium inline-block `}
         >
           {type ?? "-"}
         </div>
       );
     },
   },
-  {
-    accessorKey: "invoiceNo",
-    header: "Invoice No",
-    cell: ({ row }) => {
-      const invoiceNo = row.original.invoiceNo;
-      const truncatedRef = invoiceNo ? `${invoiceNo.substring(0, 8)}...` : "";
-      const handleCopyInvoiceNo = async () => {
-        await navigator.clipboard.writeText(invoiceNo);
-        toast.success("Invoice No copied to clipboard");
-      };
-      return (
-        <div className="flex items-center gap-2">
-          <div className="font-mono text-sm" title={invoiceNo}>{truncatedRef || "—"}</div>
-          {invoiceNo && (
-            <Button
-              type="button"
-              size="sm"
-              className="h-8 w-8 p-0 bg-theme-dark-green"
-              onClick={handleCopyInvoiceNo}
-              title="Copy Invoice No"
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "transactionNo",
-    header: "Transaction No",
-    cell: ({ row }) => {
-      const transactionNo = row.original.transactionNo;
-      const truncatedRef = transactionNo ? `${transactionNo.substring(0, 8)}...` : "";
-      const handleCopyTransactionNo = async () => {
-        await navigator.clipboard.writeText(transactionNo);
-        toast.success("Transaction No copied to clipboard");
-      };
-      return (
-        <div className="flex items-center gap-2">
-          <div className="font-mono text-sm" title={transactionNo}>{truncatedRef || "—"}</div>
-          {transactionNo && (
-            <Button
-              type="button"
-              size="sm"
-              className="h-8 w-8 p-0 bg-theme-dark-green"
-              onClick={handleCopyTransactionNo}
-              title="Copy Transaction No"
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "invoiceNo",
+  //   header: "Invoice No",
+  //   cell: ({ row }) => {
+  //     const invoiceNo = row.original.invoiceNo;
+  //     const truncatedRef = invoiceNo ? `${invoiceNo.substring(0, 8)}...` : "";
+  //     const handleCopyInvoiceNo = async () => {
+  //       await navigator.clipboard.writeText(invoiceNo);
+  //       toast.success("Invoice No copied to clipboard");
+  //     };
+  //     return (
+  //       <div className="flex items-center gap-2">
+  //         <div className="font-mono text-sm" title={invoiceNo}>{truncatedRef || "—"}</div>
+  //         {invoiceNo && (
+  //           <Button
+  //             type="button"
+  //             size="sm"
+  //             className="h-8 w-8 p-0 bg-theme-dark-green"
+  //             onClick={handleCopyInvoiceNo}
+  //             title="Copy Invoice No"
+  //           >
+  //             <Copy className="h-4 w-4" />
+  //           </Button>
+  //         )}
+  //       </div>
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "transactionNo",
+  //   header: "Transaction No",
+  //   cell: ({ row }) => {
+  //     const transactionNo = row.original.transactionNo;
+  //     const truncatedRef = transactionNo ? `${transactionNo.substring(0, 8)}...` : "";
+  //     const handleCopyTransactionNo = async () => {
+  //       await navigator.clipboard.writeText(transactionNo);
+  //       toast.success("Transaction No copied to clipboard");
+  //     };
+  //     return (
+  //       <div className="flex items-center gap-2">
+  //         <div className="font-mono text-sm" title={transactionNo}>{truncatedRef || "—"}</div>
+  //         {transactionNo && (
+  //           <Button
+  //             type="button"
+  //             size="sm"
+  //             className="h-8 w-8 p-0 bg-theme-dark-green"
+  //             onClick={handleCopyTransactionNo}
+  //             title="Copy Transaction No"
+  //           >
+  //             <Copy className="h-4 w-4" />
+  //           </Button>
+  //         )}
+  //       </div>
+  //     );
+  //   },
+  // },
   // {
   //   accessorKey: "sourceTable",
   //   header: "Source Table",
