@@ -1,3 +1,4 @@
+import { formatNumber } from "@/lib/helper";
 import { ChevronLeft, ChevronRight, Download, Info, Trash2 } from "lucide-react";
 
 interface TransactionPaginationProps {
@@ -22,10 +23,10 @@ export default function TransactionPagination({
   onDownload,
   onInfo,
   onDelete
-}: TransactionPaginationProps) {
+}: Readonly<TransactionPaginationProps>) {
   // Calculate start and end indices (0-based to 1-based for display)
-  const startIndex = currentPage * pageSize;
-  const endIndex = Math.min(startIndex + currentPageDataLength, totalRows);
+  const startIndex = (currentPage || 0) * (pageSize || 0);
+  const endIndex = Math.min(startIndex + (currentPageDataLength || 0), totalRows || 0);
 
   const handlePreviousPage = () => {
     if (currentPage > 0) {
@@ -39,15 +40,13 @@ export default function TransactionPagination({
     }
   };
 
-  const formatNumber = (num: number) => {
-    return num.toLocaleString('en-US');
-  };
+
 
   return (
     <div className="p-4 border-t border-gray-200 bg-gray-50">
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-600">
-          Showing {startIndex + 1}-{endIndex} of {formatNumber(totalRows)}
+          Showing {totalRows > 0 ? startIndex + 1 : 0}-{endIndex} of {formatNumber(totalRows || 0)}
         </div>
 
         <div className="flex items-center gap-4">
@@ -61,7 +60,7 @@ export default function TransactionPagination({
               <Download className="h-4 w-4" />
             </button>
           )}
-          
+
           {onInfo && (
             <button
               onClick={onInfo}
@@ -71,7 +70,7 @@ export default function TransactionPagination({
               <Info className="h-4 w-4" />
             </button>
           )}
-          
+
           {onDelete && (
             <button
               onClick={onDelete}
