@@ -34,23 +34,28 @@ export function DataTablePagination({
   onPageChange,
   onPageSizeChange,
 }: Readonly<DataTablePaginationProps>) {
-  const startIndex = currentPage * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, totalRows);
+  const safeCurrentPage = currentPage || 0;
+  const safeTotalPages = totalPages || 0;
+  const safeTotalRows = totalRows || 0;
+  const safePageSize = pageSize || 10;
+
+  const startIndex = safeCurrentPage * safePageSize;
+  const endIndex = Math.min(startIndex + safePageSize, safeTotalRows);
 
   const getPageNumbers = () => {
     const pages = [];
     const showMax = 5;
 
-    if (totalPages <= showMax) {
-      for (let i = 0; i < totalPages; i++) {
+    if (safeTotalPages <= showMax) {
+      for (let i = 0; i < safeTotalPages; i++) {
         pages.push(i);
       }
     } else {
       // Always show first page
       pages.push(0);
 
-      const start = Math.max(1, currentPage - 1);
-      const end = Math.min(totalPages - 2, currentPage + 1);
+      const start = Math.max(1, safeCurrentPage - 1);
+      const end = Math.min(safeTotalPages - 2, safeCurrentPage + 1);
 
       if (start > 1) {
         pages.push("ellipsis-start");
@@ -60,12 +65,12 @@ export function DataTablePagination({
         pages.push(i);
       }
 
-      if (end < totalPages - 2) {
+      if (end < safeTotalPages - 2) {
         pages.push("ellipsis-end");
       }
 
       // Always show last page
-      pages.push(totalPages - 1);
+      pages.push(safeTotalPages - 1);
     }
     return pages;
   };
@@ -76,7 +81,7 @@ export function DataTablePagination({
         {/* Row Count and Page Size Selector */}
         <div className="flex items-center gap-6">
           <div className="text-sm text-gray-600 font-medium whitespace-nowrap">
-            Showing <span className="text-gray-900">{totalRows > 0 ? startIndex + 1 : 0}-{endIndex}</span> of <span className="text-gray-900">{totalRows}</span>
+            Showing <span className="text-gray-900">{safeTotalRows > 0 ? startIndex + 1 : 0}-{endIndex}</span> of <span className="text-gray-900">{safeTotalRows}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -102,14 +107,14 @@ export function DataTablePagination({
         {/* Shadcn Pagination Controls */}
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-600 font-medium whitespace-nowrap">
-            Page <span className="text-gray-900">{currentPage + 1}</span> of <span className="text-gray-900">{totalPages || 1}</span>
+            Page <span className="text-gray-900">{safeCurrentPage + 1}</span> of <span className="text-gray-900">{safeTotalPages || 1}</span>
           </span>
           <Pagination className="mx-0 w-auto">
             <PaginationContent className="gap-1">
               <PaginationItem>
                 <PaginationPrevious
-                  className={`cursor-pointer ${currentPage === 0 ? "pointer-events-none opacity-50" : ""}`}
-                  onClick={() => currentPage > 0 && onPageChange(currentPage - 1)}
+                  className={`cursor-pointer ${safeCurrentPage === 0 ? "pointer-events-none opacity-50" : ""}`}
+                  onClick={() => safeCurrentPage > 0 && onPageChange(safeCurrentPage - 1)}
                 />
               </PaginationItem>
 
@@ -126,7 +131,7 @@ export function DataTablePagination({
                   <PaginationItem key={page}>
                     <PaginationLink
                       className="cursor-pointer"
-                      isActive={currentPage === page}
+                      isActive={safeCurrentPage === page}
                       onClick={() => onPageChange(page)}
                     >
                       {page + 1}
@@ -137,8 +142,8 @@ export function DataTablePagination({
 
               <PaginationItem>
                 <PaginationNext
-                  className={`cursor-pointer ${currentPage >= totalPages - 1 || totalPages === 0 ? "pointer-events-none opacity-50" : ""}`}
-                  onClick={() => currentPage < totalPages - 1 && onPageChange(currentPage + 1)}
+                  className={`cursor-pointer ${safeCurrentPage >= safeTotalPages - 1 || safeTotalPages === 0 ? "pointer-events-none opacity-50" : ""}`}
+                  onClick={() => safeCurrentPage < safeTotalPages - 1 && onPageChange(safeCurrentPage + 1)}
                 />
               </PaginationItem>
             </PaginationContent>
