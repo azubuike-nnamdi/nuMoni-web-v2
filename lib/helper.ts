@@ -232,6 +232,7 @@ export const getStatusColor = (status: string) => {
     case 'closed':
     case 'expired':
     case 'paused':
+    case 'pause':
       return 'bg-red-100 text-red-800 border-red-200';
     case 'pending':
       return 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -248,6 +249,7 @@ export const getStatusText = (status: string) => {
     case 'closed':
       return 'Inactive';
     case 'paused':
+    case 'pause':
       return 'Paused'
     case 'expired':
       return 'Expired'
