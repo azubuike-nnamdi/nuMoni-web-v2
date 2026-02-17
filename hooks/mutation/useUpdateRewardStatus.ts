@@ -11,7 +11,7 @@ interface UpdateRewardStatusProps {
 export const useUpdateRewardStatus = () => {
   const queryClient = useQueryClient();
   const { mutate, isPending, isSuccess } = useMutation({
-    mutationFn: (payload: UpdateRewardStatusProps) => api.put(`/merchant/updateMarchantRewardStatus
+    mutationFn: (payload: UpdateRewardStatusProps) => api.put(`/merchant/updateMerchantRewardStatus
 `, payload),
     onSuccess: (data) => {
       if (data) {
