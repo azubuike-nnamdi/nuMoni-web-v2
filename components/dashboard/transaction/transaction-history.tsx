@@ -1,14 +1,15 @@
 'use client';
 
-import TransactionsTable, { PaginationInfo } from "@/components/dashboard/transactions-table";
+import { PaginationInfo } from "@/components/dashboard/transactions-table";
 import useGetTransaction from "@/hooks/query/useGetTransaction";
-import { TransactionData } from "@/lib/types";
+import { TransactionHistoryData } from "@/lib/types";
 import CustomDurationPicker from "./components/custom-duration-picker";
 import TransactionEmptyState from "./components/transaction-empty-state";
 import TransactionErrorState from "./components/transaction-error-state";
 import TransactionFiltersHeader from "./components/transaction-filters-header";
 import TransactionLoadingState from "./components/transaction-loading-state";
 import { useTransactionFilters } from "./hooks/use-transaction-filters";
+import TransactionHistoryTable from "./transaction-history-table";
 
 export default function TransactionHistory() {
   const {
@@ -38,7 +39,7 @@ export default function TransactionHistory() {
     category: selectedCategory,
   });
 
-  const transactionData: TransactionData[] = data?.data ?? [];
+  const transactionData: TransactionHistoryData[] = data?.data ?? [];
   const pagination: PaginationInfo | undefined = data?.pagination;
 
   // Loading state
@@ -113,9 +114,8 @@ export default function TransactionHistory() {
         />
       )}
 
-      <TransactionsTable
+      <TransactionHistoryTable
         data={transactionData}
-        title=""
         pagination={pagination}
         currentPage={currentPage}
         onPageChange={handlePageChange}

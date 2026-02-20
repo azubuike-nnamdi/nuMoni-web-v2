@@ -227,18 +227,43 @@ export const formatCurrency = (amount: number) => {
 export const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
     case 'active':
+    case 'successful':
       return 'bg-green-100 text-green-800 border-green-200';
     case 'inactive':
     case 'closed':
     case 'expired':
     case 'paused':
     case 'pause':
+    case 'failed':
       return 'bg-red-100 text-red-800 border-red-200';
     case 'pending':
       return 'bg-yellow-100 text-yellow-800 border-yellow-200';
     default:
       return 'bg-gray-100 text-gray-800 border-gray-200';
   }
+};
+
+/**
+ * Converts a SCREAMING_SNAKE_CASE or snake_case string into Title Case words.
+ * Handles null/undefined values gracefully with an optional fallback.
+ *
+ * @param value   - The string to format (e.g. "DIRECT_TRANSFER", "NUMONI_WALLET")
+ * @param fallback - Value to return when input is falsy (default: "—")
+ * @returns Formatted string (e.g. "Direct Transfer", "Numoni Wallet")
+ *
+ * @example
+ * formatSnakeCase("DIRECT_TRANSFER")   // → "Direct Transfer"
+ * formatSnakeCase("NUMONI_WALLET")     // → "Numoni Wallet"
+ * formatSnakeCase("pause")             // → "Pause"
+ * formatSnakeCase(null)                // → "—"
+ * formatSnakeCase(undefined, "N/A")    // → "N/A"
+ */
+export const formatSnakeCase = (value: string | null | undefined, fallback = "—"): string => {
+  if (!value) return fallback;
+  return value
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 };
 
 export const getStatusText = (status: string) => {

@@ -7,7 +7,8 @@ import useGetPointsRedeemed from "@/hooks/query/useGetPointsRedeemed";
 import { useDateRangeFilter } from "@/hooks/useDateRangeFilter";
 import { getSearchPlaceholder } from "@/lib/helper";
 import { TransactionData } from "@/lib/types";
-import TransactionsTable, { PaginationInfo } from "../transactions-table";
+import { PaginationInfo } from "../transactions-table";
+import PointsRedeemedTable from "./points-redeemed-table";
 
 export default function PointsRedeemed() {
   const {
@@ -41,14 +42,17 @@ export default function PointsRedeemed() {
   const pointsRedeemedData = data?.data?.data as TransactionData[] | undefined;
   const paginationInfo = data?.data?.pagination as PaginationInfo | undefined;
 
-  // console.log('points redeemed', pointsRedeemedData);
-
   if (isPending && !data) {
     return <LoadingSpinner size="lg" message="Loading points redeemed..." />;
   }
 
   if (isError) {
-    return <ErrorState title="Error loading data" message={error?.message || "An error occurred while loading points redeemed."} />;
+    return (
+      <ErrorState
+        title="Error loading data"
+        message={error?.message || "An error occurred while loading points redeemed."}
+      />
+    );
   }
 
   const dateSelector = (
@@ -62,7 +66,7 @@ export default function PointsRedeemed() {
   );
 
   return (
-    <TransactionsTable
+    <PointsRedeemedTable
       data={pointsRedeemedData || []}
       title="Points Redeemed"
       pagination={paginationInfo}
