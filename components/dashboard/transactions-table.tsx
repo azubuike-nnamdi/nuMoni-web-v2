@@ -3,7 +3,7 @@
 import SearchInput from "@/components/common/search-input";
 import { DataTable } from "@/components/ui/data-table";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
-import { formatCurrency, formatDate } from "@/lib/helper";
+import { formatCurrency, formatDateTime } from "@/lib/helper";
 import { TransactionData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
@@ -316,11 +316,11 @@ const columns: ColumnDef<TransactionData>[] = [
   //   },
   // },
   {
-    accessorKey: "createdDt",
+    accessorKey: "timestamp",
     header: "Date",
     cell: ({ row }) => {
-      const date = row.original.createdDt;
-      return <div className="text-sm">{formatDate(date, "dd-MM-yyyy")}</div>;
+      const date = row.original.timestamp || row.original.createdDt;
+      return <div className="text-sm">{date ? formatDateTime(date) : "—"}</div>;
     },
   },
 ];
