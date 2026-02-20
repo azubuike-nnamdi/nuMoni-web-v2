@@ -513,6 +513,66 @@ type MetricCardProps = {
   iconBgColor: string;
 };
 
+type TransactionHistoryData = {
+  id: string;
+  transactionId: string | null;
+  transactionType: string;
+  operationType: string;
+  amount: number;
+  description: string;
+  status: string;
+  date: string;
+  type: string;
+  customerId: string;
+  customerName: string | null;
+  customerImageUrl: string | null;
+  customerEmail: string | null;
+  customerPhoneNo: string | null;
+  merchantId: string;
+  merchantName: string | null;
+  businessImagePath: string | null;
+  walletType: string | null;
+  sourceTable: string;
+  balanceBeforeTransaction: number | null;
+  balanceAfterTransaction: number | null;
+  referenceTransactionId: string | null;
+  fee: number | null;
+  trnType: string | null;
+  dealId: string | null;
+  dealName: string | null;
+  dealType: string | null;
+  unitsPurchased: number | null;
+  branchId: string | null;
+  branchName: string;
+  invoiceRefId: string | null;
+  invoiceNo: string;
+  transactionReferenceId: string;
+  numoniTransactionRefId: string | null;
+  transactionNo: string;
+  amountByWallet: number | null;
+  amountBrandWallet: number | null;
+  numoniPoints: number | null;
+  brandPoints: number | null;
+  amountPaid: number;
+  settledAmount: number | null;
+  issuedPoints: number | null;
+  beneficiaryAccountNumber: string | null;
+  beneficiaryAccountName: string | null;
+  bankCode: string | null;
+  bankName: string | null;
+  paymentGateway: string | null;
+  transferResponseCode: string | null;
+  transactionCategory: string;
+  title: string;
+  posLocation: string;
+  createdDt: string;
+  posId: string | null;
+  posBankName: string | null;
+  posBankCode: string | null;
+  posAccountNumber: string | null;
+  posName: string | null;
+};
+
 type TransactionData = {
   id: string;
   transactionId: string | null;
@@ -819,7 +879,7 @@ export type {
   SocialMediaData,
   TanstackProviderProps,
   Transaction,
-  TransactionData, TransactionMetric, UpdateBranchManagerPayload,
+  TransactionData, TransactionHistoryData, TransactionMetric, UpdateBranchManagerPayload,
   UpdateRewardRuleModalProps,
   ValidateOtpPayload,
   VerifyBankNamePayload,
