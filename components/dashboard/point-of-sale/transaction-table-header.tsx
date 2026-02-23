@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DateRangeOption, DateRangeSelector } from "@/components/ui/date-range-selector";
 import { FileDown } from "lucide-react";
 import { useState } from "react";
-import ExportPOS from "./export-pos";
+import UnauthExportPOS from "./unauth-export-pos";
 
 interface TransactionTableHeaderProps {
   title: string;
@@ -59,7 +59,7 @@ export default function TransactionTableHeader({
           />
         </div>
       </div>
-      <ExportPOS
+      <UnauthExportPOS
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
         posId={posId}
