@@ -230,6 +230,7 @@ interface PointsRedeemedTableProps {
   searchType?: string;
   onSearchTypeChange?: (value: string) => void;
   dateSelector?: React.ReactNode;
+  exportButton?: React.ReactNode;
 }
 
 export default function PointsRedeemedTable({
@@ -245,6 +246,7 @@ export default function PointsRedeemedTable({
   searchType,
   onSearchTypeChange,
   dateSelector,
+  exportButton,
 }: Readonly<PointsRedeemedTableProps>) {
   return (
     <div className="bg-white rounded-2xl p-4 my-4">
@@ -252,6 +254,7 @@ export default function PointsRedeemedTable({
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
           {dateSelector}
+          {exportButton}
           {onSearchTypeChange && (
             <Select value={searchType} onValueChange={onSearchTypeChange}>
               <SelectTrigger className="w-[180px]">
