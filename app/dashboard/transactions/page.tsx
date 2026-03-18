@@ -3,8 +3,8 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Transactions | Dashboard",
-  description: "Transactions | Dashboard",
+  title: "Transactions ",
+  description: "Transactions",
 };
 
 export default function Page() {
