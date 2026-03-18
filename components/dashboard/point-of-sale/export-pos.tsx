@@ -108,7 +108,7 @@ export default function ExportPOS({ isOpen, onClose, posId, merchantId }: Readon
     setDateRangeOption('Today');
     reset(); // Reset the mutation state to clear isSuccess
     onClose();
-  }, [form, onClose, reset]);
+  }, [form, onClose, reset, todayDates?.end, todayDates?.start]);
 
   const handleSubmit = async (formData: ExportPosTransactionFormData) => {
 
