@@ -152,7 +152,7 @@ export function DataTablePagination({
                   />
                 </PaginationItem>
 
-                {getPageNumbers().map((page, index) => {
+                {getPageNumbers().map((page) => {
                   if (typeof page === "string") {
                     return (
                       <PaginationItem key={page}>

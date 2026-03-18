@@ -106,7 +106,7 @@ export default function UnauthExportPOS({ isOpen, onClose, posId, merchantId }: 
     setDateRangeOption('Today');
     reset(); // Reset the mutation state to clear isSuccess
     onClose();
-  }, [form, onClose, reset]);
+  }, [form, onClose, reset, todayDates?.end, todayDates?.start]);
 
   const handleSubmit = async (formData: ExportPosTransactionFormData) => {
 
