@@ -894,10 +894,10 @@ export const getYesterdayDate = (format: 'iso' | 'formatted' | 'timestamp' | 'dd
  * @returns Object with startDate and endDate in YYYY-MM-DD format
  * 
  * @example
- * getTimelineDates('Today') // Returns: { startDate: '2024-01-15', endDate: '2024-01-15' }
- * getTimelineDates('Yesterday') // Returns: { startDate: '2024-01-14', endDate: '2024-01-14' }
- * getTimelineDates('This Week') // Returns: { startDate: '2024-01-15', endDate: '2024-01-21' }
- * getTimelineDates('Custom Range', '2024-01-01', '2024-01-31') // Returns: { startDate: '2024-01-01', endDate: '2024-01-31' }
+ * getTimelineDates('Today') // Returns: { startDate: '15-01-2024', endDate: '15-01-2024' }
+ * getTimelineDates('Yesterday') // Returns: { startDate: '14-01-2024', endDate: '14-01-2024' }
+ * getTimelineDates('This Week') // Returns: { startDate: '15-01-2024', endDate: '21-01-2024' }
+ * getTimelineDates('Custom Range', '01-01-2024', '31-01-2024') // Returns: { startDate: '01-01-2024', endDate: '31-01-2024' }
  */
 export const getTimelineDates = (
   timeline: string,
@@ -907,12 +907,12 @@ export const getTimelineDates = (
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Helper function to format date as YYYY-MM-DD (local timezone)
+  // Helper function to format date as DD-MM-YYYY (local timezone)
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${day}-${month}-${year}`;
   };
 
   // Helper function to get start of week (Monday)
@@ -1681,7 +1681,7 @@ export const downloadQRCodeImageWithLogo = async (
  * parseDateString('2024-01-15') // Returns Date object for January 15, 2024
  */
 export const parseDateString = (dateString: string): Date => {
-  const [year, month, day] = dateString.split('-').map(Number);
+  const [day, month, year] = dateString.split('-').map(Number);
   return new Date(year, month - 1, day);
 };
 

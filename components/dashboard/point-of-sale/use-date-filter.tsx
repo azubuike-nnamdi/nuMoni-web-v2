@@ -1,6 +1,6 @@
 'use client';
 
-import { convertYYYYMMDDtoDDMMYYYY, getTimelineDates } from "@/lib/helper";
+import { getTimelineDates } from "@/lib/helper";
 import { format } from "date-fns";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DateRangeOption } from "./transaction-table-header";
@@ -43,15 +43,12 @@ export function useDateFilter(): UseDateFilterReturn {
       };
     }
 
-    // Handle predefined date ranges - convert from YYYY-MM-DD to DD-MM-YYYY format
+    // Handle predefined date ranges — getTimelineDates already returns DD-MM-YYYY
     if (dateRange !== 'Custom Range' && dateRange !== null) {
       const { startDate, endDate } = getTimelineDates(dateRange);
-      // Convert YYYY-MM-DD to DD-MM-YYYY directly (e.g., "2026-01-05" -> "05-01-2026")
-      const startDateFormatted = convertYYYYMMDDtoDDMMYYYY(startDate);
-      const endDateFormatted = convertYYYYMMDDtoDDMMYYYY(endDate);
       return {
-        startDate: startDateFormatted,
-        endDate: endDateFormatted
+        startDate,
+        endDate
       };
     }
 
