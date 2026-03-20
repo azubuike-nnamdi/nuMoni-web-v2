@@ -49,8 +49,8 @@ export function useDateRangeFilter() {
       return { fromDate: "", toDate: "" };
     }
 
-    const customStartStr = customStartDate ? format(customStartDate, "yyyy-MM-dd") : undefined;
-    const customEndStr = customEndDate ? format(customEndDate, "yyyy-MM-dd") : undefined;
+    const customStartStr = customStartDate ? format(customStartDate, "dd-MM-yyyy") : undefined;
+    const customEndStr = customEndDate ? format(customEndDate, "dd-MM-yyyy") : undefined;
 
     const { startDate, endDate } = getTimelineDates(
       selectedTimeline || "Today",
@@ -58,16 +58,9 @@ export function useDateRangeFilter() {
       customEndStr
     );
 
-    // Convert YYYY-MM-DD to DD-MM-YYYY for API
-    const formatToApiDate = (dateStr: string) => {
-      if (!dateStr) return "";
-      const [y, m, d] = dateStr.split("-");
-      return `${d}-${m}-${y}`;
-    };
-
     return {
-      fromDate: formatToApiDate(startDate),
-      toDate: formatToApiDate(endDate)
+      fromDate: startDate,
+      toDate: endDate
     };
   }, [selectedTimeline, customStartDate, customEndDate, isCustomRange, areCustomDatesValid]);
 

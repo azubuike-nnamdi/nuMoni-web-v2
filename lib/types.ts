@@ -823,6 +823,45 @@ type TransactionMetric = {
   bgColor: string;
   iconBgColor: string;
 }
+
+
+type UseGetMerchantTransactionProps = {
+  merchantId: string;
+  startDate?: string;
+  endDate?: string;
+  customerEmail?: string;
+  customerPhoneNo?: string;
+  customerId?: string;
+  page?: number;
+  size?: number;
+}
+
+type Sales = {
+  periodAmount: number;
+  totalAmount: number;
+  periodCount: number;
+  totalCount: number;
+}
+
+type Payouts = {
+  periodAmount: number;
+  totalAmount: number;
+  periodCount: number;
+  totalCount: number;
+}
+
+type ServiceFees = {
+  periodAmount: number,
+  totalAmount: number,
+  periodCount: number,
+  totalCount: number
+}
+
+type StatsProps = {
+  sales: Sales;
+  payouts: Payouts;
+  serviceFees: ServiceFees;
+}
 export type {
   AccountInformationProps,
   ActiveBranchModalProps,
@@ -830,8 +869,7 @@ export type {
   AuthUser,
   AuthUserStore,
   AxiosError,
-  Bank,
-  BankInformation,
+  Bank, BankInformation,
   BankPayload,
   BankToken,
   Branch,
@@ -840,8 +878,7 @@ export type {
   BranchSummaryData,
   BrandProfileProps,
   BrandSummaryProps,
-  BusinessImage,
-  ChangeBranchStatusPayload,
+  BusinessImage, ChangeBranchStatusPayload,
   CreateRewardsPayload,
   Customer,
   CustomerAnalyticsData,
@@ -876,12 +913,10 @@ export type {
   SidebarProps,
   signInPayload,
   singleBranchDetails,
-  SocialMediaData,
-  TanstackProviderProps,
+  SocialMediaData, StatsProps, TanstackProviderProps,
   Transaction,
   TransactionData, TransactionHistoryData, TransactionMetric, UpdateBranchManagerPayload,
-  UpdateRewardRuleModalProps,
-  ValidateOtpPayload,
+  UpdateRewardRuleModalProps, UseGetMerchantTransactionProps, ValidateOtpPayload,
   VerifyBankNamePayload,
   VerifyBankPayload,
   VerifyPayOnUsBankPayload,
