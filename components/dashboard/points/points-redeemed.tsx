@@ -76,21 +76,14 @@ export default function PointsRedeemed() {
     setExportEndDate(end);
   };
 
-  /** Convert YYYY-MM-DD → DD-MM-YYYY (API format) */
-  const toApiDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const [y, m, d] = dateStr.split("-");
-    return `${d}-${m}-${y}`;
-  };
-
   const handleConfirmExport = () => {
     if (!exportTimeline) return;
 
     const customStartStr = exportStartDate
-      ? format(exportStartDate, "yyyy-MM-dd")
+      ? format(exportStartDate, "dd-MM-yyyy")
       : undefined;
     const customEndStr = exportEndDate
-      ? format(exportEndDate, "yyyy-MM-dd")
+      ? format(exportEndDate, "dd-MM-yyyy")
       : undefined;
 
     const { startDate, endDate } = getTimelineDates(
@@ -100,8 +93,8 @@ export default function PointsRedeemed() {
     );
 
     handleExportPointsRedeemed({
-      fromDate: toApiDate(startDate),
-      toDate: toApiDate(endDate),
+      fromDate: startDate,
+      toDate: endDate,
     });
 
     setExportDialogOpen(false);

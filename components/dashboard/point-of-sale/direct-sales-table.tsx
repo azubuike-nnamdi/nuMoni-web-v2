@@ -236,7 +236,7 @@ export default function DirectSalesTable({ posId, merchantId }: Readonly<DirectS
 
   if (!filteredTransactionData || filteredTransactionData.length === 0) {
     return (
-      <div className="bg-gray-50 rounded-2xl p-4 m-8">
+      <div className="bg-gray-50 rounded-2xl">
         <TransactionTableHeader
           title="Direct Sales Transactions"
           dateRange={dateRange}

@@ -1,6 +1,5 @@
 "use client";
 
-import OpenNavbar from "@/components/common/open-navbar";
 import DirectSalesLanding from "@/components/dashboard/point-of-sale/direct-sales-landing";
 import PosTransactionStatisticsCard from "@/components/dashboard/point-of-sale/pos-transaction-statistics-card";
 import PosTransactionTable from "@/components/dashboard/point-of-sale/pos-transaction-table";
@@ -33,8 +32,7 @@ export default function Page() {
     setActiveTab(activeTab === "direct-sales-report" ? "view-full-report" : "direct-sales-report");
   };
 
-  return <main>
-    <OpenNavbar />
+  return <>
     <section className="p-8 md:flex justify-between items-center">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold">Welcome to {merchantName}&apos;s POS Transaction History</h1>
@@ -77,5 +75,5 @@ export default function Page() {
         </motion.div>
       )}
     </AnimatePresence>
-  </main>;
+  </>;
 }

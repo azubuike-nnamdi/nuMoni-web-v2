@@ -59,13 +59,8 @@ export default function RewardDashboard() {
     }
 
     const { startDate: start, endDate: end } = getTimelineDates(option);
-    // getTimelineDates returns yyyy-MM-dd; reformat to dd-MM-yyyy
-    const reformat = (s: string) => {
-      const [y, mo, d] = s.split('-');
-      return `${d}-${mo}-${y}`;
-    };
-    setStartDate(reformat(start));
-    setEndDate(reformat(end));
+    setStartDate(start);
+    setEndDate(end);
   };
 
   // Called by DateRangeSelector for Custom Range after user applies dates in the modal.

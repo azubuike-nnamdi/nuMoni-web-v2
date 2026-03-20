@@ -1,19 +1,27 @@
 'use client';
 
 import { numoniLogoDark } from '@/constant/icons';
-import { navigationItems } from '@/data';
+import { navigationItems, posNavigationItems } from '@/data';
 import { isNavigationItemActive } from '@/lib/helper';
 import { SidebarProps } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname, useSearchParams } from 'next/navigation';
 
 
-export default function Sidebar({ isOpen, onClose }: Readonly<SidebarProps>) {
+export default function DynamicSidebar({ isOpen, onClose }: Readonly<SidebarProps>) {
   const pathname = usePathname();
-  const allPaths = navigationItems.map(item => item.path);
+  const searchParams = useSearchParams();
+  const params = useParams();
+  const id = params.id as string;
+  const allPaths = [
+    ...navigationItems.map(item => item.path),
+    ...posNavigationItems.map(item => (item.path.includes('[id]') && id ? item.path.replace('[id]', id) : item.path))
+  ];
+
+
 
   return (
     <>
@@ -52,14 +60,19 @@ export default function Sidebar({ isOpen, onClose }: Readonly<SidebarProps>) {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2">
-            {navigationItems.map((item) => {
-              const isActive = isNavigationItemActive(item.path, pathname, allPaths);
+            {posNavigationItems.map((item) => {
+              const fullPathWithId = item.path.includes('[id]') && id
+                ? item.path.replace('[id]', id)
+                : item.path;
+              const href = searchParams.toString() ? `${fullPathWithId}?${searchParams.toString()}` : fullPathWithId;
+
+              const isActive = isNavigationItemActive(fullPathWithId, pathname, allPaths);
               const IconComponent = item.icon;
 
               return (
                 <Link
                   key={item.name}
-                  href={item.path}
+                  href={href}
                   className={cn(
                     "flex items-center px-3 py-4 text-sm font-medium rounded-lg transition-colors",
                     isActive
@@ -78,6 +91,7 @@ export default function Sidebar({ isOpen, onClose }: Readonly<SidebarProps>) {
               );
             })}
           </nav>
+
         </div>
       </div>
     </>
