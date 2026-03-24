@@ -34,8 +34,9 @@ export default function TransactionFiltersHeader({
       </h1>
 
       <div className="md:flex items-center gap-2 space-y-2 md:space-y-0 space-x-2 grid grid-cols-2 ">
+
         <Button
-          className="bg-theme-dark-green"
+          className="bg-theme-dark-green shadow-none"
           onClick={() => setOpenExportModal(true)}
         >
           Export
@@ -57,6 +58,7 @@ export default function TransactionFiltersHeader({
         isOpen={openExportModal}
         onClose={() => setOpenExportModal(false)}
       />
+
     </div>
   );
 }

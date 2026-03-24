@@ -8,7 +8,7 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { ErrorState } from "@/components/ui/error-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetMerchantTransaction from "@/hooks/query/useGetMerchantTransaction";
-import { extractErrorMessage, formatCurrency, formatDateTime, getTimelineDates, getStatusColor, formatSnakeCase } from "@/lib/helper";
+import { extractErrorMessage, formatCurrency, formatDateTime, formatSnakeCase, getStatusColor, getTimelineDates } from "@/lib/helper";
 import { TransactionHistoryData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -191,7 +191,7 @@ export function PaymentHistoryTable({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mt-6">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-none overflow-hidden mt-6">
       <div className="p-6 border-b border-gray-50 flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold text-gray-900">Transaction History</h2>
