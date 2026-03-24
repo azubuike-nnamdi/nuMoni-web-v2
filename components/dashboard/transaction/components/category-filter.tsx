@@ -28,7 +28,8 @@ export default function CategoryFilter({ selectedCategory, onCategoryChange }: R
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline"
+          className="gap-2 shadow-none">
           Category: {formatCategoryLabel(selectedCategory)}
           <ChevronDown className="h-4 w-4" />
         </Button>

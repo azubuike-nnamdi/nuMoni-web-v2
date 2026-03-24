@@ -6,7 +6,8 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { formatCurrency, formatDateTime, formatSnakeCase, getStatusColor } from "@/lib/helper";
 import { TransactionHistoryData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Copy } from "lucide-react";
+import { ArrowUpRight, Copy } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { PaginationInfo } from "../transactions-table";
 
@@ -158,6 +159,51 @@ const transactionHistoryColumns: ColumnDef<TransactionHistoryData>[] = [
     header: "Wallet Type",
     cell: ({ row }) => {
       return <div>{formatSnakeCase(row.original.walletType)}</div>;
+    },
+  },
+  {
+    accessorKey: "confirmPayment",
+    header: "Confirm Payment",
+    cell: ({ row }) => {
+      const merchantName = row.original.merchantName;
+      const merchantId = row.original.merchantId;
+
+      const handleCopyLink = async () => {
+        try {
+          const baseUrl = globalThis.window ? globalThis.window.location.origin : '';
+          const encodedMerchantName = encodeURIComponent(merchantName || '');
+          const transactionLink = `${baseUrl}/payment-transaction-history?merchantName=${encodedMerchantName}&merchantId=${merchantId}`;
+          await navigator.clipboard.writeText(transactionLink);
+          toast.success("Transaction link copied to clipboard");
+        } catch {
+          toast.error("Failed to copy link");
+        }
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <Link href={`/payment-transaction-history?merchantName=${encodeURIComponent(merchantName || '')}&merchantId=${merchantId}`} target="_blank">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              title="View Transactions"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Button
+            type="button"
+            size="sm"
+            className="h-8 w-8 p-0 bg-theme-dark-green"
+            onClick={handleCopyLink}
+            title="Copy Transaction Link"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+      );
     },
   },
   {

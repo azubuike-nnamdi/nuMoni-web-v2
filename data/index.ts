@@ -1,8 +1,8 @@
 import { BranchIcon, DashboardIcon, RewardIcon } from "@/components/common/icon-svg";
 import { avatarIcon, branchIcon, calenderIcon, dealIcon, emailIcon, giftIcon, graphDirectionIcon, grayPointIcon, instagramIcon, musicPauseIcon, phoneNotificationIcon, twitterIcon, whatsappIcon } from "@/constant/icons";
 import { sampleUserIcon } from "@/constant/images";
-import { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_PAYMENT_HISTORY_URL, POS_TRANSACTION_HISTORY_URL_WITH_ID, POS_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
-import { ChartBarBig, Flag, Monitor, PanelTopClose } from "lucide-react";
+import { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_TRANSACTION_HISTORY_URL_WITH_ID, POS_URL, REWARD_TABLE_URL, TRANSACTIONS_URL } from "@/constant/routes";
+import { ChartBarBig, Flag, PanelTopClose } from "lucide-react";
 
 const navigationItems = [
   {
@@ -44,15 +44,15 @@ const navigationItems = [
 
 const posNavigationItems = [
   {
-    name: 'Transactions',
+    name: 'POS Transactions',
     path: POS_TRANSACTION_HISTORY_URL_WITH_ID,
     icon: PanelTopClose
   },
-  {
-    name: 'Payment History',
-    path: POS_PAYMENT_HISTORY_URL,
-    icon: Monitor
-  }
+  // {
+  //   name: 'Payment History',
+  //   path: POS_PAYMENT_HISTORY_URL,
+  //   icon: Monitor
+  // }
 ]
 
 // Data for "What You Can Do" section
