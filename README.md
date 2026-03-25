@@ -4,6 +4,7 @@ Numoni Web V2 is a modern, high-performance merchant portal built with Next.js 1
 
 ## 🚀 Key Features
 
+
 -  **Multi-Step Branch Registration**: A sophisticated 5-step form with real-time validation and state management.
 -  **Interactive Map Integration**: Secure Google Maps integration for precise branch location selection.
 -  **Advanced Dashboard**: Real-time transaction monitoring and business analytics.
