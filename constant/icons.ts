@@ -1,9 +1,6 @@
-const numoniLogoLight = '/assets/icons/numoni-logo-light.svg';
+
 const numoniLogoDark = '/assets/icons/numoni-logo-dark.svg';
-const crownIcon = '/assets/icons/crown.svg';
-const notificationIcon = '/assets/icons/notification-01.svg';
-const messageIcon = '/assets/icons/message-icon.svg';
-const profileIcon = '/assets/icons/profile-icon.svg';
+
 const blueVerifiedIcon = '/assets/icons/blue-verified-icon.svg';
 const rightArrowIcon = '/assets/icons/arrow-right.svg';
 const rightArrowWhiteIcon = '/assets/icons/arrow-right-white.svg';
@@ -19,8 +16,7 @@ const cashBackIcon = '/assets/icons/cash-back-icon.svg';
 const storeIcon = '/assets/icons/store-icon.svg';
 const NigeriaIcon = '/assets/icons/nigeria-icon.svg';
 const pointIcon = '/assets/icons/points.svg';
-const peopleGrayIcon = '/assets/icons/people-gray.svg';
-const successIconCheck = '/assets/icons/success-check-icon.svg';
+
 const verifyIcon = '/assets/icons/verify.svg';
 const star = '/assets/icons/star.svg';
 const branchCloseIcon = '/assets/icons/branch-close-icon.svg';
@@ -32,15 +28,14 @@ const phoneIcon = '/assets/icons/phone-icon.svg';
 const emailIcon = '/assets/icons/email-icon.svg';
 const moniepointIcon = '/assets/icons/moniepoint-icon.svg';
 const whatsappIcon = '/assets/icons/whatsapp-icon.svg';
-const facebookIcon = '/assets/icons/facebook-icon.svg';
+
 const instagramIcon = '/assets/icons/instagram-icon.svg';
 const twitterIcon = '/assets/icons/twitter-icon.svg';
 const filterIcon = '/assets/icons/filter-icon.svg';
 const activeBranchIcon = '/assets/icons/activate-store-icon.svg';
 const giftIcon = '/assets/icons/gift-icon.svg';
 const grayPointIcon = '/assets/icons/gray-point-icon.svg';
-const warningIcon = '/assets/icons/warning-icon.svg';
-const redMusicPauseIcon = '/assets/icons/red-music-pause-icon.svg';
+
 const musicPlayIcon = '/assets/icons/music-play-icon.svg';
 
 
