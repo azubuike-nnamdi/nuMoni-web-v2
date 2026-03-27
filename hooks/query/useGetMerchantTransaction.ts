@@ -3,9 +3,9 @@ import { UseGetMerchantTransactionProps } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 
 
-const useGetMerchantTransaction = ({ merchantId, startDate, endDate, customerEmail, customerPhoneNo, customerId, page = 0, size = 20 }: UseGetMerchantTransactionProps) => {
+const useGetMerchantTransaction = ({ merchantId, startDate, endDate, customerEmail, customerPhoneNo, customerId, operationType, page = 0, size = 20 }: UseGetMerchantTransactionProps) => {
   const { data, isPending, error, isError, refetch } = useQuery({
-    queryKey: ["transaction-history", merchantId, startDate, endDate, customerEmail, customerPhoneNo, customerId, page, size],
+    queryKey: ["transaction-history", merchantId, startDate, endDate, customerEmail, customerPhoneNo, customerId, operationType, page, size],
     queryFn: () => {
       const params = new URLSearchParams({ 
         merchantId,
@@ -17,6 +17,7 @@ const useGetMerchantTransaction = ({ merchantId, startDate, endDate, customerEma
       if (customerEmail) params.append("customerEmail", customerEmail);
       if (customerPhoneNo) params.append("customerPhoneNo", customerPhoneNo);
       if (customerId) params.append("customerId", customerId);
+      if (operationType) params.append("operationType", operationType);
       return api.get(`/auth/merchant/transactions?${params.toString()}`);
     },
   });
