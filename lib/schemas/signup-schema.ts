@@ -40,7 +40,5 @@ export const signUpSchema = z.object({
 });
 
 export type SignUpFormData = z.infer<typeof signUpSchema>;
-type Step1FormData = z.infer<typeof step1Schema>;
-type Step2FormData = z.infer<typeof step2Schema>;
-type Step3FormData = z.infer<typeof step3Schema>;
+
 
