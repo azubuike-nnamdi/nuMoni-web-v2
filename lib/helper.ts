@@ -1666,18 +1666,6 @@ const parseDateString = (dateString: string): Date => {
   return new Date(year, month - 1, day);
 };
 
-/**
- * Converts a date string from YYYY-MM-DD format to DD-MM-YYYY format
- * @param dateString - Date string in YYYY-MM-DD format (e.g., "2026-01-05")
- * @returns Date string in DD-MM-YYYY format (e.g., "05-01-2026")
- * 
- * @example
- * convertYYYYMMDDtoDDMMYYYY('2026-01-05') // Returns "05-01-2026"
- */
-const convertYYYYMMDDtoDDMMYYYY = (dateString: string): string => {
-  const [year, month, day] = dateString.split('-');
-  return `${day}-${month}-${year}`;
-};
 
 /**
  * Converts a date range option to actual start and end Date objects

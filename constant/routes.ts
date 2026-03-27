@@ -9,7 +9,6 @@ const BRANCH_LEVEL_URL: string = `${DASHBOARD_URL}/branch-level`;
 const REWARD_TABLE_URL: string = `${DASHBOARD_URL}/reward-table`;
 const TRANSACTIONS_URL: string = `${DASHBOARD_URL}/transactions`;
 const POS_URL: string = `${DASHBOARD_URL}/point-of-sale`;
-const POS_TRANSACTION_HISTORY_URL_WITH_ID: string = `/pos-transaction-history/[id]`;
 
 
 
