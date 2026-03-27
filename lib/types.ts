@@ -844,19 +844,19 @@ type Sales = {
   totalCount: number;
 }
 
-type Payouts = {
-  periodAmount: number;
-  totalAmount: number;
-  periodCount: number;
-  totalCount: number;
-}
+// type Payouts = {
+//   periodAmount: number;
+//   totalAmount: number;
+//   periodCount: number;
+//   totalCount: number;
+// }
 
-type ServiceFees = {
-  periodAmount: number,
-  totalAmount: number,
-  periodCount: number,
-  totalCount: number
-}
+// type ServiceFees = {
+//   periodAmount: number,
+//   totalAmount: number,
+//   periodCount: number,
+//   totalCount: number
+// }
 
 type StatsProps = {
   sales: Sales;
