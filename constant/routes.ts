@@ -9,14 +9,10 @@ const BRANCH_LEVEL_URL: string = `${DASHBOARD_URL}/branch-level`;
 const REWARD_TABLE_URL: string = `${DASHBOARD_URL}/reward-table`;
 const TRANSACTIONS_URL: string = `${DASHBOARD_URL}/transactions`;
 const POS_URL: string = `${DASHBOARD_URL}/point-of-sale`;
-const POS_PAYMENT_HISTORY_URL: string = `/pos-transaction-history/[id]/payment-history`;
 const POS_TRANSACTION_HISTORY_URL_WITH_ID: string = `/pos-transaction-history/[id]`;
-const POINTS_URL: string = `${DASHBOARD_URL}/points`;
-const DEALS_AND_PROMOS_URL: string = `${DASHBOARD_URL}/deals-and-promos`;
-const CHARITY_ORGS_URL: string = `${DASHBOARD_URL}/charity-orgs`;
 
 
 
 
-export { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_TRANSACTION_HISTORY_URL_WITH_ID, POS_URL, REWARD_TABLE_URL, SIGN_IN_URL, SIGN_UP_URL, TRANSACTIONS_URL };
+export { BRANCH_LEVEL_URL, DASHBOARD_URL, POS_URL, REWARD_TABLE_URL, SIGN_IN_URL, SIGN_UP_URL, TRANSACTIONS_URL };
 
