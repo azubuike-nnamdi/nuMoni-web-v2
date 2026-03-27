@@ -16,7 +16,7 @@ export default function PosTransactionHistoryLayout({
 
       <div className="flex flex-col flex-1">
         <OpenNavbar />
-        <main className="pt-16 lg:ml-64">
+        <main className="pt-16">
           {children}
         </main>
       </div>

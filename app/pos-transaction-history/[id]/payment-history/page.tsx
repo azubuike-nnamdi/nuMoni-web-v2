@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const merchantId = (searchParams.get("merchantId") || "") as string;
+  const merchantId = searchParams.get("merchantId") || "";
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6">
@@ -18,10 +18,10 @@ export default function Page() {
       </div>
 
       <div className="space-y-8 mt-6">
-        <PaymentHistory 
+        <PaymentHistory
           merchantId={merchantId}
         />
-        
+
         <PaymentHistoryTable
           merchantId={merchantId}
         />
