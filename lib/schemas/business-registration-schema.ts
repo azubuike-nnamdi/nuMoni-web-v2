@@ -66,6 +66,7 @@ export const businessCollectionAccountSchema = z.object({
 
 
 // Type exports
+export type RegisterBusinessFormData = z.infer<typeof registerBusinessSchema>;
 export type BusinessLocationFormData = z.infer<typeof businessLocationSchema>;
 export type BusinessDocumentFormData = z.infer<typeof businessDocumentSchema>;
 export type BusinessCollectionAccountFormData = z.infer<typeof businessCollectionAccountSchema>;

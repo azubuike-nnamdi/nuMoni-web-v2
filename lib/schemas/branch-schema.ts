@@ -47,3 +47,11 @@ export const branchFormSchema = z.object({
 
 export type BranchFormData = z.infer<typeof branchFormSchema>
 
+// Step 3 partial schema — used for manager-only forms (e.g. EditBranchManager)
+export const step3Schema = branchFormSchema.pick({
+  managerName: true,
+  managerPhone: true,
+  managerEmail: true,
+})
+
+type Step3FormData = z.infer<typeof step3Schema>
