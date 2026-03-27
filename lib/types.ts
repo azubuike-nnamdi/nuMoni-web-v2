@@ -832,6 +832,7 @@ type UseGetMerchantTransactionProps = {
   customerEmail?: string;
   customerPhoneNo?: string;
   customerId?: string;
+  operationType?: string;
   page?: number;
   size?: number;
 }
@@ -843,24 +844,24 @@ type Sales = {
   totalCount: number;
 }
 
-type Payouts = {
-  periodAmount: number;
-  totalAmount: number;
-  periodCount: number;
-  totalCount: number;
-}
+// type Payouts = {
+//   periodAmount: number;
+//   totalAmount: number;
+//   periodCount: number;
+//   totalCount: number;
+// }
 
-type ServiceFees = {
-  periodAmount: number,
-  totalAmount: number,
-  periodCount: number,
-  totalCount: number
-}
+// type ServiceFees = {
+//   periodAmount: number,
+//   totalAmount: number,
+//   periodCount: number,
+//   totalCount: number
+// }
 
 type StatsProps = {
   sales: Sales;
-  payouts: Payouts;
-  serviceFees: ServiceFees;
+  // payouts: Payouts;
+  // serviceFees: ServiceFees;
 }
 export type {
   AccountInformationProps,

@@ -135,11 +135,15 @@ export function PaymentHistoryTable({
     customerEmail: filters.filterType === 'customerEmail' ? filters.debouncedSearchValue : undefined,
     customerPhoneNo: filters.filterType === 'customerPhoneNo' ? filters.debouncedSearchValue : undefined,
     customerId: filters.filterType === 'customerId' ? filters.debouncedSearchValue : undefined,
+    operationType: 'SALES',
     page,
     size: pageSize
   });
 
-  const transactions = useMemo(() => data?.data?.data?.pageData || [], [data]);
+  const transactions = useMemo(() => {
+    const allTransactions = (data?.data?.data?.pageData as TransactionHistoryData[]) || [];
+    return allTransactions.filter(t => t.operationType === 'SALES');
+  }, [data]);
   const pagination = data?.data;
 
   const renderBody = () => {

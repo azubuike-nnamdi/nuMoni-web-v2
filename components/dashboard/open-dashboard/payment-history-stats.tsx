@@ -3,9 +3,9 @@
 import { MetricCard } from "@/components/common/metric-card";
 import { formatCurrency } from "@/lib/helper";
 import { StatsProps } from "@/lib/types";
-import { Banknote, CreditCard, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
-export function PaymentHistoryStats({ sales, payouts, serviceFees }: Readonly<StatsProps>) {
+export function PaymentHistoryStats({ sales }: Readonly<StatsProps>) {
   const sections = [
     {
       title: "Sales Statistics",
@@ -21,31 +21,31 @@ export function PaymentHistoryStats({ sales, payouts, serviceFees }: Readonly<St
 
 
     },
-    {
-      title: "Payout Statistics",
-      data: payouts,
-      icon: <Banknote className="h-5 w-5 text-blue-600" />,
-      color: "blue",
-      bgLight: "bg-blue-50",
-      bgIcon: "bg-blue-100",
-      totalLabel: "Total Payouts",
-      periodLabel: "Period Payouts",
-      countLabel: "Payout Records",
-      periodCountLabel: "Period  Records"
+    // {
+    //   title: "Payout Statistics",
+    //   data: payouts,
+    //   icon: <Banknote className="h-5 w-5 text-blue-600" />,
+    //   color: "blue",
+    //   bgLight: "bg-blue-50",
+    //   bgIcon: "bg-blue-100",
+    //   totalLabel: "Total Payouts",
+    //   periodLabel: "Period Payouts",
+    //   countLabel: "Payout Records",
+    //   periodCountLabel: "Period  Records"
 
-    },
-    {
-      title: "Service Fee Statistics",
-      data: serviceFees,
-      icon: <CreditCard className="h-5 w-5 text-orange-600" />,
-      color: "orange",
-      bgLight: "bg-orange-50",
-      bgIcon: "bg-orange-100",
-      totalLabel: "Total Fees",
-      periodLabel: "Period Fees",
-      countLabel: "Fee Records",
-      periodCountLabel: "Period  Records"
-    },
+    // },
+    // {
+    //   title: "Service Fee Statistics",
+    //   data: serviceFees,
+    //   icon: <CreditCard className="h-5 w-5 text-orange-600" />,
+    //   color: "orange",
+    //   bgLight: "bg-orange-50",
+    //   bgIcon: "bg-orange-100",
+    //   totalLabel: "Total Fees",
+    //   periodLabel: "Period Fees",
+    //   countLabel: "Fee Records",
+    //   periodCountLabel: "Period  Records"
+    // },
   ];
 
   return (
