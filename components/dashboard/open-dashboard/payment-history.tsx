@@ -5,7 +5,7 @@ import { ErrorState } from "@/components/ui/error-state";
 import useGetMerchantTransactionStats from "@/hooks/query/useGetMerchantTransactionStats";
 import { extractErrorMessage, getTimelineDates } from "@/lib/helper";
 import { format } from "date-fns";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { PaymentHistoryFilters, PaymentHistoryFiltersState } from "./payment-history-filters";
 import { PaymentHistoryLoading } from "./payment-history-loading";
 import { PaymentHistoryStats } from "./payment-history-stats";
@@ -71,8 +71,8 @@ export function PaymentHistory({ merchantId }: Readonly<PaymentHistoryProps>) {
         {!isPending && !isError && stats && (
           <PaymentHistoryStats
             sales={stats.sales}
-            payouts={stats.payouts}
-            serviceFees={stats.serviceFees}
+          // payouts={stats.payouts}
+          // serviceFees={stats.serviceFees}
           />
         )}
       </div>

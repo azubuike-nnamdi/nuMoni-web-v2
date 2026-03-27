@@ -832,6 +832,7 @@ type UseGetMerchantTransactionProps = {
   customerEmail?: string;
   customerPhoneNo?: string;
   customerId?: string;
+  operationType?: string;
   page?: number;
   size?: number;
 }
@@ -859,8 +860,8 @@ type ServiceFees = {
 
 type StatsProps = {
   sales: Sales;
-  payouts: Payouts;
-  serviceFees: ServiceFees;
+  // payouts: Payouts;
+  // serviceFees: ServiceFees;
 }
 export type {
   AccountInformationProps,
