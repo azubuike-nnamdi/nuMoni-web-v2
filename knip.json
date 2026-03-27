@@ -8,6 +8,7 @@
       "@types/google.maps",
       "@googlemaps/js-api-loader",
       "@radix-ui/react-avatar",
-      "@types/google.maps"
+      "@types/google.maps",
+      "@radix-ui/react-tabs"
    ]
 }
