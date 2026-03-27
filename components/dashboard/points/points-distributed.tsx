@@ -6,7 +6,8 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetPointsDistributed from "@/hooks/query/useGetPointsDistributed";
 import { useDateRangeFilter } from "@/hooks/useDateRangeFilter";
 import { getSearchPlaceholder } from "@/lib/helper";
-import { PaginationInfo } from "../transactions-table";
+
+import { PaginationInfo } from "@/lib/types";
 import PointsDistributedTable from "./points-distributed-table";
 import { PointsDistributedData } from "./types";
 

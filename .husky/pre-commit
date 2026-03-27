@@ -2,12 +2,19 @@
 
 echo "🔍 Running pre-commit hook..."
 
-# Get staged files
 files=$(git diff --cached --name-only)
 
-if [ -n "$files" ]; then
-  echo "🚀 Running lint for staged files..."
-  pnpm run lint
-else
+if [ -z "$files" ]; then
   echo "✅ No files staged for commit."
+  exit 0
 fi
+
+# Run knip to detect unused files and exports
+echo "🕵️ Running knip check..."
+pnpm knip || exit 1
+
+echo "🚀 Running lint..."
+pnpm run lint || exit 1
+
+echo "✅ Pre-commit checks passed."
+exit 0

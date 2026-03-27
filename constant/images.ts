@@ -4,5 +4,5 @@ const cashBackBg = '/assets/images/cash-back-bg.png';
 const walletImage = '/assets/images/wallet-image.png';
 const highFiveImage = '/assets/images/high-five.png';
 
-export { cashBackBg, highFiveImage, qrCode, sampleUserIcon, walletImage };
+export { highFiveImage, qrCode, sampleUserIcon, walletImage };
 

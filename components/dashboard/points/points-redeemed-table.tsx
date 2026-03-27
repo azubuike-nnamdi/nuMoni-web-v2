@@ -12,11 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatCurrency, formatDateTime } from "@/lib/helper";
-import { TransactionData } from "@/lib/types";
+import { PaginationInfo, TransactionData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
-import { PaginationInfo } from "../transactions-table";
 
 const pointsRedeemedColumns: ColumnDef<TransactionData>[] = [
   {

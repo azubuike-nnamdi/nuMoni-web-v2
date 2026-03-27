@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Step 1: Business Operation Type Schema
-export const businessOperationTypeSchema = z.object({
+const businessOperationTypeSchema = z.object({
   isRegistered: z.enum(['yes', 'no'], {
     message: 'Please select if your business is registered',
   }),
@@ -73,7 +73,7 @@ export const businessCollectionAccountSchema = z.object({
 });
 
 // Complete Business Registration Schema
-export const businessRegistrationSchema = z.object({
+const businessRegistrationSchema = z.object({
   // Step 1: Operation Type
   isRegistered: z.enum(['yes', 'no']),
   salesChannels: z.array(z.enum(['online', 'offline'])).min(1),
@@ -129,10 +129,10 @@ export const businessRegistrationSchema = z.object({
 );
 
 // Type exports
-export type BusinessOperationTypeFormData = z.infer<typeof businessOperationTypeSchema>;
-export type RegisterBusinessFormData = z.infer<typeof registerBusinessSchema>;
+type BusinessOperationTypeFormData = z.infer<typeof businessOperationTypeSchema>;
+type RegisterBusinessFormData = z.infer<typeof registerBusinessSchema>;
 export type BusinessLocationFormData = z.infer<typeof businessLocationSchema>;
 export type BusinessDocumentFormData = z.infer<typeof businessDocumentSchema>;
 export type BusinessCollectionAccountFormData = z.infer<typeof businessCollectionAccountSchema>;
-export type BusinessRegistrationFormData = z.infer<typeof businessRegistrationSchema>;
+type BusinessRegistrationFormData = z.infer<typeof businessRegistrationSchema>;
 

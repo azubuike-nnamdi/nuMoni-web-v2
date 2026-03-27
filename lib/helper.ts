@@ -190,18 +190,6 @@ export const getRingColor = (ringColor: string): string => {
  * @param indicatorColor - The indicator color string (e.g., "red", "green", "black", "blue", "orange", "purple", "yellow")
  * @returns A Tailwind CSS background color class
  */
-export const getIndicatorColor = (indicatorColor: string): string => {
-  switch (indicatorColor) {
-    case 'red': return 'bg-red-500';
-    case 'green': return 'bg-green-500';
-    case 'black': return 'bg-black';
-    case 'blue': return 'bg-blue-500';
-    case 'orange': return 'bg-orange-500';
-    case 'purple': return 'bg-purple-500';
-    case 'yellow': return 'bg-yellow-500';
-    default: return 'bg-gray-500';
-  }
-};
 
 /**
  * Formats a number value with proper locale formatting and decimal places
@@ -386,7 +374,7 @@ export const getReceiveMethodFromDistributionType = (distributionType: string) =
  * @param rewardType - The reward type from API (e.g., "PERCENTAGE_BASED")
  * @returns Formatted string for display (e.g., "Percentage Based")
  */
-export const formatRewardType = (rewardType: string) => {
+const formatRewardType = (rewardType: string) => {
   switch (rewardType) {
     case "PERCENTAGE_BASED":
       return "Percentage Based";
@@ -402,7 +390,7 @@ export const formatRewardType = (rewardType: string) => {
  * @param distributionType - The distribution type from API (e.g., "INSTANT")
  * @returns Formatted string for display (e.g., "Instant")
  */
-export const formatDistributionType = (distributionType: string) => {
+const formatDistributionType = (distributionType: string) => {
   switch (distributionType) {
     case "INSTANT":
       return "Instant";
@@ -429,7 +417,7 @@ export const getRewardsRules = (rewards: { rules?: Array<RewardRule> } | null): 
  * @param fallback - Fallback text if date is null
  * @returns Formatted date string or fallback
  */
-export const formatDate = (dateString: string | null, fallback: string) => {
+const formatDate = (dateString: string | null, fallback: string) => {
   if (!dateString) return fallback;
   return new Date(dateString).toLocaleDateString();
 };
@@ -455,13 +443,6 @@ export const formatDateTime = (dateString: string) => {
  * @param dateString - Date string to format
  * @returns Formatted date string in DD-MM-YYYY format (e.g., "25-12-2024")
  */
-export const formatDateDDMMYYYY = (dateString: string): string => {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
-};
 
 /**
  * Creates summary data array from rewards object
@@ -1019,7 +1000,7 @@ export const getTimelineDates = (
 };
 
 // File size validation utilities
-export const parseFileSize = (sizeString: string): number => {
+const parseFileSize = (sizeString: string): number => {
   const units: { [key: string]: number } = {
     'b': 1,
     'kb': 1024,
@@ -1680,7 +1661,7 @@ export const downloadQRCodeImageWithLogo = async (
  * @example
  * parseDateString('2024-01-15') // Returns Date object for January 15, 2024
  */
-export const parseDateString = (dateString: string): Date => {
+const parseDateString = (dateString: string): Date => {
   const [day, month, year] = dateString.split('-').map(Number);
   return new Date(year, month - 1, day);
 };
@@ -1693,7 +1674,7 @@ export const parseDateString = (dateString: string): Date => {
  * @example
  * convertYYYYMMDDtoDDMMYYYY('2026-01-05') // Returns "05-01-2026"
  */
-export const convertYYYYMMDDtoDDMMYYYY = (dateString: string): string => {
+const convertYYYYMMDDtoDDMMYYYY = (dateString: string): string => {
   const [year, month, day] = dateString.split('-');
   return `${day}-${month}-${year}`;
 };

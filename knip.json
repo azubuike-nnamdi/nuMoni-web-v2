@@ -1,0 +1,6 @@
+{
+   "$schema": "https://unpkg.com/knip@5/schema.json",
+   "tags": ["-lintignore"],
+   "ignore": ["components/ui/**", "lib/types/**", "lib/types.ts", "stores/**"],
+   "ignoreDependencies": ["@tanstack/eslint-plugin-query", "eslint-config-next"]
+}

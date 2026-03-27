@@ -2,30 +2,29 @@
 
 echo "🔍 Running pre-push hook..."
 
-# Check for package.json changes compared to origin/main
 files_changed=$(git diff --name-only origin/main...HEAD 2>/dev/null)
 
+# Install dependencies if package.json changed
 if echo "$files_changed" | grep -q "package.json"; then
   echo "📦 Dependencies changed. Running pnpm install..."
-  pnpm install
+  pnpm install || exit 1
 fi
+
+# Run knip to detect unused files and exports
+echo "🕵️ Running knip check..."
+pnpm knip || exit 1
+
+# Run lint
+echo "🧹 Running lint..."
+pnpm run lint || exit 1
+
+# Run type check
+echo "🔎 Running type check..."
+pnpm run type-check || exit 1
 
 # Run build
 echo "🏗️ Running build..."
-pnpm run build
+pnpm run build || exit 1
 
-if [ $? -ne 0 ]; then
-  echo "❌ Build failed. Push aborted."
-  exit 1
-fi
-
-# Run type check (optional but recommended)
-echo "➡️ Running type check..."
-pnpm run type-check
-
-if [ $? -ne 0 ]; then
-  echo "❌ Type check failed. Push aborted."
-  exit 1
-fi
-
-echo "✅ Build and checks passed. Proceeding with push..."
+echo "✅ All checks passed. Proceeding with push."
+exit 0

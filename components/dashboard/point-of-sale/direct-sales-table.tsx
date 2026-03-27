@@ -8,12 +8,12 @@ import { ErrorState } from "@/components/ui/error-state";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useGetPosTransactionList from "@/hooks/query/useGetPosTransactionList";
 import { formatCurrency, formatDateTime } from "@/lib/helper";
-import { TransactionData } from "@/lib/types";
+import { PaginationInfo, TransactionData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { PaginationInfo } from "../transactions-table";
+
 import TransactionTableHeader from "./transaction-table-header";
 import { useDateFilter } from "./use-date-filter";
 

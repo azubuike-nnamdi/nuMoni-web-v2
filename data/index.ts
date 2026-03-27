@@ -385,12 +385,9 @@ const mockMerchantData = {
 export {
   benefitsData,
   branches,
-  customerData, mockMerchantData, months, navigationItems, pointsTabs, posNavigationItems, regions, rewardTableData,
+  navigationItems, regions,
   socialMediaPlatforms,
-  summaryData,
   tabs, timelineOptions,
-  transactionData,
   whatYouCanDoData,
-  years
 };
 

@@ -5,7 +5,7 @@ import { useBranchStore } from "@/stores/branch-store";
 import { useUpdateBranch } from "./mutation/useUpdateBranch";
 
 // Helper function to convert base64 to File
-export const base64ToFile = (base64: string, filename: string): File => {
+const base64ToFile = (base64: string, filename: string): File => {
   // Check if it's a URL instead of base64
   if (base64.startsWith('http')) {
     console.warn('URL detected instead of base64, skipping file conversion:', base64);

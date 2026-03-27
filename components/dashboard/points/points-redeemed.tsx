@@ -15,11 +15,10 @@ import useExportPointsRedeemed from "@/hooks/query/useExportPointsRedeemed";
 import useGetPointsRedeemed from "@/hooks/query/useGetPointsRedeemed";
 import { useDateRangeFilter } from "@/hooks/useDateRangeFilter";
 import { getSearchPlaceholder, getTimelineDates } from "@/lib/helper";
-import { TransactionData } from "@/lib/types";
+import { PaginationInfo, TransactionData } from "@/lib/types";
 import { format } from "date-fns";
 import { Download } from "lucide-react";
 import { useState } from "react";
-import { PaginationInfo } from "../transactions-table";
 import PointsRedeemedTable from "./points-redeemed-table";
 
 export default function PointsRedeemed() {

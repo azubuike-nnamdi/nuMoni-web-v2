@@ -48,7 +48,7 @@ export const branchFormSchema = z.object({
 export type BranchFormData = z.infer<typeof branchFormSchema>
 
 // Step-specific schemas for validation
-export const step1Schema = branchFormSchema.pick({
+const step1Schema = branchFormSchema.pick({
   branchName: true,
   branchRegion: true,
   branchState: true,
@@ -60,7 +60,7 @@ export const step1Schema = branchFormSchema.pick({
   email: true,
 })
 
-export const step2Schema = branchFormSchema.pick({
+const step2Schema = branchFormSchema.pick({
   address: true,
   city: true,
   state: true,
@@ -73,7 +73,7 @@ export const step3Schema = branchFormSchema.pick({
   managerEmail: true,
 })
 
-export const step4Schema = branchFormSchema.pick({
+const step4Schema = branchFormSchema.pick({
   website: true,
   whatsapp: true,
   linkedin: true,
@@ -82,7 +82,7 @@ export const step4Schema = branchFormSchema.pick({
   snapchat: true,
 })
 
-export const step5Schema = branchFormSchema.pick({
+const step5Schema = branchFormSchema.pick({
   bank: true,
   payOnUsBank: true,
   accountNumber: true,
