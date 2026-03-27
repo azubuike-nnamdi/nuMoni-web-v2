@@ -1,8 +1,7 @@
 'use client';
 
-import { PaginationInfo } from "@/components/dashboard/transactions-table";
 import useGetTransaction from "@/hooks/query/useGetTransaction";
-import { TransactionHistoryData } from "@/lib/types";
+import { PaginationInfo, TransactionHistoryData } from "@/lib/types";
 import CustomDurationPicker from "./components/custom-duration-picker";
 import TransactionEmptyState from "./components/transaction-empty-state";
 import TransactionErrorState from "./components/transaction-error-state";

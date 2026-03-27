@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useExportTransactions from "@/hooks/query/useExportTransactions";
+import { useExportTransactions } from "@/hooks/query/useExportTransactions";
 import useGetAllPos from "@/hooks/query/useGetAllPos";
 import { extractErrorMessage, getDatesFromRangeOption } from "@/lib/helper";
 import {

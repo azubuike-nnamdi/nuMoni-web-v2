@@ -88,7 +88,7 @@ function formatWithPlus234(string: string): string | null {
 }
 
 
-export function formatMsisdn(string: string, format: FormatType = 'default'): string | null {
+function formatMsisdn(string: string, format: FormatType = 'default'): string | null {
   // Handle null/undefined input
   if (!string) {
     return null;

@@ -863,6 +863,18 @@ type StatsProps = {
   // payouts: Payouts;
   // serviceFees: ServiceFees;
 }
+
+type PaginationInfo = {
+  isFirst: boolean;
+  isLast: boolean;
+  currentPageElements: number;
+  totalPages: number;
+  pageSize: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  currentPage: number;
+  totalElements: number;
+}
 export type {
   AccountInformationProps,
   ActiveBranchModalProps,
@@ -870,8 +882,7 @@ export type {
   AuthUser,
   AuthUserStore,
   AxiosError,
-  Bank, BankInformation,
-  BankPayload,
+  Bank, BankInformation, BankPayload,
   BankToken,
   Branch,
   BranchAnalyticsData,
@@ -901,7 +912,7 @@ export type {
   MetricCardProps,
   MilestoneTargetSectionProps,
   MutationErrorType,
-  NinInfo, PaymentHistoryData, PointAnalyticsProps,
+  NinInfo, PaginationInfo, PaymentHistoryData, PointAnalyticsProps,
   PointOfSaleData,
   QRCodeCardProps,
   ReceiveMethodSectionProps,

@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { formatCurrency, formatDateTime, formatSnakeCase, getStatusColor } from "@/lib/helper";
-import { TransactionHistoryData } from "@/lib/types";
+import { PaginationInfo, TransactionHistoryData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpRight, Copy } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { PaginationInfo } from "../transactions-table";
 
 const transactionHistoryColumns: ColumnDef<TransactionHistoryData>[] = [
   {

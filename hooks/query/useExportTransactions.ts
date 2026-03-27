@@ -94,5 +94,3 @@ export const useExportTransactions = () => {
 
   return { handleExportPosTransaction, isPending, isSuccess, reset };
 };
-
-export default useExportTransactions;

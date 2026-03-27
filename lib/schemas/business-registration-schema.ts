@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
-// Step 1: Business Operation Type Schema
-export const businessOperationTypeSchema = z.object({
-  isRegistered: z.enum(['yes', 'no'], {
-    message: 'Please select if your business is registered',
-  }),
-  salesChannels: z
-    .array(z.enum(['online', 'offline']))
-    .min(1, 'Please select at least one sales channel'),
-});
+
 
 // Step 2: Register Business Schema
 export const registerBusinessSchema = z.object({
@@ -72,67 +64,10 @@ export const businessCollectionAccountSchema = z.object({
   minPayment: z.number().min(0, 'Minimum payment amount must be greater than or equal to 0'),
 });
 
-// Complete Business Registration Schema
-export const businessRegistrationSchema = z.object({
-  // Step 1: Operation Type
-  isRegistered: z.enum(['yes', 'no']),
-  salesChannels: z.array(z.enum(['online', 'offline'])).min(1),
-
-  // Step 2: Business Details
-  logo: z.string().url().nullable().optional(),
-  businessName: z.string().min(1),
-  businessCategories: z.array(z.string()).min(1),
-  businessDescription: z.string().min(10),
-  businessPhone: z.string().regex(/^\d{10,11}$/),
-  businessEmail: z.string().email(),
-  businessPhoto: z.array(z.string().url()).optional(),
-
-  // Step 3: Location
-  id: z.string().nullable().optional(),
-  merchantId: z.string().min(1),
-  storeNo: z.string().min(1),
-  address: z.string().min(1),
-  street: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().min(1),
-  country: z.string().min(1),
-  postalCode: z.string().min(1),
-  latitude: z.number().min(-90).max(90),
-  longitude: z.number().min(-180).max(180),
-  active: z.boolean().default(true),
-
-  // Step 4: Documents (conditional - only required if isRegistered === 'yes')
-  identificationType: z.string().optional(),
-  registrationNumber: z.string().optional(),
-  tin: z.string().optional(),
-  cacDocument: z.instanceof(File).nullable().optional(),
-  certificateOfRegistration: z.instanceof(File).nullable().optional(),
-  tinDocument: z.instanceof(File).nullable().optional(),
-  menuOrCatalogue: z.instanceof(File).nullable().optional(),
-}).refine(
-  (data) => {
-    // If business is registered, documents are required
-    if (data.isRegistered === 'yes') {
-      return (
-        data.identificationType &&
-        data.identificationType.length > 0 &&
-        data.registrationNumber &&
-        data.registrationNumber.length > 0
-      );
-    }
-    return true;
-  },
-  {
-    message: 'Identification type and registration number are required for registered businesses',
-    path: ['identificationType'],
-  }
-);
 
 // Type exports
-export type BusinessOperationTypeFormData = z.infer<typeof businessOperationTypeSchema>;
 export type RegisterBusinessFormData = z.infer<typeof registerBusinessSchema>;
 export type BusinessLocationFormData = z.infer<typeof businessLocationSchema>;
 export type BusinessDocumentFormData = z.infer<typeof businessDocumentSchema>;
 export type BusinessCollectionAccountFormData = z.infer<typeof businessCollectionAccountSchema>;
-export type BusinessRegistrationFormData = z.infer<typeof businessRegistrationSchema>;
 

@@ -9,7 +9,8 @@ import { formatCurrency, formatDateTime } from "@/lib/helper";
 import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
-import { PaginationInfo } from "../transactions-table";
+
+import { PaginationInfo } from "@/lib/types";
 import { PointsDistributedData } from "./types";
 
 const columns: ColumnDef<PointsDistributedData>[] = [

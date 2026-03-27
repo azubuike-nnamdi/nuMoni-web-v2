@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import { useCreateBranch } from "./mutation/useCreateBranch";
 
 // Helper function to convert base64 to File
-export const base64ToFile = (base64: string, filename: string): File => {
+const base64ToFile = (base64: string, filename: string): File => {
   const arr = base64.split(',');
-  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+  const mime = /:(.*?);/.exec(arr[0])?.[1] || 'image/jpeg';
   const bstr = atob(arr[1]);
   let n = bstr.length;
   const u8arr = new Uint8Array(n);
@@ -22,7 +22,6 @@ export const base64ToFile = (base64: string, filename: string): File => {
 export const useBranchFormSubmission = () => {
   const { formData, managerId } = useBranchStore();
 
-  // console.log('user', user);
   const { handleCreateBranch, isPending, isSuccess, isError, error } = useCreateBranch();
 
   const createFormDataPayload = async (data: BranchFormData): Promise<CreateBranchPayload> => {
@@ -92,8 +91,6 @@ export const useBranchFormSubmission = () => {
   };
 
   const submitBranch = async (data: BranchFormData) => {
-    console.log('🎉 FORM SUBMISSION SUCCESSFUL! 🎉');
-    console.log('Form submission triggered with data:', data);
 
     try {
       const apiPayload = await createFormDataPayload(data);

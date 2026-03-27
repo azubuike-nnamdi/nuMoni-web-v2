@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 
 // Cookie names
-export const COOKIE_NAMES = {
+const COOKIE_NAMES = {
   USER_TYPE: 'user-type',
   USER_ID: 'user-id',
   ACCESS_TOKEN: 'access-token',
@@ -72,7 +72,7 @@ export const clearAuthCookies = () => {
 }
 
 // Check if user is authenticated via cookies
-export const isAuthenticatedViaCookies = () => {
+const isAuthenticatedViaCookies = () => {
   const { userType, userId, accessToken } = getAuthCookies()
   return !!(userType && userId && accessToken)
 }

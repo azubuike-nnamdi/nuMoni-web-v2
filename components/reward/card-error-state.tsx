@@ -3,7 +3,7 @@ interface CardErrorStateProps {
   onRetry?: () => void;
 }
 
-export default function CardErrorState({ errorMessage, onRetry }: CardErrorStateProps) {
+export default function CardErrorState({ errorMessage, onRetry }: Readonly<CardErrorStateProps>) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
       <div className="text-red-500 text-sm mb-2">⚠️ Error loading data</div>
