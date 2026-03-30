@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import useGetMerchant from "@/hooks/query/useGetMerchant";
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { Copy } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import ExportTransaction from "../export-transaction";
 import { DateRangeOption } from "../utils/date-range-utils";
 import CategoryFilter, { CategoryOption } from "./category-filter";
@@ -35,6 +35,14 @@ export default function TransactionFiltersHeader({
   const merchantInfo = merchantData?.data?.data;
   const { merchantId, businessName } = merchantInfo ?? {}
 
+  const CopyConfirmationLink = () => {
+    const link = `${window.location.origin}/payment-transaction-history?merchantName=${encodeURIComponent(businessName || '')}&merchantId=${merchantId}`
+
+    navigator.clipboard.writeText(link);
+    toast.success("Link copied to clipboard");
+
+  }
+
 
   return (
     <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between mb-6">
@@ -44,23 +52,19 @@ export default function TransactionFiltersHeader({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap lg:items-center gap-3 w-full lg:w-auto">
         <div className="sm:col-span-2 lg:contents">
-          <Link
-            href={isMerchantPending || !merchantId ? "#" : `/payment-transaction-history?merchantName=${encodeURIComponent(businessName || '')}&merchantId=${merchantId}`}
-            target={isMerchantPending || !merchantId ? undefined : "_blank"}
-            className={`w-full lg:w-auto ${isMerchantPending || !merchantId ? "pointer-events-none opacity-50" : ""}`}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={`w-full lg:w-auto h-10 px-4 shadow-none flex items-center justify-center gap-2 border-theme-dark-green text-theme-dark-green hover:bg-theme-green/5 ${isMerchantPending || !merchantId ? "pointer-events-none opacity-50" : ""}`}
+            title="View Transactions"
+            disabled={isMerchantPending || !merchantId}
+            onClick={CopyConfirmationLink}
           >
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="w-full h-10 px-4 shadow-none flex items-center justify-center gap-2 border-theme-dark-green text-theme-dark-green hover:bg-theme-green/5"
-              title="View Transactions"
-              disabled={isMerchantPending || !merchantId}
-            >
-              <span className="whitespace-nowrap font-medium">Confirm Payment</span>
-              <ArrowUpRight className="h-4 w-4 shrink-0" />
-            </Button>
-          </Link>
+            <span className="whitespace-nowrap font-medium"> Confirm Payment</span>
+            <Copy className="h-4 w-4 shrink-0" />
+          </Button>
+
         </div>
 
         <Button

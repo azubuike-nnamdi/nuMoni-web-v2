@@ -6,7 +6,7 @@ import useGetMerchantTransactionStats from "@/hooks/query/useGetMerchantTransact
 import { extractErrorMessage, getTimelineDates } from "@/lib/helper";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
-import { PaymentHistoryFilters, PaymentHistoryFiltersState } from "./payment-history-filters";
+import { PaymentHistoryFiltersState } from "./payment-history-filters";
 import { PaymentHistoryLoading } from "./payment-history-loading";
 import { PaymentHistoryStats } from "./payment-history-stats";
 
@@ -15,7 +15,7 @@ interface PaymentHistoryProps {
 }
 
 export function PaymentHistory({ merchantId }: Readonly<PaymentHistoryProps>) {
-  const [filters, setFilters] = useState<PaymentHistoryFiltersState>({
+  const [filters] = useState<PaymentHistoryFiltersState>({
     filterType: 'customerEmail',
     searchValue: "",
     debouncedSearchValue: "",
@@ -47,8 +47,8 @@ export function PaymentHistory({ merchantId }: Readonly<PaymentHistoryProps>) {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-gray-900 mb-2">Transaction Metrics</h2>
-      <PaymentHistoryFilters onFiltersChange={setFilters} />
+      {/* <h2 className="text-lg font-bold text-gray-900 mb-2">Transaction Metrics</h2> */}
+      {/* <PaymentHistoryFilters onFiltersChange={setFilters} /> */}
 
       <div className="mt-4">
         {isPending && <PaymentHistoryLoading />}
