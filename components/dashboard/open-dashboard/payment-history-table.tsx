@@ -59,12 +59,12 @@ const columns: ColumnDef<TransactionHistoryData>[] = [
     header: "Customer",
     cell: ({ row }) => {
       const name = row.original.customerName;
-      const email = row.original.customerEmail;
-      const phone = row.original.customerPhoneNo;
+      // const email = row.original.customerEmail;
+      // const phone = row.original.customerPhoneNo;
       return (
         <div className="flex flex-col min-w-[150px]">
           <span className="font-semibold text-gray-900">{name || "Anonymous"}</span>
-          <span className="text-[11px] text-gray-400 truncate max-w-[200px]">{email || phone || "No contact info"}</span>
+
         </div>
       );
     },
