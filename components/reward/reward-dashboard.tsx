@@ -1,11 +1,13 @@
+'use client';
+
 import { peopleIcon, pointIcon } from "@/constant/icons";
 import useGetRewardAnalysis from "@/hooks/query/useGetRewardAnalysis";
 import useGetRewards from "@/hooks/query/useGetRewards";
-import { formatCurrency } from "@/lib/helper";
+import { formatCurrency, getTimelineDates } from "@/lib/helper";
 import { AxiosError } from "@/lib/types";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ErrorDisplay from "../common/error-display";
+import { DateRangeOption, DateRangeSelector } from "../ui/date-range-selector";
 import {
   BudgetCapCard,
   CustomerPoolCard,
@@ -20,61 +22,65 @@ export default function RewardDashboard() {
 
   const { data, isPending, error, isError, refetch } = useGetRewards({});
 
-  const { data: rewardAnalysisData, isPending: isPendingRewardAnalysis, isError: isErrorRewardAnalysis, error: errorRewardAnalysis, refetch: refetchRewardAnalysis } = useGetRewardAnalysis();
+  // Date filter state
+  const [dateRange, setDateRange] = useState<DateRangeOption>(null);
+  const [startDate, setStartDate] = useState<string | undefined>();
+  const [endDate, setEndDate] = useState<string | undefined>();
+  // Track current selection in a ref so handleCustomDatesChange can read it
+  // synchronously without stale closure issues
+  const dateRangeRef = useRef<DateRangeOption>(null);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const { data: rewardAnalysisData, isFetching: isFetchingRewardAnalysis, isError: isErrorRewardAnalysis, error: errorRewardAnalysis, refetch: refetchRewardAnalysis } = useGetRewardAnalysis({
+    startDate,
+    endDate,
+  });
 
   const analyticsData = rewardAnalysisData?.data?.data;
-
   const errorMessage = (error as AxiosError)?.response?.data?.message;
-
   const rewardTableData = data?.data[0];
 
-  const checkScrollButtons = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
+  // Format a Date to dd-MM-yyyy
+  const fmtDate = (d: Date): string => {
+    const day = String(d.getDate()).padStart(2, '0');
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const y = d.getFullYear();
+    return `${day}-${m}-${y}`;
   };
 
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      checkScrollButtons();
-      container.addEventListener('scroll', checkScrollButtons);
-      window.addEventListener('resize', checkScrollButtons);
+  // Resolve preset options (Today, This Week, etc.) into date strings immediately
+  const handleDateRangeChange = (option: DateRangeOption) => {
+    dateRangeRef.current = option;
+    setDateRange(option);
 
-      return () => {
-        container.removeEventListener('scroll', checkScrollButtons);
-        window.removeEventListener('resize', checkScrollButtons);
-      };
+    if (!option || option === 'Custom Range') {
+      setStartDate(undefined);
+      setEndDate(undefined);
+      return;
     }
-  }, [data, rewardAnalysisData]);
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -300,
-        behavior: 'smooth'
-      });
-    }
+    const { startDate: start, endDate: end } = getTimelineDates(option);
+    setStartDate(start);
+    setEndDate(end);
   };
 
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 300,
-        behavior: 'smooth'
-      });
+  // Called by DateRangeSelector for Custom Range after user applies dates in the modal.
+  // IMPORTANT: DateRangeSelector also calls this with (undefined, undefined) whenever
+  // the value switches away from 'Custom Range' — we must ignore those spurious resets
+  // so preset-resolved dates are not wiped out.
+  const handleCustomDatesChange = (start: Date | undefined, end: Date | undefined) => {
+    if (dateRangeRef.current !== 'Custom Range') return;
+
+    if (start && end) {
+      setStartDate(fmtDate(start));
+      setEndDate(fmtDate(end));
+    } else {
+      setStartDate(undefined);
+      setEndDate(undefined);
     }
   };
 
   return (
     <main>
-      {/* Error Display */}
       <ErrorDisplay
         error={errorMessage}
         isError={isError}
@@ -82,34 +88,21 @@ export default function RewardDashboard() {
         className="mb-4"
       />
 
-      <section className="bg-white rounded-2xl p-4 relative">
-        {/* Left Arrow */}
-        {canScrollLeft && (
-          <button
-            onClick={scrollLeft}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors"
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="h-5 w-5 text-gray-700" />
-          </button>
-        )}
+      <section className="bg-white rounded-2xl p-4">
+        {/* Date Range Filter — top-right above the cards */}
+        <div className="flex justify-end mb-3">
+          <DateRangeSelector
+            value={dateRange}
+            onValueChange={handleDateRangeChange}
+            onDatesChange={handleCustomDatesChange}
+            showCustomRange
+            placeholder="Filter by date"
+            className="w-[180px]"
+          />
+        </div>
 
-        {/* Right Arrow */}
-        {canScrollRight && (
-          <button
-            onClick={scrollRight}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors"
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="h-5 w-5 text-gray-700" />
-          </button>
-        )}
-
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
-          <div className="min-w-[280px] shrink-0 flex">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3">
+          <div className="flex">
             <div className="w-full h-full">
               <BudgetCapCard
                 rewardCap={rewardTableData?.rewardCap}
@@ -118,60 +111,11 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalPointsRewardedCard
-                totalRewardCap={analyticsData?.totalIssued}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalPointsBalanceCard
-                availablePoints={analyticsData?.availablePoints}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <CustomerPoolCard
-                totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-[280px] shrink-0 flex">
-            <div className="w-full h-full">
-              <TotalRewardIssued
-                totalIssued={analyticsData?.totalRedeemed}
-                isLoading={isPendingRewardAnalysis}
-                isError={isErrorRewardAnalysis}
-                errorMessage={errorRewardAnalysis?.message}
-                onRetry={() => refetchRewardAnalysis()}
-                title="Total Points Redeemed"
-                iconImage={peopleIcon}
-              />
-            </div>
-          </div>
-          <div className="min-w-[280px] shrink-0 flex">
+          <div className="flex">
             <div className="w-full h-full">
               <TotalRewardIssued
                 totalIssued={formatCurrency(analyticsData?.budgetBalance)}
-                isLoading={isPendingRewardAnalysis}
+                isLoading={isFetchingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
@@ -180,11 +124,24 @@ export default function RewardDashboard() {
               />
             </div>
           </div>
-          <div className="min-w-[280px] shrink-0 flex">
+
+          <div className="flex">
+            <div className="w-full h-full">
+              <TotalOutstandingAllocation
+                outStandingAllocation={analyticsData?.outStandingAllocation}
+                isLoading={isFetchingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
+
+          <div className="flex">
             <div className="w-full h-full">
               <TotalRewardIssued
                 totalIssued={analyticsData?.totalIssueCount}
-                isLoading={isPendingRewardAnalysis}
+                isLoading={isFetchingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
@@ -194,11 +151,11 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          <div className="min-w-[280px] shrink-0 flex">
+          <div className="flex">
             <div className="w-full h-full">
-              <TotalOutstandingAllocation
-                outStandingAllocation={analyticsData?.outStandingAllocation}
-                isLoading={isPendingRewardAnalysis}
+              <CustomerPoolCard
+                totalLifetimeCustomers={analyticsData?.totalLifetimeCustomers}
+                isLoading={isFetchingRewardAnalysis}
                 isError={isErrorRewardAnalysis}
                 errorMessage={errorRewardAnalysis?.message}
                 onRetry={() => refetchRewardAnalysis()}
@@ -206,15 +163,57 @@ export default function RewardDashboard() {
             </div>
           </div>
 
-          {/* <div className="min-w-[280px] flex-shrink-0">
-            <TotalDistributedPoints
-              totalRewardDistributed={analyticsData?.totalRewardDistributed}
-              isLoading={isPendingRewardAnalysis}
-              isError={isErrorRewardAnalysis}
-              errorMessage={errorRewardAnalysis?.message}
-              onRetry={() => refetchRewardAnalysis()}
-            />
-          </div> */}
+          <div className="flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalRedeemed}
+                isLoading={isFetchingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Points Redeemed"
+                iconImage={peopleIcon}
+              />
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="w-full h-full">
+              <TotalRewardIssued
+                totalIssued={analyticsData?.totalRedeemCount}
+                isLoading={isFetchingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+                title="Total Redeemed Count"
+                iconImage={peopleIcon}
+              />
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="w-full h-full">
+              <TotalPointsRewardedCard
+                totalRewardCap={analyticsData?.totalIssued}
+                isLoading={isFetchingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="w-full h-full">
+              <TotalPointsBalanceCard
+                availablePoints={analyticsData?.availablePoints}
+                isLoading={isFetchingRewardAnalysis}
+                isError={isErrorRewardAnalysis}
+                errorMessage={errorRewardAnalysis?.message}
+                onRetry={() => refetchRewardAnalysis()}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -226,5 +225,5 @@ export default function RewardDashboard() {
         onRetry={refetch}
       />
     </main>
-  )
+  );
 }

@@ -1,15 +1,16 @@
 'use client';
 
-import TransactionPagination from "@/components/branch-level/transaction-pagination";
 import SearchInput from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatCurrency, formatDateTime } from "@/lib/helper";
 import { ColumnDef } from "@tanstack/react-table";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
-import { PaginationInfo } from "../transactions-table";
+
+import { PaginationInfo } from "@/lib/types";
 import { PointsDistributedData } from "./types";
 
 const columns: ColumnDef<PointsDistributedData>[] = [
@@ -178,6 +179,7 @@ interface PointsDistributedTableProps {
   pagination?: PaginationInfo;
   currentPage?: number;
   onPageChange?: (page: number) => void;
+  onPageSizeChange?: (size: number) => void;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
   searchPlaceholder?: string;
@@ -192,6 +194,7 @@ export default function PointsDistributedTable({
   pagination,
   currentPage = 0,
   onPageChange,
+  onPageSizeChange,
   searchValue = "",
   onSearchChange,
   searchPlaceholder = "Search by merchant, branch, deal...",
@@ -234,16 +237,15 @@ export default function PointsDistributedTable({
         <DataTable columns={columns} data={data} />
       </div>
       {pagination && onPageChange && data.length > 0 && (
-        <TransactionPagination
+        <DataTablePagination
           currentPage={currentPage}
           totalPages={pagination.totalPages}
           totalRows={pagination.totalElements}
-          currentPageDataLength={pagination.currentPageElements}
           pageSize={pagination.pageSize}
           onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange || (() => { })}
         />
       )}
     </div>
   );
 }
-

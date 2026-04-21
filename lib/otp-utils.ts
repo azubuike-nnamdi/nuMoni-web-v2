@@ -3,7 +3,7 @@
  * @param email - The email address to mask
  * @returns Masked email (e.g., "ab***@example.com")
  */
-export const getMaskedEmail = (email: string): string => {
+const getMaskedEmail = (email: string): string => {
   if (!email) return "";
   const [localPart, domain] = email.split("@");
   if (localPart.length <= 2) return email;
@@ -16,7 +16,7 @@ export const getMaskedEmail = (email: string): string => {
  * @param phone - The phone number to mask
  * @returns Masked phone number (e.g., "***1234")
  */
-export const getMaskedPhone = (phone: string): string => {
+const getMaskedPhone = (phone: string): string => {
   if (!phone) return "";
   if (phone.length <= 4) return phone;
   return `***${phone.slice(-4)}`;

@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 export function useDateRangeFilter() {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
 
   // Search state
   const [searchValue, setSearchValue] = useState("");
@@ -31,10 +32,10 @@ export function useDateRangeFilter() {
     return () => clearTimeout(timer);
   }, [searchValue]);
 
-  // Reset page when search type changes
+  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(0);
-  }, [searchType]);
+  }, [searchType, selectedTimeline, customStartDate, customEndDate, pageSize]);
 
   // Calculate fetch conditions
   const isCustomRange = selectedTimeline === "Custom Range";
@@ -48,8 +49,8 @@ export function useDateRangeFilter() {
       return { fromDate: "", toDate: "" };
     }
 
-    const customStartStr = customStartDate ? format(customStartDate, "yyyy-MM-dd") : undefined;
-    const customEndStr = customEndDate ? format(customEndDate, "yyyy-MM-dd") : undefined;
+    const customStartStr = customStartDate ? format(customStartDate, "dd-MM-yyyy") : undefined;
+    const customEndStr = customEndDate ? format(customEndDate, "dd-MM-yyyy") : undefined;
 
     const { startDate, endDate } = getTimelineDates(
       selectedTimeline || "Today",
@@ -57,22 +58,20 @@ export function useDateRangeFilter() {
       customEndStr
     );
 
-    // Convert YYYY-MM-DD to DD-MM-YYYY for API
-    const formatToApiDate = (dateStr: string) => {
-      if (!dateStr) return "";
-      const [y, m, d] = dateStr.split("-");
-      return `${d}-${m}-${y}`;
-    };
-
     return {
-      fromDate: formatToApiDate(startDate),
-      toDate: formatToApiDate(endDate)
+      fromDate: startDate,
+      toDate: endDate
     };
   }, [selectedTimeline, customStartDate, customEndDate, isCustomRange, areCustomDatesValid]);
 
   // Handlers
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(0);
   };
 
   const handleSearchChange = (value: string) => {
@@ -87,6 +86,7 @@ export function useDateRangeFilter() {
   return {
     // States
     currentPage,
+    pageSize,
     searchValue,
     searchType,
     debouncedSearch,
@@ -99,11 +99,13 @@ export function useDateRangeFilter() {
 
     // Setters
     setCurrentPage,
+    setPageSize,
     setSearchType,
     setSelectedTimeline,
 
     // Handlers
     handlePageChange,
+    handlePageSizeChange,
     handleSearchChange,
     handleCustomDatesChange,
   };

@@ -190,18 +190,6 @@ export const getRingColor = (ringColor: string): string => {
  * @param indicatorColor - The indicator color string (e.g., "red", "green", "black", "blue", "orange", "purple", "yellow")
  * @returns A Tailwind CSS background color class
  */
-export const getIndicatorColor = (indicatorColor: string): string => {
-  switch (indicatorColor) {
-    case 'red': return 'bg-red-500';
-    case 'green': return 'bg-green-500';
-    case 'black': return 'bg-black';
-    case 'blue': return 'bg-blue-500';
-    case 'orange': return 'bg-orange-500';
-    case 'purple': return 'bg-purple-500';
-    case 'yellow': return 'bg-yellow-500';
-    default: return 'bg-gray-500';
-  }
-};
 
 /**
  * Formats a number value with proper locale formatting and decimal places
@@ -221,21 +209,49 @@ export const formatCurrency = (amount: number) => {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 2,
-  }).format(amount).replace('NGN', '₦');
+  }).format(amount).replace('NGN ', '₦ ');
 };
 
 export const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
     case 'active':
+    case 'successful':
       return 'bg-green-100 text-green-800 border-green-200';
     case 'inactive':
     case 'closed':
+    case 'expired':
+    case 'paused':
+    case 'pause':
+    case 'failed':
       return 'bg-red-100 text-red-800 border-red-200';
     case 'pending':
       return 'bg-yellow-100 text-yellow-800 border-yellow-200';
     default:
       return 'bg-gray-100 text-gray-800 border-gray-200';
   }
+};
+
+/**
+ * Converts a SCREAMING_SNAKE_CASE or snake_case string into Title Case words.
+ * Handles null/undefined values gracefully with an optional fallback.
+ *
+ * @param value   - The string to format (e.g. "DIRECT_TRANSFER", "NUMONI_WALLET")
+ * @param fallback - Value to return when input is falsy (default: "—")
+ * @returns Formatted string (e.g. "Direct Transfer", "Numoni Wallet")
+ *
+ * @example
+ * formatSnakeCase("DIRECT_TRANSFER")   // → "Direct Transfer"
+ * formatSnakeCase("NUMONI_WALLET")     // → "Numoni Wallet"
+ * formatSnakeCase("pause")             // → "Pause"
+ * formatSnakeCase(null)                // → "—"
+ * formatSnakeCase(undefined, "N/A")    // → "N/A"
+ */
+export const formatSnakeCase = (value: string | null | undefined, fallback = "—"): string => {
+  if (!value) return fallback;
+  return value
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 };
 
 export const getStatusText = (status: string) => {
@@ -245,6 +261,11 @@ export const getStatusText = (status: string) => {
     case 'inactive':
     case 'closed':
       return 'Inactive';
+    case 'paused':
+    case 'pause':
+      return 'Paused'
+    case 'expired':
+      return 'Expired'
     case 'pending':
       return 'Pending';
     default:
@@ -353,7 +374,7 @@ export const getReceiveMethodFromDistributionType = (distributionType: string) =
  * @param rewardType - The reward type from API (e.g., "PERCENTAGE_BASED")
  * @returns Formatted string for display (e.g., "Percentage Based")
  */
-export const formatRewardType = (rewardType: string) => {
+const formatRewardType = (rewardType: string) => {
   switch (rewardType) {
     case "PERCENTAGE_BASED":
       return "Percentage Based";
@@ -369,7 +390,7 @@ export const formatRewardType = (rewardType: string) => {
  * @param distributionType - The distribution type from API (e.g., "INSTANT")
  * @returns Formatted string for display (e.g., "Instant")
  */
-export const formatDistributionType = (distributionType: string) => {
+const formatDistributionType = (distributionType: string) => {
   switch (distributionType) {
     case "INSTANT":
       return "Instant";
@@ -396,7 +417,7 @@ export const getRewardsRules = (rewards: { rules?: Array<RewardRule> } | null): 
  * @param fallback - Fallback text if date is null
  * @returns Formatted date string or fallback
  */
-export const formatDate = (dateString: string | null, fallback: string) => {
+const formatDate = (dateString: string | null, fallback: string) => {
   if (!dateString) return fallback;
   return new Date(dateString).toLocaleDateString();
 };
@@ -422,13 +443,6 @@ export const formatDateTime = (dateString: string) => {
  * @param dateString - Date string to format
  * @returns Formatted date string in DD-MM-YYYY format (e.g., "25-12-2024")
  */
-export const formatDateDDMMYYYY = (dateString: string): string => {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
-};
 
 /**
  * Creates summary data array from rewards object
@@ -861,10 +875,10 @@ export const getYesterdayDate = (format: 'iso' | 'formatted' | 'timestamp' | 'dd
  * @returns Object with startDate and endDate in YYYY-MM-DD format
  * 
  * @example
- * getTimelineDates('Today') // Returns: { startDate: '2024-01-15', endDate: '2024-01-15' }
- * getTimelineDates('Yesterday') // Returns: { startDate: '2024-01-14', endDate: '2024-01-14' }
- * getTimelineDates('This Week') // Returns: { startDate: '2024-01-15', endDate: '2024-01-21' }
- * getTimelineDates('Custom Range', '2024-01-01', '2024-01-31') // Returns: { startDate: '2024-01-01', endDate: '2024-01-31' }
+ * getTimelineDates('Today') // Returns: { startDate: '15-01-2024', endDate: '15-01-2024' }
+ * getTimelineDates('Yesterday') // Returns: { startDate: '14-01-2024', endDate: '14-01-2024' }
+ * getTimelineDates('This Week') // Returns: { startDate: '15-01-2024', endDate: '21-01-2024' }
+ * getTimelineDates('Custom Range', '01-01-2024', '31-01-2024') // Returns: { startDate: '01-01-2024', endDate: '31-01-2024' }
  */
 export const getTimelineDates = (
   timeline: string,
@@ -874,12 +888,12 @@ export const getTimelineDates = (
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Helper function to format date as YYYY-MM-DD (local timezone)
+  // Helper function to format date as DD-MM-YYYY (local timezone)
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${day}-${month}-${year}`;
   };
 
   // Helper function to get start of week (Monday)
@@ -909,10 +923,8 @@ export const getTimelineDates = (
 
   switch (timeline) {
     case 'Today': {
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
       return {
-        startDate: formatDate(yesterday),
+        startDate: formatDate(today),
         endDate: formatDate(today)
       };
     }
@@ -988,7 +1000,7 @@ export const getTimelineDates = (
 };
 
 // File size validation utilities
-export const parseFileSize = (sizeString: string): number => {
+const parseFileSize = (sizeString: string): number => {
   const units: { [key: string]: number } = {
     'b': 1,
     'kb': 1024,
@@ -1609,7 +1621,7 @@ export const downloadQRCodeImageWithLogo = async (
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `${posId ? `${posId}-` : ''}${title.replace(/\s+/g, '-').toLowerCase()}-qr-code.png`;
+                link.download = `${posId ? `${posId}-` : ''}${title.replaceAll(/\s+/g, '-').toLowerCase()}-qr-code.png`;
                 link.style.display = 'none';
                 document.body.appendChild(link);
 
@@ -1649,23 +1661,11 @@ export const downloadQRCodeImageWithLogo = async (
  * @example
  * parseDateString('2024-01-15') // Returns Date object for January 15, 2024
  */
-export const parseDateString = (dateString: string): Date => {
-  const [year, month, day] = dateString.split('-').map(Number);
+const parseDateString = (dateString: string): Date => {
+  const [day, month, year] = dateString.split('-').map(Number);
   return new Date(year, month - 1, day);
 };
 
-/**
- * Converts a date string from YYYY-MM-DD format to DD-MM-YYYY format
- * @param dateString - Date string in YYYY-MM-DD format (e.g., "2026-01-05")
- * @returns Date string in DD-MM-YYYY format (e.g., "05-01-2026")
- * 
- * @example
- * convertYYYYMMDDtoDDMMYYYY('2026-01-05') // Returns "05-01-2026"
- */
-export const convertYYYYMMDDtoDDMMYYYY = (dateString: string): string => {
-  const [year, month, day] = dateString.split('-');
-  return `${day}-${month}-${year}`;
-};
 
 /**
  * Converts a date range option to actual start and end Date objects

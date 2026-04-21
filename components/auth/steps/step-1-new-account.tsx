@@ -26,7 +26,7 @@ export default function Step1NewAccount({
   control,
   getValues,
   setError,
-}: Step1NewAccountProps) {
+}: Readonly<Step1NewAccountProps>) {
   const { handleGenerateOtp, isPending } = useGenerateOtp();
 
   const handleSubmit = async (e: React.FormEvent) => {

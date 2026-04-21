@@ -20,7 +20,7 @@ export default function BranchFormFooter({
   isLastStep,
   isPending = false,
   isUpdate = false
-}: BranchFormFooterProps) {
+}: Readonly<BranchFormFooterProps>) {
   const getStepTitle = () => {
     if (isUpdate) {
       switch (currentStep) {

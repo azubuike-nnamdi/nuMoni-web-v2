@@ -2,7 +2,7 @@ import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export type FileUploadType = 'images' | 'documents' | 'deallmage' | string;
+type FileUploadType = 'images' | 'documents' | 'deallmage' | string;
 
 interface UploadFileParams {
   formData: FormData;

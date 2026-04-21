@@ -70,6 +70,3 @@ export const useExportPosTransaction = () => {
 
   return { handleExportPosTransaction, isPending, isSuccess, reset };
 };
-
-export default useExportPosTransaction;
-

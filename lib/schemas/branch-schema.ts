@@ -47,45 +47,11 @@ export const branchFormSchema = z.object({
 
 export type BranchFormData = z.infer<typeof branchFormSchema>
 
-// Step-specific schemas for validation
-export const step1Schema = branchFormSchema.pick({
-  branchName: true,
-  branchRegion: true,
-  branchState: true,
-  lga: true,
-  openingTime: true,
-  closingTime: true,
-  description: true,
-  phone: true,
-  email: true,
-})
-
-export const step2Schema = branchFormSchema.pick({
-  address: true,
-  city: true,
-  state: true,
-  zipCode: true,
-})
-
+// Step 3 partial schema — used for manager-only forms (e.g. EditBranchManager)
 export const step3Schema = branchFormSchema.pick({
   managerName: true,
   managerPhone: true,
   managerEmail: true,
 })
 
-export const step4Schema = branchFormSchema.pick({
-  website: true,
-  whatsapp: true,
-  linkedin: true,
-  instagram: true,
-  twitter: true,
-  snapchat: true,
-})
-
-export const step5Schema = branchFormSchema.pick({
-  bank: true,
-  payOnUsBank: true,
-  accountNumber: true,
-  bankAccountName: true,
-  minPayment: true,
-})
+type Step3FormData = z.infer<typeof step3Schema>

@@ -174,16 +174,26 @@ type Customer = {
 
 type CustomerAnalyticsData = {
   totalTransactions: number;
+  averageOrderAmount: number;
   totalSpent: number;
+  totalPointSpent: number;
   mostShoppedBranch: string;
+  totalPointReceived: number;
   customerId: string;
-  rank?: number;
+  customerUserId: string;
+  branchesUsed: string[];
   customerName: string;
+  averageReviewScore: number;
+  rank?: number;
 };
 
 type CustomerAnalyticsResponse = {
   topLoyalCustomers: CustomerAnalyticsData[];
   totalCustomers: number;
+  size: number;
+  totalPages: number;
+  page: number;
+  totalElements: number;
 };
 
 type BranchAnalyticsData = {
@@ -503,7 +513,7 @@ type MetricCardProps = {
   iconBgColor: string;
 };
 
-type TransactionData = {
+type TransactionHistoryData = {
   id: string;
   transactionId: string | null;
   transactionType: string;
@@ -512,6 +522,7 @@ type TransactionData = {
   description: string;
   status: string;
   date: string;
+  type: string;
   customerId: string;
   customerName: string | null;
   customerImageUrl: string | null;
@@ -553,6 +564,65 @@ type TransactionData = {
   transferResponseCode: string | null;
   transactionCategory: string;
   title: string;
+  posLocation: string;
+  createdDt: string;
+  posId: string | null;
+  posBankName: string | null;
+  posBankCode: string | null;
+  posAccountNumber: string | null;
+  posName: string | null;
+};
+
+type TransactionData = {
+  id: string;
+  transactionId: string | null;
+  transactionType: string;
+  operationType: string;
+  amount: number;
+  description: string;
+  status: string;
+  date: string;
+  customerId: string;
+  customerName: string | null;
+  customerImageUrl: string | null;
+  customerEmail: string | null;
+  customerPhoneNo: string | null;
+  merchantId: string;
+  merchantName: string | null;
+  businessImagePath: string | null;
+  walletType: string | null;
+  sourceTable: string;
+  balanceBeforeTransaction: number | null;
+  balanceAfterTransaction: number | null;
+  referenceTransactionId: string | null;
+  fee: number | null;
+  trnType: string | null;
+  dealId: string | null;
+  dealName: string | null;
+  dealType: string | null;
+  unitsPurchased: number | null;
+  branchId: string | null;
+  branchName: string;
+  invoiceRefId: string | null;
+  invoiceNo: string;
+  transactionReferenceId: string;
+  numoniTransactionRefId: string | null;
+  transactionNo: string;
+  amountByWallet: number | null;
+  amountBrandWallet: number | null;
+  numoniPoints: number | null;
+  brandPoints: number | null;
+  amountPaid: number;
+  settled: number | null;
+  issuedPoints: number | null;
+  beneficiaryAccountNumber: string | null;
+  beneficiaryAccountName: string | null;
+  bankCode: string | null;
+  bankName: string | null;
+  paymentGateway: string | null;
+  transferResponseCode: string | null;
+  transactionCategory: string;
+  title: string;
   paymentDt: string | null;
   createdDt: string | null;
   updatedDt: string | null;
@@ -564,6 +634,12 @@ type TransactionData = {
   posAccountHolderName: string;
   posAccountNumber: string;
   posId: string;
+  timestamp: string;
+  totalAmountPaid: number | null;
+  paidInNumoniPoints: number | null;
+  paidInBrandPoints: number | null;
+  settledAmount: number | null;
+  type: string | null;
 };
 
 type PointOfSaleData = {
@@ -747,6 +823,58 @@ type TransactionMetric = {
   bgColor: string;
   iconBgColor: string;
 }
+
+
+type UseGetMerchantTransactionProps = {
+  merchantId: string;
+  startDate?: string;
+  endDate?: string;
+  customerEmail?: string;
+  customerPhoneNo?: string;
+  customerId?: string;
+  operationType?: string;
+  page?: number;
+  size?: number;
+}
+
+type Sales = {
+  periodAmount: number;
+  totalAmount: number;
+  periodCount: number;
+  totalCount: number;
+}
+
+// type Payouts = {
+//   periodAmount: number;
+//   totalAmount: number;
+//   periodCount: number;
+//   totalCount: number;
+// }
+
+// type ServiceFees = {
+//   periodAmount: number,
+//   totalAmount: number,
+//   periodCount: number,
+//   totalCount: number
+// }
+
+type StatsProps = {
+  sales: Sales;
+  // payouts: Payouts;
+  // serviceFees: ServiceFees;
+}
+
+type PaginationInfo = {
+  isFirst: boolean;
+  isLast: boolean;
+  currentPageElements: number;
+  totalPages: number;
+  pageSize: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  currentPage: number;
+  totalElements: number;
+}
 export type {
   AccountInformationProps,
   ActiveBranchModalProps,
@@ -754,9 +882,7 @@ export type {
   AuthUser,
   AuthUserStore,
   AxiosError,
-  Bank,
-  BankInformation,
-  BankPayload,
+  Bank, BankInformation, BankPayload,
   BankToken,
   Branch,
   BranchAnalyticsData,
@@ -764,8 +890,7 @@ export type {
   BranchSummaryData,
   BrandProfileProps,
   BrandSummaryProps,
-  BusinessImage,
-  ChangeBranchStatusPayload,
+  BusinessImage, ChangeBranchStatusPayload,
   CreateRewardsPayload,
   Customer,
   CustomerAnalyticsData,
@@ -787,7 +912,7 @@ export type {
   MetricCardProps,
   MilestoneTargetSectionProps,
   MutationErrorType,
-  NinInfo, PaymentHistoryData, PointAnalyticsProps,
+  NinInfo, PaginationInfo, PaymentHistoryData, PointAnalyticsProps,
   PointOfSaleData,
   QRCodeCardProps,
   ReceiveMethodSectionProps,
@@ -800,12 +925,10 @@ export type {
   SidebarProps,
   signInPayload,
   singleBranchDetails,
-  SocialMediaData,
-  TanstackProviderProps,
+  SocialMediaData, StatsProps, TanstackProviderProps,
   Transaction,
-  TransactionData, TransactionMetric, UpdateBranchManagerPayload,
-  UpdateRewardRuleModalProps,
-  ValidateOtpPayload,
+  TransactionData, TransactionHistoryData, TransactionMetric, UpdateBranchManagerPayload,
+  UpdateRewardRuleModalProps, UseGetMerchantTransactionProps, ValidateOtpPayload,
   VerifyBankNamePayload,
   VerifyBankPayload,
   VerifyPayOnUsBankPayload,

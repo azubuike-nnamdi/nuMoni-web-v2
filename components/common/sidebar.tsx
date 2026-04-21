@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose }: Readonly<SidebarProps>) {
   const pathname = usePathname();
   const allPaths = navigationItems.map(item => item.path);
 
@@ -19,9 +19,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <>
       {/* Mobile overlay */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+        <button
+          type="button"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden w-full h-full border-none cursor-default"
           onClick={onClose}
+          aria-label="Close sidebar"
         />
       )}
 
@@ -61,7 +63,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   className={cn(
                     "flex items-center px-3 py-4 text-sm font-medium rounded-lg transition-colors",
                     isActive
-                      ? "bg-gradient-to-r from-white to-green-50 text-theme-dark-green border-r-4 font-bold border-theme-dark-green-700"
+                      ? "bg-linear-to-r from-white to-green-50 text-theme-dark-green border-r-4 font-bold border-theme-dark-green-700"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   )}
                 >

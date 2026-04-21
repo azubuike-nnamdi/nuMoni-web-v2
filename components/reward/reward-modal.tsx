@@ -23,7 +23,7 @@ export default function RewardModal({
   secondaryButtonColor,
   isLoading = false,
   disabled = false
-}: RewardModalProps) {
+}: Readonly<RewardModalProps>) {
 
   const handleCancel = () => {
     if (onCancel) {
